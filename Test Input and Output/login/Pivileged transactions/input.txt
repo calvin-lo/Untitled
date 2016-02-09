@@ -1,0 +1,12 @@
+login
+standard session
+jane doe
+withdrawal 
+transfer
+paybill
+deposit 
+create
+delete
+disable
+changeplan
+logout
