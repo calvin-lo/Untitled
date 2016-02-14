@@ -1,1 +1,0 @@
-Do you wish to login as a standard user or admin?

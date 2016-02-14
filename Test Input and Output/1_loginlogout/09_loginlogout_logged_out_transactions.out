@@ -1,0 +1,13 @@
+Do you wish to login as a standard user or admin?
+Logged in as a standard user.
+What is the account holder's name?
+logged in as John Doe.
+logout: Valid command.
+withdrawal: Invalid command. Login required. 
+transfer: Invalid command. Login required. 
+paybill: Invalid command. Login required. 
+deposit: Inalid command. Login required. 
+create: Invalid command. Login required.
+delete: Invalid command. Login required.
+disable: Invalid command. Login required.
+changeplan: Invalid command. Login required.
