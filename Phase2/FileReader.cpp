@@ -1,18 +1,14 @@
 // Phase2.cpp : main project file.
 
 //Imports
-#include "stdafx.h"
+#include "FileReader.h"
 #include <iostream> 
 #include <string>
 #include <fstream>
 
+
 using namespace std;
 
-class FileReader { 
- public:
-	string file_path; //stores file path
-	void ReadFile(); //ReadFile function
-};
 
 //ReadFile function
 void FileReader::ReadFile() { 
@@ -35,7 +31,5 @@ int main() {
 	bank_accounts.file_path = "BankAccounts.txt";
 	//call the readfile function on filepath given above
 	bank_accounts.ReadFile();
-	//pause to read console output
-	system("pause");
 	return 0;
 }
