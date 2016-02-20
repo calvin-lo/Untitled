@@ -13,7 +13,7 @@ using namespace std;
 //ReadFile function
 void FileReader::ReadFile() { 
 	string line; //stores line of currently read string
-	ifstream file(file_path); //open ifstream
+	ifstream file(file_path.c_str()); //open ifstream
 	if (file.is_open()) {  //if file opened successfully
 		while (getline(file,line)) { //while there are lines
 			cout << line << '\n'; //output to the screen for now
