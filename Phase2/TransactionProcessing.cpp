@@ -14,6 +14,7 @@ TransactionProcessing::~TransactionProcessing() {
 }
 
 bool TransactionProcessing::login(string line){
+	//TROLL
 	return status;
 }
 
