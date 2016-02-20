@@ -1,0 +1,1 @@
+Use g++ -std=c++11 file.cpp -o output to compile.

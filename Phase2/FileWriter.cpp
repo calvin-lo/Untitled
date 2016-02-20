@@ -10,7 +10,7 @@ using namespace std;
 
 //WriteFile function
 void FileWriter::WriteFile(string line) { 
-	ofstream file(file_path.c_str()); //open ifstream
+	ofstream file(file_path); //open ifstream
 	if (file.is_open()) {  //if file opened successfully
 		file << line << '\n';
 		file.close(); //close file
