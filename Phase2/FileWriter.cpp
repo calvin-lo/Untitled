@@ -18,13 +18,3 @@ void FileWriter::WriteFile(string line) {
 		cout << "Unable to open" << '\n';
 	}
 }
-
-int main() {
-	//new bank_accounts object
-	FileWriter bank_accounts;
-	//referring to the filepath of created object
-	bank_accounts.file_path = "Transaction.txt";
-	//call the WriteFile function on filepath given above
-	bank_accounts.WriteFile("HELLO");
-	return 0;
-}
