@@ -7,6 +7,7 @@
 #define __TransactionProcessing_h__
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -16,14 +17,14 @@ using namespace std;
 class TransactionProcessing {
 
 private:
-
-	string input;	
+	
 	bool status;
 
 protected:
 
 public:
-
+	string input;
+	vector<string> transactions;
 	TransactionProcessing();
 	~TransactionProcessing();
 	bool login(string line);
@@ -37,9 +38,7 @@ public:
 	bool disable(string line);
 	bool changeplan(string line);
 	bool logout(string line);
-
-
-
+	bool in_array(string value, vector<string> array);
 };
 
 #endif
