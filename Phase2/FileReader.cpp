@@ -17,7 +17,7 @@ void FileReader::ReadFile() {
 	ifstream file(file_path); //open ifstream
 	if (file.is_open()) {  //if file opened successfully
 		while (getline(file,line)) { //while there are lines
-			buffer.push_back(line); //push into the list
+			buffer.push_back(line); //intpush into the list
 		}
 		file.close(); //close file
 	} else { //if the file is not found

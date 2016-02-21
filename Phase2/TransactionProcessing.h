@@ -24,21 +24,22 @@ protected:
 
 public:
 	string input;
-	vector<string> transactions;
 	TransactionProcessing();
 	~TransactionProcessing();
-	bool login(string line);
-	bool withdrawal(string line);
-	bool transfer(string line);
-	bool paybill(string line);
-	bool deposit(string line);
-	bool create(string line);
-	bool delete1(string line);
-	bool enable(string line);
-	bool disable(string line);
-	bool changeplan(string line);
-	bool logout(string line);
+	bool login();
+	bool withdrawal();
+	bool transfer();
+	bool paybill();
+	bool deposit();
+	bool create();
+	bool delete1();
+	bool enable();
+	bool disable();
+	bool changeplan();
+	bool logout();
 	bool in_array(string value, vector<string> array);
+	string promptTransaction();
+	string parse(string to_parse, int field);
 };
 
 #endif
