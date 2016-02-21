@@ -2,14 +2,9 @@
 
 //Imports
 #include "FileReader.h"
-#include <iostream> 
-#include <string>
-#include <fstream>
-#include <vector> 
 
 using namespace std;
 
-vector<string> buffer;
 //ReadFile function
 void FileReader::ReadFile() { 
 	string line; //stores line of currently read string

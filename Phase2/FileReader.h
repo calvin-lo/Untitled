@@ -8,14 +8,19 @@
 
 #include <string>
 #include <vector> 
+#include <iostream> 
+#include <fstream>
 
 using namespace std;
 
 
 class FileReader { 
+
+
  public:
 	string file_path; //stores file path
-	vector<string> commands;
+	vector<string> commands;	
+	vector<string> buffer;
 	void ReadFile(); //ReadFile function
 };
 

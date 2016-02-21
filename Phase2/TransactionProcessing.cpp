@@ -4,8 +4,8 @@
 	Member: Calvin Lo, Albert Fung, Karan Chandwaney
 */
 #include "TransactionProcessing.h"
-#include "FileReader.cpp"
-#include "FileWriter.cpp"
+#include "FileReader.h"
+#include "FileWriter.h"
 
 TransactionProcessing::TransactionProcessing() {
 	status = false;
@@ -66,7 +66,8 @@ int main () {
 	bank_accounts.file_path = "BankAccounts.txt";
 	//call the readfile function on filepath given above
 	bank_accounts.ReadFile();
-	bank_accounts.commands = buffer;
+
+	bank_accounts.commands = bank_accounts.buffer;
 	
 	for (int i = 0; i < bank_accounts.commands.size(); i++) { 
 		cout << bank_accounts.commands.at(i) << '\n';
