@@ -1,10 +1,8 @@
-/*
-	CSCI 3060/ SOFE 3980 Course Project Front End
-	Group: Untitled
-	Member: Calvin Lo, Albert Fung, Karan Chandwaney
-*/
-#ifndef __FileReader_h__ 
-#define __FileReader_h__
+//	CSCI 3060/ SOFE 3980 Course Project Front End
+//	Group: Untitled
+//	Member: Calvin Lo, Albert Fung, Karan Chandwaney
+#ifndef FileReader_h_ 
+#define FileReader_h_
 
 #include <string>
 #include <vector> 
@@ -24,4 +22,4 @@ class FileReader {
 	void ReadFile(); //ReadFile function
 };
 
-#endif
+#endif // FileReader_h_

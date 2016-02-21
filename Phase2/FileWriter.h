@@ -1,10 +1,8 @@
-/*
-	CSCI 3060/ SOFE 3980 Course Project Front End
-	Group: Untitled
-	Member: Calvin Lo, Albert Fung, Karan Chandwaney
-*/
-#ifndef __FileWriter_h__ 
-#define __FileWriter_h__
+//	CSCI 3060/ SOFE 3980 Course Project Front End
+//	Group: Untitled
+//	Member: Calvin Lo, Albert Fung, Karan Chandwaney
+#ifndef FileWriter_h_
+#define FileWriter_h_
 
 #include <string>
 
@@ -16,4 +14,4 @@ class FileWriter {
 	void WriteFile(string); //WriteFile function
 };
 
-#endif
+#endif // FileWriter_h_
