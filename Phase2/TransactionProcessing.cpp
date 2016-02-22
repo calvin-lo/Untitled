@@ -17,7 +17,7 @@ TransactionProcessing::TransactionProcessing() {
 	miscellaneous = "";
 	trans_code = "";
 
-	account_type = "";
+	account_type = 'N';
 
 	while (true) {
 		getline(cin, input);
@@ -134,6 +134,7 @@ bool TransactionProcessing::login() {
 		if (input == "standard session") {
 			msg = "Logged in as a standard user.";
 			login_mode = 'S';
+			account_type = 'S';
 		} 
 		// logged in as admin mode
 		else if (input == "admin") {
@@ -369,12 +370,16 @@ bool TransactionProcessing::transfer() {
 							if (valid_amount == true) { 	
 
 								// if account type is student, check if bal is enough to cover fee
-								if (account_type == "S" && valid_student_fee == true) { 
+								if (account_type == 'S' && valid_student_fee == true) { 
 
 									// if amount to transfer is below limit
 									if (valid_under_limit == true) { 
+										// success 
 										msg = "$" + transfer_amount + "transferred from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + ".";
 										cout << msg << endl;
+										transaction_writer.WriteTransation(trans_code, transfer_acc_name_from, transfer_acc_num_from, transfer_amount, miscellaneous);
+										transaction_writer.WriteTransation(trans_code, transfer_acc_name_to, transfer_acc_num_to, transfer_amount, miscellaneous);
+										return status;
 									// amount to transfer above limit
 									} else { 
 										msg = "Transfer limit exceeded. You must transfer less than $" + transfer_amount + ".";
@@ -388,11 +393,15 @@ bool TransactionProcessing::transfer() {
 									return status;
 								}
 								// if account type is non-student, check if bal is enough to cover fee
-								if (account_type == "N" && valid_non_student_fee == true) { 
+								if (account_type == 'N' && valid_non_student_fee == true) { 
 									// if amount to transfer is below limit
 									if (valid_under_limit == true) { 
+										// success 
 										msg = "$" + transfer_amount + "transferred from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + ".";
 										cout << msg << endl;
+										transaction_writer.WriteTransation(trans_code, transfer_acc_name_from, transfer_acc_num_from, transfer_amount, miscellaneous);
+										transaction_writer.WriteTransation(trans_code, transfer_acc_name_to, transfer_acc_num_to, transfer_amount, miscellaneous);
+										return status;
 									// amount to transfer above limit
 									} else { 
 										msg = "Transfer limit exceeded. You must transfer less than $" + transfer_amount + ".";
@@ -455,6 +464,12 @@ bool TransactionProcessing::paybill() {
 	} else if (login_mode == 'S' || login_mode == 'A') {
 		msg = "paybill: Valid command.";
 		cout << msg << endl;
+
+
+
+
+
+
 	}
 
 	return status;

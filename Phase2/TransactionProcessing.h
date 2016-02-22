@@ -36,7 +36,7 @@ private:
 	// keep track of the miscel information;
 	string miscellaneous;
 	// keep track of the account type, student or non student
-	string account_type; 
+	char account_type; 
 
 
 	// Keep track of the command index of file input	
