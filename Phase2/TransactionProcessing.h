@@ -33,9 +33,15 @@ private:
 	string account_number;
 	// keep track of the amount of money;
 	string amount;
-	// keep track of the miscel informaiton;
+	// keep track of the miscel information;
 	string miscellaneous;
-	// Keep track of the command index of file input
+	// keep track of the account type, student or non student
+	char account_type; 
+	// keep track of disabled or enabled accounts
+	char acc_status;
+
+
+	// Keep track of the command index of file input	
 	int command_index;
 
 	// File Reader for reading input file
