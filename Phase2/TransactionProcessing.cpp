@@ -2,19 +2,123 @@
 //	Group: Untitled
 //	Member: Calvin Lo, Albert Fung, Karan Chandwaney
 #include "TransactionProcessing.h"
-#include "FileReader.h"
-#include "FileWriter.h"
 
 TransactionProcessing::TransactionProcessing() {
-	status = false;
+	// set the default login mode to 'N' (Not logged in)
 	login_mode = 'N';
+	// set the default input type to 'T' (Termainal input)
+	input_type = 'T';
+	//referring to the filepath of created object
+	transaction_writer.file_path = "Transaction.txt";
+	// Set account holder's name, bank account number, amount, miscellaneous to default
+	account_holder_name = "";
+	account_number = "";
+	amount = "";
+	miscellaneous = "";
+	trans_code = "";
+
+	while (true) {
+		getline(cin, input);
+		startTransaction(input);
+	}
+}
+
+TransactionProcessing::TransactionProcessing(string input_file) {
+	// set the default login mode to 'N' (Not logged in)
+	login_mode = 'N';
+	// set the default input type to 'F' (File input)
+	input_type = 'F';
+	// Set the command index for the input file to 0
+	command_index = 0;
+	//referring to the filepath of created object
+	transaction_writer.file_path = "Transaction.txt";
+
+	//referring to the filepath of created object
+	input_reader.file_path = input_file;
+	//call the readfile function on filepath given above
+	input_reader.ReadFile();
+	input_reader.commands = input_reader.buffer;
+	// Read int the commands from the file
+	while (command_index < input_reader.commands.size()) { 
+		input = input_reader.commands.at(command_index);
+		// increase the command index
+		command_index++;
+		startTransaction(input);
+	}
+	// Start command line input when all the transaction in the input file is done
+	while (true) {
+		getline(cin, input);
+		startTransaction(input);
+	}
 }
 
 TransactionProcessing::~TransactionProcessing() {
 
 }
 
-bool TransactionProcessing::login(string line) {
+void TransactionProcessing::startTransaction(string input) {
+
+	// set the default transaction status to false;
+	status = false;
+	// Set the miscellaneous information to empty;
+	miscellaneous = "";
+
+	if (input == "login") {
+		trans_code = "10";
+		login();
+	} else if (input == "withdrawal") {
+		trans_code = "01";
+		withdrawal();
+	} else if (input == "transfer") {
+		trans_code = "02";
+		transfer();
+	} else if (input == "paybill") {
+		trans_code = "03";
+		paybill();
+	} else if (input == "deposit") {
+		trans_code = "04";
+		deposit();
+	} else if (input == "create") {
+		trans_code = "05";
+		create();
+	} else if (input == "delete") {
+		trans_code = "06";
+		delete1();
+	} else if (input == "enable") {
+		trans_code = "09";
+		enable();
+	} else if (input == "disable") {
+		trans_code = "07";
+		disable();
+	} else if (input == "changeplan") {
+		trans_code = "08";
+		changeplan();
+	} else if (input == "logout") {
+		trans_code = "00";
+		logout();
+	} else {
+		cout << "Invalid command." << endl;
+	} 
+
+}
+
+string TransactionProcessing::readCommand() {
+	string command;
+	// if the input type is terminal input
+	if (input_type == 'T') {
+		getline(cin, command);
+	}
+	// if the input type is file input 
+	else if (input_type == 'F') {
+		command = input_reader.commands.at(command_index);
+		cout << command << endl;
+		// increase the command index
+		command_index++;
+	}
+	return command;
+}
+
+bool TransactionProcessing::login() {
 
 	// Keep track of valid account holder's name
 	bool valid_name = true;
@@ -23,9 +127,9 @@ bool TransactionProcessing::login(string line) {
 	if (login_mode == 'N') {
 		msg = "Do you wish to login as a standard user or admin?";
 		cout << msg << endl;
-		getline(cin, input);
+		input = readCommand();
 		// logged in as standard mode
-		if (input == "standard") {
+		if (input == "standard session") {
 			msg = "Logged in as a standard user.";
 			login_mode = 'S';
 		} 
@@ -40,16 +144,24 @@ bool TransactionProcessing::login(string line) {
 			cout << msg << endl;
 			return status;
 		}
+
+		// set the miscel information
+		miscellaneous =+ login_mode;
 		cout << msg << endl;
 		msg = "What is the account holder's name?";
 		cout << msg << endl;
-	  	getline(cin, input);
+	  	input = readCommand();
 		account_holder_name = input;
 		
 		// if account holder name is valid
 		if (valid_name == true) {
+			// Sucessfully log in
+			status = true;
 			msg = "logged in as " + account_holder_name + ".";
 			cout << msg << endl;
+			// write the transation file
+			transaction_writer.WriteTransation(trans_code, account_holder_name, account_number, amount, miscellaneous);
+			return status;
 		}
 		// if account hodler name is NOT valid
 		else {
@@ -57,8 +169,6 @@ bool TransactionProcessing::login(string line) {
 			cout << msg << endl;
 			return status;
 		}
-		
-		status = true;
 	} 
 	// if there are already someone logged in
 	else {
@@ -66,16 +176,17 @@ bool TransactionProcessing::login(string line) {
 		cout << msg << endl;
 		return status;
 	}
+
 	return status;
 }
 
-bool TransactionProcessing::withdrawal(string line) {
+bool TransactionProcessing::withdrawal() {
 	// Keep track of the account holder name for withdrawal
 	string withdrawal_acc_name;
 	// Keep track of the account holder name for withdrawal
 	string withdrawal_acc_num;
 	// Keep track of the amount for withdrawal;
-	string amount;
+	string withdrawal_amount;
 	// True if the amount to withdraw is valid, False if not
 	bool valid_amount = true;
 	// True if the account holder name to withdraw is valid, False if not
@@ -92,30 +203,43 @@ bool TransactionProcessing::withdrawal(string line) {
 	} else if (login_mode == 'S' || login_mode == 'A') {
 		msg = "withdrawal: Valid command.";
 		cout << msg << endl;
-		msg = "What is the account holder's name for withdrawal?";
-		cout << msg << endl;
-		getline(cin, input);
-		withdrawal_acc_name = input;
+		// Ask for the account holder's name if logged in as admin
+		if (login_mode == 'A') {
+			msg = "What is the account holder's name for withdrawal?";
+			cout << msg << endl;
+			input = readCommand();
+			withdrawal_acc_name = input; 
+		}
+		// Set the account holder's name to the current user if logged in as standard 
+		else {
+			withdrawal_acc_name = account_holder_name;
+		}
+
 		// if the account holder name is valid.
 		if (valid_name == true) {
 			msg =  withdrawal_acc_name+ "set as withdrawal account holder.";
 			cout << msg << endl;
 			msg = "What is the account number you wish to withdrawal from?";
 			cout << msg << endl;
-			getline(cin, input);
+			input = readCommand();
 			withdrawal_acc_num = input;
 			// if the account number is valid.			
 			if (valid_num == true) {
-				msg = "Valid account number" + withdrawal_acc_num + ".";
+				msg = "Valid account number " + withdrawal_acc_num + ".";
 				cout << msg << endl;
 				msg = "What is the amount to withdrawal?";
 				cout << msg << endl;
-				getline(cin, input);
-				amount = input;
+				input = readCommand();
+				withdrawal_amount = input;
 				// if the amount is valid.	
 				if (valid_amount == true) {
-					msg = "$" + amount + " withdrawn from account" + withdrawal_acc_num + ".";
+					// Successfully withdrawa money
+					status = true;
+					msg = "$" + withdrawal_amount + " withdrawn from account " + withdrawal_acc_num + ".";
 					cout << msg << endl;
+					// write the transaction file
+					transaction_writer.WriteTransation(trans_code, withdrawal_acc_name, withdrawal_acc_num, withdrawal_amount, miscellaneous);
+					return status;
 				} 
 				// if the amount is NOT valid
 				else {
@@ -137,14 +261,12 @@ bool TransactionProcessing::withdrawal(string line) {
 			cout << msg << endl;
 			return status;
 		}
-		status = true;
 
 	}
-	
 	return status;
 }
 
-bool TransactionProcessing::transfer(string line) {
+bool TransactionProcessing::transfer() {
 	// Check whether the user logged in.  If logged in, check if they have the privilege to transfer money
 	// Return false if the user is not logged
 	if (login_mode == 'N') {
@@ -159,7 +281,7 @@ bool TransactionProcessing::transfer(string line) {
 	return status;
 }
 
-bool TransactionProcessing::paybill(string line) {
+bool TransactionProcessing::paybill() {
 	// Check whether the user logged in.  If logged in, check if they have the privilege to pay bill
 	// Return false if the user is not logged
 	if (login_mode == 'N') {
@@ -174,7 +296,7 @@ bool TransactionProcessing::paybill(string line) {
 	return status;
 }
 
-bool TransactionProcessing::deposit(string line) {
+bool TransactionProcessing::deposit() {
 	// Check whether the user logged in.  If logged in, check if they have the privilege to deposit money
 	// Return false if the user is not logged
 	if (login_mode == 'N') {
@@ -189,7 +311,7 @@ bool TransactionProcessing::deposit(string line) {
 	return status;
 }
 
-bool TransactionProcessing::create(string line) {
+bool TransactionProcessing::create() {
 	// Check whether the user logged in.  If logged in, check if they have the privilege to create account
 	// Return false if the user is not logged
 	if (login_mode == 'N') {
@@ -208,7 +330,7 @@ bool TransactionProcessing::create(string line) {
 	return status;
 }
 
-bool TransactionProcessing::delete1(string line) {
+bool TransactionProcessing::delete1() {
 	// Check whether the user logged in.  If logged in, check if they have the privilege to delete account
 	// Return false if the user is not logged
 	if (login_mode == 'N') {
@@ -227,7 +349,7 @@ bool TransactionProcessing::delete1(string line) {
 	return status;
 }
 
-bool TransactionProcessing::enable(string line) { 
+bool TransactionProcessing::enable() { 
 	// Check whether the user logged in.  If logged in, check if they have the privilege to enable account
 	// Return false if the user is not logged
 	if (login_mode == 'N') {
@@ -246,7 +368,7 @@ bool TransactionProcessing::enable(string line) {
 	return status;
 }
 
-bool TransactionProcessing::disable(string line) {
+bool TransactionProcessing::disable() {
 	// Check whether the user logged in.  If logged in, check if they have the privilege to disable account
 	// Return false if the user is not logged
 	if (login_mode == 'N') {
@@ -265,7 +387,7 @@ bool TransactionProcessing::disable(string line) {
 	return status;
 }
 
-bool TransactionProcessing::changeplan(string line) {
+bool TransactionProcessing::changeplan() {
 	// Check whether the user logged in.  If logged in, check if they have the privilege to change plan
 	// Return false if the user is not logged
 	if (login_mode == 'N') {
@@ -284,7 +406,7 @@ bool TransactionProcessing::changeplan(string line) {
 	return status;
 }
 
-bool TransactionProcessing::logout(string line) { 
+bool TransactionProcessing::logout() { 
 	// Check whether the user logged in.  If logged in, check if they have the privilege to logout
 	// Return false if the user is not logged
 	if (login_mode == 'N') {
@@ -294,34 +416,13 @@ bool TransactionProcessing::logout(string line) {
 	} else if (login_mode == 'S' || login_mode == 'A') {
 		msg = "logout: Valid command.";
 		cout << msg << endl;
+		msg = "Logout Sucessfully.";
+		cout << msg << endl;
+		transaction_writer.WriteTransation(trans_code, account_holder_name, account_number, amount, miscellaneous);
 		login_mode = 'N';
 		account_holder_name = "";
 	}
 
-	status = false;
+	status = true;
 	return status;
 }
-
-/*int main () {
-	//new bank_accounts object
-	FileReader bank_accounts;
-	//referring to the filepath of created object
-	bank_accounts.file_path = "BankAccounts.txt";
-	//call the readfile function on filepath given above
-	bank_accounts.ReadFile();
-
-	bank_accounts.commands = bank_accounts.buffer;
-	
-	for (int i = 0; i < bank_accounts.commands.size(); i++) { 
-		cout << bank_accounts.commands.at(i) << '\n';
-	}
-
-	//new bank_accounts object
-	FileWriter transaction_file;
-	//referring to the filepath of created object
-	transaction_file.file_path = "Transaction.txt";
-	//call the WriteFile function on filepath given above
-	transaction_file.WriteFile("HELLOasdasdsadas");
-	return 0;
-
-}*/

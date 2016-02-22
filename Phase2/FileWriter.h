@@ -10,8 +10,12 @@ using namespace std;
 
 class FileWriter { 
  public:
-	string file_path; //stores file path
-	void WriteFile(string); //WriteFile function
+	//stores file path
+	string file_path;
+	//WriteFile function
+	void WriteFile(string);
+	// save the transation file
+	void WriteTransation(string trans_code, string account_holder_name, string account_number, string amount, string miscellaneous);
 };
 
 #endif // FileWriter_h_
