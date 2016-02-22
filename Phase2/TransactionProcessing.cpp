@@ -295,6 +295,19 @@ bool TransactionProcessing::logout(string line) {
 	return status;
 }
 
+string TransactionProcessing::erase(string str) { 
+
+	int count = 0;
+	for (int i = 1; i < str.length(); i++) { 
+		if (str.at(i).compare(" ") == 0) { 
+			count++;
+		}
+		if (count > 1) { 
+			return str.substr(0, i);
+		}
+	}
+}
+
 string TransactionProcessing::parse(string check, int field) { 
 	// field 0 = account number
 	// field 1 = name
@@ -339,7 +352,7 @@ string TransactionProcessing::parse(string check, int field) {
 			return bank_accounts.commands.at(i).substr(accnum_loc, 5);
 
 		} else if (name_loc != -1 && field == 1) { 
-			return bank_accounts.commands.at(i).substr(name_loc, 20);	
+			return erase(bank_accounts.commands.at(i).substr(name_loc, 20));
 		}	
 		//cout << bank_accounts.commands.at(i) << '\n';
 	}
