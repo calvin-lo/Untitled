@@ -69,7 +69,8 @@ public:
 	// End a Front End session
 	// Returns true if the transaction su	
 	bool logout(string line);
-
+	// Parse BankAccounts.txt file for accounts
+	string parse(string check, int field);
 
 
 };

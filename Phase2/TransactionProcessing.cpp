@@ -19,6 +19,7 @@ bool TransactionProcessing::login(string line) {
 	// Keep track of valid account holder's name
 	bool valid_name;
 
+
 	msg = "Do you wish to login as a standard user or admin?";
 	cout << msg << endl;
 	getline(cin, input);
@@ -34,6 +35,16 @@ bool TransactionProcessing::login(string line) {
 	cout << msg << endl;
   	getline(cin, input);
 	account_holder_name = input;
+
+	//cout << parse("John Doe", 1) << endl;	
+	cout << "account holder name is " << account_holder_name << "." << endl;
+	string parsed = parse(account_holder_name, 1);
+	
+	cout << "looking for: " << parsed << "." << endl;
+
+	if (parsed.compare(account_holder_name) == 0) { 
+		valid_name = true;
+	}
 	
 	// if account holder name is valid
 	if (valid_name == true) {
@@ -282,6 +293,57 @@ bool TransactionProcessing::logout(string line) {
 
 	status = false;
 	return status;
+}
+
+string TransactionProcessing::parse(string check, int field) { 
+	// field 0 = account number
+	// field 1 = name
+	// field 2 = active/disabled
+	// field 3 = balance
+	// field 4 = student/non student
+/*
+	if (field == 0) { 
+		return to_parse.substr(0, 4);
+	
+	} else if (field == 1) { 
+		return to_parse.substr(6, 26);
+	
+	} else if (field == 2) { 
+		return to_parse.substr(27, 28);
+	
+	} else if (field == 3) { 
+		return to_parse.substr(30, 37);
+	
+	} else if (field == 4) { 
+		return to_parse.substr(38, 39);
+	} 
+	return "";
+	*/
+	FileReader bank_accounts;
+	//referring to the filepath of created object
+	bank_accounts.file_path = "BankAccounts.txt";
+	//call the readfile function on filepath given above
+	bank_accounts.commands = bank_accounts.ReadFile();
+	
+	TransactionProcessing trans;
+
+	//string cmd = trans.promptTransaction();
+
+	for (int i = 0; i < bank_accounts.commands.size(); i++) { 
+		
+		//string name = trans.parse(bank_accounts.commands.at(i), 1);
+		int accnum_loc = bank_accounts.commands.at(i).find(check);
+		int name_loc = bank_accounts.commands.at(i).find(check);
+		
+		if (accnum_loc != -1 && field == 0) { 
+			return bank_accounts.commands.at(i).substr(accnum_loc, 5);
+
+		} else if (name_loc != -1 && field == 1) { 
+			return bank_accounts.commands.at(i).substr(name_loc, 20);	
+		}	
+		//cout << bank_accounts.commands.at(i) << '\n';
+	}
+	return "";
 }
 
 /*int main () {
