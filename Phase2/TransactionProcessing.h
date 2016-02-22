@@ -37,6 +37,8 @@ private:
 	string miscellaneous;
 	// keep track of the account type, student or non student
 	char account_type; 
+	// keep track of disabled or enabled accounts
+	char acc_status;
 
 
 	// Keep track of the command index of file input	

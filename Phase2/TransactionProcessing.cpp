@@ -1,4 +1,4 @@
-//	CSCI 3060/ SOFE 3980 Course Project Front End
+//	CSCI 3060/ SOFE 3980 Course Project Front endl
 //	Group: Untitled
 //	Member: Calvin Lo, Albert Fung, Karan Chandwaney
 #include "TransactionProcessing.h"
@@ -16,7 +16,7 @@ TransactionProcessing::TransactionProcessing() {
 	amount = "";
 	miscellaneous = "";
 	trans_code = "";
-
+	acc_status = 'E';
 	account_type = 'N';
 
 	while (true) {
@@ -375,6 +375,8 @@ bool TransactionProcessing::transfer() {
 									// if amount to transfer is below limit
 									if (valid_under_limit == true) { 
 										// success 
+
+										status = true;
 										msg = "$" + transfer_amount + "transferred from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + ".";
 										cout << msg << endl;
 										transaction_writer.WriteTransation(trans_code, transfer_acc_name_from, transfer_acc_num_from, transfer_amount, miscellaneous);
@@ -397,6 +399,8 @@ bool TransactionProcessing::transfer() {
 									// if amount to transfer is below limit
 									if (valid_under_limit == true) { 
 										// success 
+
+										status = true;
 										msg = "$" + transfer_amount + "transferred from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + ".";
 										cout << msg << endl;
 										transaction_writer.WriteTransation(trans_code, transfer_acc_name_from, transfer_acc_num_from, transfer_amount, miscellaneous);
@@ -529,6 +533,17 @@ bool TransactionProcessing::delete1() {
 }
 
 bool TransactionProcessing::enable() { 
+	// stores the name of the account holder that you want to change the plan for
+	string enable_account_holder;
+
+	// stores the account number that you want to change the plan for 
+	string enable_account_num; 
+	// true if the account holder is valid, otherwise false
+	bool valid_account_holder = true;
+	
+	// true if the bank acconut number is valid, otherwise false
+	bool valid_bank_acc_num = true;
+
 	// Check whether the user logged in.  If logged in, check if they have the privilege to enable account
 	// Return false if the user is not logged
 	if (login_mode == 'N') {
@@ -542,8 +557,47 @@ bool TransactionProcessing::enable() {
 	} else if (login_mode == 'A') {
 		msg = "enable: Valid command. Admin access granted.";
 		cout << msg << endl;
+		msg = "Enter the bank account holder's name to be enabled.";
+		cout << msg << endl;
+		input = readCommand();
+		enable_account_holder = input;
+		// valid account holder
+		if (valid_account_holder == true) { 
+			msg = "Accepted bank account holder's name : " + enable_account_num + ".";
+			cout << msg << endl;
+			msg = "Enter bank account number to be enabled.";
+			cout << msg << endl;
+			input = readCommand();
+			enable_account_num = input;
+			// valid bank account number, enabled account
+			if (valid_bank_acc_num == true && acc_status == 'E') { 
+				//success
+				status = true;
+				msg = "Accepted bank account number :" + enable_account_num + ".";
+				cout << msg << endl;
+				msg = "Account" + enable_account_num + "from" + enable_account_holder + "had been enabled. Information saved to bank account transaction file.";
+				cout << msg << endl;
+				transaction_writer.WriteTransation(trans_code, enable_account_holder, enable_account_num, amount, miscellaneous);
+				return status;
+			// valid bank account number, disabled account
+			} else if (valid_bank_acc_num && acc_status == 'D') {
+				msg = "Rejected bank account number to be enabled :" + enable_account_holder +"(Account " + enable_account_num + " is a enabled account.)";
+				cout << msg << endl;
+				return status;
+			} else { // not valid bank account number
+				msg = "Rejected bank account number to be enabled :" + enable_account_holder +"(Account " + enable_account_num + ". (Entered an invalid bank account number)";
+				cout << msg << endl;
+				return status;
+			}
+		// not valid account holder
+		} else { 
+			msg = "Rejected the bank account holder's name : Invalid name.  (Entered an invalid account holder's name)";
+			cout << msg << endl;
+			return status;
+		}
 	}	
-
+	msg = "enable Unsucessfully.";
+	cout << msg << endl;
 	return status;
 }
 
@@ -608,6 +662,8 @@ bool TransactionProcessing::changeplan() {
 			// valid bank account number
 			if (valid_bank_acc_num == true && account_type == 'S') { 
 				//success
+
+				status = true;
 				msg = "Accepted bank account number : " + changeplan_account_num + ".";
 				cout << msg << endl;
 				msg = "Account " + changeplan_account_num + "from " + changeplan_account_holder + "has changed from student (SP) to non - student (NP). Information saved to bank account transaction file.";
@@ -617,6 +673,8 @@ bool TransactionProcessing::changeplan() {
 			// valid bank account number non student to student
 			} else if (valid_bank_acc_num == true && account_type == 'N') { 
 				// success
+
+				status = true;
 				msg = "Account " + changeplan_account_num + "from " + changeplan_account_holder + "has changed from non - student (NP) to student (SP). Information saved to bank account transaction file.";
 				cout << msg << endl;
 				transaction_writer.WriteTransation(trans_code, changeplan_account_holder, changeplan_account_num, amount, miscellaneous);
@@ -634,6 +692,7 @@ bool TransactionProcessing::changeplan() {
 			return status;
 		}
 	}	
+	//fail
 	msg = "changeplan Unsucessfully.";
 	cout << msg << endl;
 	return status;
