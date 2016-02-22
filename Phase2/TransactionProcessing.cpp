@@ -8,8 +8,11 @@ TransactionProcessing::TransactionProcessing() {
 	login_mode = 'N';
 	// set the default input type to 'T' (Termainal input)
 	input_type = 'T';
+	// find the time for the transaction file name
+	time_t rawtime;
+	time(&rawtime);
 	//referring to the filepath of created object
-	transaction_writer.file_path = "Transaction.txt";
+	transaction_writer.file_path =  to_string(rawtime) + "-transaction.txt";
 	// Set account holder's name, bank account number, amount, account type, miscellaneous to default
 	account_holder_name = "";
 	account_number = "";
@@ -19,6 +22,7 @@ TransactionProcessing::TransactionProcessing() {
 	acc_status = 'E';
 	account_type = 'N';
 
+	// parse the current bank account file
 	parse();
 
 	while (true) {
@@ -34,8 +38,15 @@ TransactionProcessing::TransactionProcessing(string input_file) {
 	input_type = 'F';
 	// Set the command index for the input file to 0
 	command_index = 0;
+	// find the time for the transaction file name
+	time_t rawtime;
+	time(&rawtime);
 	//referring to the filepath of created object
-	transaction_writer.file_path = "Transaction.txt";
+	transaction_writer.file_path =  to_string(rawtime) + "-transaction.txt";
+
+
+	// parse the current bank account file
+	parse();
 
 	//referring to the filepath of created object
 	input_reader.file_path = input_file;
@@ -340,7 +351,7 @@ bool TransactionProcessing::transfer() {
 
 		// if name given for origin transfer is valid
 		if (valid_name_from == true) {
-			msg =  transfer_acc_name_from+ "selected as account holder name for origin transfer.";
+			msg =  transfer_acc_name_from+ " selected as account holder name for origin transfer.";
 			cout << msg << endl;
 			msg = "What is the account number for origin transfer?";
 			cout << msg << endl;
@@ -349,7 +360,7 @@ bool TransactionProcessing::transfer() {
 
 			// if the origin account number is valid.	
 			if (valid_num_from == true) {
-				msg = "Account number " + transfer_acc_num_from + "selected for origin transfer.";
+				msg = "Account number " + transfer_acc_num_from + " selected for origin transfer.";
 				cout << msg << endl;
 				msg = "What is the destination account number";
 				cout << msg << endl;
@@ -358,7 +369,7 @@ bool TransactionProcessing::transfer() {
 
 				// if destination account number is valid
 				if (valid_num_to == true) { 
-					msg = "Account number " + transfer_acc_num_to + "set as destination account number.";
+					msg = "Account number " + transfer_acc_num_to + " set as destination account number.";
 					cout << msg << endl;
 					msg = "What is the amount to transfer from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + "?";
 					cout << msg << endl;
@@ -381,7 +392,7 @@ bool TransactionProcessing::transfer() {
 										// success 
 
 										status = true;
-										msg = "$" + transfer_amount + "transferred from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + ".";
+										msg = "$" + transfer_amount + " transferred from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + ".";
 										cout << msg << endl;
 										transaction_writer.WriteTransation(trans_code, transfer_acc_name_from, transfer_acc_num_from, transfer_amount, miscellaneous);
 										transaction_writer.WriteTransation(trans_code, transfer_acc_name_to, transfer_acc_num_to, transfer_amount, miscellaneous);
@@ -472,12 +483,6 @@ bool TransactionProcessing::paybill() {
 	} else if (login_mode == 'S' || login_mode == 'A') {
 		msg = "paybill: Valid command.";
 		cout << msg << endl;
-
-
-
-
-
-
 	}
 
 	return status;
@@ -823,6 +828,12 @@ bool TransactionProcessing::logout() {
 		transaction_writer.WriteTransation(trans_code, account_holder_name, account_number, amount, miscellaneous);
 		login_mode = 'N';
 		account_holder_name = "";
+
+		// Reset the transaction file name
+		time_t rawtime;
+		time(&rawtime);
+		//referring to the filepath of created object
+		transaction_writer.file_path =  to_string(rawtime) + "-transaction.txt";
 	}
 
 	status = true;
@@ -855,7 +866,7 @@ void TransactionProcessing::parse() {
 		// Remove all the white space after the last character
 		temp_account.acc_holder_name = trim(temp_account.acc_holder_name);
 
-		cout << temp_account.acc_holder_name.length() << endl;
+		//cout << temp_account.acc_holder_name.length() << endl;
 
 		// push back the temp account to the all account vector
 		all_accounts.push_back(temp_account);
