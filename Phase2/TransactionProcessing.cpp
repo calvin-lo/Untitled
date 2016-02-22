@@ -10,12 +10,14 @@ TransactionProcessing::TransactionProcessing() {
 	input_type = 'T';
 	//referring to the filepath of created object
 	transaction_writer.file_path = "Transaction.txt";
-	// Set account holder's name, bank account number, amount, miscellaneous to default
+	// Set account holder's name, bank account number, amount, account type, miscellaneous to default
 	account_holder_name = "";
 	account_number = "";
 	amount = "";
 	miscellaneous = "";
 	trans_code = "";
+
+	account_type = "";
 
 	while (true) {
 		getline(cin, input);
@@ -267,6 +269,48 @@ bool TransactionProcessing::withdrawal() {
 }
 
 bool TransactionProcessing::transfer() {
+	// Keep track of the account holder name for transfer from
+	string transfer_acc_name_from;
+
+	// Keep track of the account holder name for transfer to
+	string transfer_acc_name_to;
+
+	// Keep track of the account holder name for transfer from
+	string transfer_acc_num_from;
+
+	// Keep track of the account holder name for transfer to
+	string transfer_acc_num_to;
+
+	// Keep track of the amount for transfer
+	string transfer_amount;
+
+	// True if the amount to transfer is valid, False if not
+	bool valid_amount = true;
+
+	// True if the account holder names to transfer is valid, False if not
+	bool valid_name_from = true;
+	bool valid_name_to = true;
+
+	// True if the account numbers to transfer is valid, False if not
+	bool valid_num_from = true;
+	bool valid_num_to = true;
+
+	// true if the transfer amount is under the limit, false if not
+	bool valid_under_limit = true;
+
+	// true if the account to transfer to is not disabled, false if not
+	bool valid_not_disabled = true;
+
+	// true if the account has enough money to cover the transaction fee, false if not 
+	bool valid_non_student_fee = true;
+	
+	// true if the account has enough money to cover the student transaction fee, false if not
+	bool valid_student_fee = true;
+
+	// true if the account has sufficient funds to cover transfer, false if not 
+
+	bool sufficient_funds = true;
+
 	// Check whether the user logged in.  If logged in, check if they have the privilege to transfer money
 	// Return false if the user is not logged
 	if (login_mode == 'N') {
@@ -276,8 +320,128 @@ bool TransactionProcessing::transfer() {
 	} else if (login_mode == 'S' || login_mode == 'A') {
 		msg = "transfer: Valid command.";
 		cout << msg << endl;
-	}
 
+		// Admin mode transfer request
+		if (login_mode == 'A') {
+			msg = "What is the account holder's name for origin transfer?";
+			cout << msg << endl;
+			input = readCommand();
+			transfer_acc_name_from = input; 
+
+		// standard mode transfer, from is the account currently logged in
+		} else { 
+			transfer_acc_name_from = account_holder_name; 
+		}
+
+		// if name given for origin transfer is valid
+		if (valid_name_from == true) {
+			msg =  transfer_acc_name_from+ "selected as account holder name for origin transfer.";
+			cout << msg << endl;
+			msg = "What is the account number for origin transfer?";
+			cout << msg << endl;
+			input = readCommand();
+			transfer_acc_num_from = input;
+
+			// if the origin account number is valid.	
+			if (valid_num_from == true) {
+				msg = "Account number " + transfer_acc_num_from + "selected for origin transfer.";
+				cout << msg << endl;
+				msg = "What is the destination account number";
+				cout << msg << endl;
+				input = readCommand();
+				transfer_acc_num_to = input;
+
+				// if destination account number is valid
+				if (valid_num_to == true) { 
+					msg = "Account number " + transfer_acc_num_to + "set as destination account number.";
+					cout << msg << endl;
+					msg = "What is the amount to transfer from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + "?";
+					cout << msg << endl;
+					input = readCommand();
+					transfer_amount = input;
+
+					//sufficient funds
+					if (sufficient_funds == true) { 
+					// destination account number not disabled
+						if (valid_not_disabled == true) { 
+						
+							// if valid amount to transfer
+							if (valid_amount == true) { 	
+
+								// if account type is student, check if bal is enough to cover fee
+								if (account_type == "S" && valid_student_fee == true) { 
+
+									// if amount to transfer is below limit
+									if (valid_under_limit == true) { 
+										msg = "$" + transfer_amount + "transferred from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + ".";
+										cout << msg << endl;
+									// amount to transfer above limit
+									} else { 
+										msg = "Transfer limit exceeded. You must transfer less than $" + transfer_amount + ".";
+										cout << msg << endl;
+										return status;
+									}
+								// student not enough to cover fee 
+								} else { 
+									msg = "Insufficient funds of 5 cents to transfer $" + transfer_amount + " due to transaction fee.";
+									cout << msg << endl;
+									return status;
+								}
+								// if account type is non-student, check if bal is enough to cover fee
+								if (account_type == "N" && valid_non_student_fee == true) { 
+									// if amount to transfer is below limit
+									if (valid_under_limit == true) { 
+										msg = "$" + transfer_amount + "transferred from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + ".";
+										cout << msg << endl;
+									// amount to transfer above limit
+									} else { 
+										msg = "Transfer limit exceeded. You must transfer less than $" + transfer_amount + ".";
+										cout << msg << endl;
+										return status;
+									}
+								// non - student not enough to cover fee 
+								} else { 
+									msg = "Insufficient funds of 10 cents to transfer $" + transfer_amount + " due to transaction fee.";
+									cout << msg << endl;
+									return status;
+								}
+							// amount to transfer not valid	
+							} else { 
+								msg = "Invalid format. Must be ####.## where # is a digit 0 - 9.";
+								cout << msg << endl;
+								return status;
+							}
+						// destination account number disabled
+						} else { 
+							msg = "Invalid destination account number, the account has been disabled.";
+							cout << msg << endl;
+							return status;
+						}
+					// insufficient funds
+					} else { 
+						msg = "Insufficient funds to transfer $" + transfer_amount + ".";
+						cout << msg << endl;
+						return status;
+					}
+				// if destination account number is invalid
+				} else { 
+					msg = "Invalid account number for destination of transfer.";
+					cout << msg << endl;
+					return status;
+				}
+			// origin account number is not valid
+			} else { 
+				msg = "Invalid account number for origin of transfer.";
+				cout << msg << endl;
+				return status;
+			}
+		// origin account name is not valid
+		} else { 
+			msg = "Invalid account name";
+			cout << msg << endl;
+			return status;
+		}				
+	}		
 	return status;
 }
 
