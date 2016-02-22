@@ -607,16 +607,16 @@ bool TransactionProcessing::create() {
 }
 
 bool TransactionProcessing::delete1() { 
-	// stores the name of the account holder that you want to enable
+	// stores the name of the account holder that you want to delete
 	string delete_account_holder;
 
-	// stores the account number that you want to enable
+	// stores the account number that you want to delete
 	string delete_account_num; 
 	// true if the account holder is valid, otherwise false
 	bool valid_account_holder = true;
 	
 	// true if the bank acconut number is valid, otherwise false
-	bool valid_bank_acc_num = true;
+	bool valid_account_num = true;
 
 	// Check whether the user logged in.  If logged in, check if they have the privilege to delete account
 	// Return false if the user is not logged
@@ -631,19 +631,43 @@ bool TransactionProcessing::delete1() {
 	} else if (login_mode == 'A') {
 		msg = "delete: Valid command. Admin access granted.";
 		cout << msg << endl;
-		msg = "Enter the bank account holder's name to be disabled.";
+		msg = "Enter the bank account holder's name to be deleted.";
 		cout << msg << endl;
 		input = readCommand();
+		delete_account_holder = input;
 		// if the account holder's name is valid
 		if (valid_account_holder == true) { 
-
+			msg = "Accepted bank account holder's name: " + delete_account_holder + ".";
+			cout << msg << endl;
+			msg = "Enter bank account number to be deleted.";
+			cout << msg << endl;
+			input = readCommand();
+			delete_account_num = input;
+			// if account number is valid
+			if (valid_account_num == true) { 
+				// success
+				status = true;
+				msg = "Accepted bank account number to be deleted: " + delete_account_num + ".";
+				cout << msg << endl;
+				msg = "Account " + delete_account_num + "from " + delete_account_holder + " has been deleted. Information saved to bank account transaction file.";
+				cout << msg << endl;
+				transaction_writer.WriteTransation(trans_code, delete_account_holder, delete_account_num, amount, miscellaneous);
+				return status;
+			// if the account number is not valid 	
+			} else { 
+				msg = "Rejected bank account number to be deleted: " + delete_account_num + ". (Entered an invalid bank account number)";
+				cout << msg << endl;
+				return status;
+			}
 		// if the account holder's name is not valid
 		} else { 
-
+			msg = "Rejected bank account holder's name: Invalid name. (Entered an invalid account holder's name)";
+			cout << msg << endl;
+			return status;
 		}
-
 	}	
-
+	msg = "Delete Unsucessfully.";
+	cout << msg << endl;
 	return status;
 }
 
