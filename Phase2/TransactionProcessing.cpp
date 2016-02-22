@@ -137,7 +137,7 @@ bool TransactionProcessing::login() {
 			account_type = 'S';
 		} 
 		// logged in as admin mode
-		else if (input == "admin") {
+		else if (input == "admin session") {
 			msg = "Logged in as an admin user.";
 			login_mode = 'A';
 		} 
@@ -567,8 +567,21 @@ bool TransactionProcessing::disable() {
 }
 
 bool TransactionProcessing::changeplan() {
+
+	// stores the name of the account holder that you want to change the plan for
+	string changeplan_account_holder;
+
+	// stores the account number that you want to change the plan for 
+	string changeplan_account_num; 
+	// true if the account holder is valid, otherwise false
+	bool valid_account_holder = true;
+	
+	// true if the bank acconut number is valid, otherwise false
+	bool valid_bank_acc_num = true;
+
 	// Check whether the user logged in.  If logged in, check if they have the privilege to change plan
 	// Return false if the user is not logged
+
 	if (login_mode == 'N') {
 		msg = "changeplan: Invalid command. You are required to be logged into the system.";
 		cout << msg << endl;
@@ -580,8 +593,49 @@ bool TransactionProcessing::changeplan() {
 	} else if (login_mode == 'A') {
 		msg = "changeplan: Valid command. Admin access granted.";
 		cout << msg << endl;
+		msg = "Enter the bank account holder's name to change the transaction payment plan.";
+		cout << msg << endl;
+		input = readCommand();
+		changeplan_account_holder = input; 
+		// if valid bank account holder name student to non student
+		if (valid_account_holder == true) { 
+			msg = "Accepted bank account holder's name: " + changeplan_account_holder + ".";
+			cout << msg << endl;
+			msg = "Enter bank account number to change the transaction payment plan.";
+			cout << msg << endl;
+			input = readCommand();
+			changeplan_account_num = input; 
+			// valid bank account number
+			if (valid_bank_acc_num == true && account_type == 'S') { 
+				//success
+				msg = "Accepted bank account number : " + changeplan_account_num + ".";
+				cout << msg << endl;
+				msg = "Account " + changeplan_account_num + "from " + changeplan_account_holder + "has changed from student (SP) to non - student (NP). Information saved to bank account transaction file.";
+				cout << msg << endl;
+				transaction_writer.WriteTransation(trans_code, changeplan_account_holder, changeplan_account_num, amount, miscellaneous);
+				return status;
+			// valid bank account number non student to student
+			} else if (valid_bank_acc_num == true && account_type == 'N') { 
+				// success
+				msg = "Account " + changeplan_account_num + "from " + changeplan_account_holder + "has changed from non - student (NP) to student (SP). Information saved to bank account transaction file.";
+				cout << msg << endl;
+				transaction_writer.WriteTransation(trans_code, changeplan_account_holder, changeplan_account_num, amount, miscellaneous);
+				return status;
+			// not valid bank account number
+			} else { 
+				msg = "Rejected bank account number to to change the transaction payment plan : " + changeplan_account_num + " (Entered an invalid bank account number)";
+				cout << msg << endl;
+				return status;
+			}
+		// not valid bank account holder name
+		} else {
+			msg = "Rejected Bank account holder's name : Invalid name.  (Entered an invalid account holder's name)";
+			cout << msg << endl;
+			return status;
+		}
 	}	
-
+	msg = "changeplan Unsucessfully.";
+	cout << msg << endl;
 	return status;
 }
 
