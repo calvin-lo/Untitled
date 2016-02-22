@@ -17,37 +17,55 @@ TransactionProcessing::~TransactionProcessing() {
 bool TransactionProcessing::login(string line) {
 
 	// Keep track of valid account holder's name
-	bool valid_name;
+	bool valid_name = true;
 
-	msg = "Do you wish to login as a standard user or admin?";
-	cout << msg << endl;
-	getline(cin, input);
-	if (input == "standard") {
-		msg = "Logged in as a standard user.";
-		login_mode = 'S';
-	} else if (input == "admin") {
-		msg = "Logged in as an admin user.";
-		login_mode = 'A';
-	}
-	cout << msg << endl;
-	msg = "What is the account holder's name?";
-	cout << msg << endl;
-  	getline(cin, input);
-	account_holder_name = input;
-	
-	// if account holder name is valid
-	if (valid_name == true) {
-		msg = "logged in as " + account_holder_name + ".";
+	// if there are no one logged in.
+	if (login_mode == 'N') {
+		msg = "Do you wish to login as a standard user or admin?";
 		cout << msg << endl;
-	}
-	// if account hodler name is NOT valid
+		getline(cin, input);
+		// logged in as standard mode
+		if (input == "standard") {
+			msg = "Logged in as a standard user.";
+			login_mode = 'S';
+		} 
+		// logged in as admin mode
+		else if (input == "admin") {
+			msg = "Logged in as an admin user.";
+			login_mode = 'A';
+		} 
+		// Not valid mode
+		else {
+			msg = "Invalid Mode";
+			cout << msg << endl;
+			return status;
+		}
+		cout << msg << endl;
+		msg = "What is the account holder's name?";
+		cout << msg << endl;
+	  	getline(cin, input);
+		account_holder_name = input;
+		
+		// if account holder name is valid
+		if (valid_name == true) {
+			msg = "logged in as " + account_holder_name + ".";
+			cout << msg << endl;
+		}
+		// if account hodler name is NOT valid
+		else {
+			msg = "Invalid account holder name";
+			cout << msg << endl;
+			return status;
+		}
+		
+		status = true;
+	} 
+	// if there are already someone logged in
 	else {
-		msg = "Invalid account holder name";
+		msg = "login: Invalid command. User " + account_holder_name + " must be logged out before attempting to login again.";
 		cout << msg << endl;
 		return status;
 	}
-	
-	status = true;
 	return status;
 }
 
@@ -59,11 +77,11 @@ bool TransactionProcessing::withdrawal(string line) {
 	// Keep track of the amount for withdrawal;
 	string amount;
 	// True if the amount to withdraw is valid, False if not
-	bool valid_amount;
+	bool valid_amount = true;
 	// True if the account holder name to withdraw is valid, False if not
-	bool valid_name;
+	bool valid_name = true;
 	// True if the account number to withdraw is valid, False if not
-	bool valid_num;
+	bool valid_num = true;
 	
 	// Check whether the user logged in.  If logged in, check if they have the privilege to withdrawal money
 	// Return false if the user is not logged in
