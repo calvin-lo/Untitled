@@ -58,7 +58,7 @@ public:
 	// Deconstructor
 	~TransactionProcessing();
 
-	// check which transaction is required
+	// check which transaction is required and start
 	void startTransaction(string input);
 
 	// read the command from terminal if the type is T
