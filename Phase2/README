@@ -1,2 +1,3 @@
 Use g++ -std=c++11 file.cpp -o output to compile OR use the make compile the program.
 ./output to run the terminal input OR ./output file_path to run the file input.
+make sure you have the BankAccounts.txt in the same folder.
