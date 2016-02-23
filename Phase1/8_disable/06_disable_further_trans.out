@@ -1,0 +1,13 @@
+Do you wish to login as a standard user or admin?
+Logged in as a standard user
+What is the account holder's name?
+logged in as john doe.
+Enter bank account number to be withdrawn.
+withdraw unsucessfully (Try to withdraw from a disabled account)
+Enter account number that money will be transferred from.
+transfer unsucessfully (Try to transfer from a disabled account)
+Enter account number that money will be paid from.
+paybill unsucessfully (Try to pay bill from a disabled account)
+Enter account number that money will be deposit to.
+deposit unsucessfully (Try to deposit a disabled account)
+Logout sucessfully. 

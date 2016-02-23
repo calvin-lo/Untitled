@@ -1,0 +1,6 @@
+Do you wish to login as a standard user or admin?
+What is the name of the account holder?
+What is the account number?
+What is the amount to be deposited?
+Unable to complete deposit. Amount must be a multiple of 5.
+Logout successful.

@@ -1,0 +1,10 @@
+Do you wish to login as a standard user or admin?
+Logged in as a standard user.
+What is the account holder's name?
+Logged in as John Doe.
+What is the account number for withdrawal?
+Valid account number 00001.
+What is the amount you wish to withdrawal?
+Invalid format. Format must be in ####.## where # is 0 - 9.
+Invalid format. Format must be in ####.## where # is 0 - 9.
+$100.00 withdrawn from account 00001.
