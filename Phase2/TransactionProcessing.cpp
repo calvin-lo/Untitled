@@ -749,7 +749,7 @@ void TransactionProcessing::parse() {
 		// Remove all the white space after the last character
 		temp_account.acc_holder_name = trim(temp_account.acc_holder_name);
 
-		//cout << temp_account.acc_holder_name.length() << endl;
+		cout << temp_account.acc_holder_name.length() << endl;
 
 		// push back the temp account to the all account vector
 		all_accounts.push_back(temp_account);
@@ -760,7 +760,6 @@ void TransactionProcessing::parse() {
 
 string TransactionProcessing::trim(string s)
 {
-	// find the index that not a white space
-    int last = s.find_last_not_of(' ');
-    return s.substr(0, (last + 1));
+	// substing from 0 to the first not white space char from the end
+    return s.substr(0, (s.find_last_not_of(' ') + 1));
 }
