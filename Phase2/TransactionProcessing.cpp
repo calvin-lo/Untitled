@@ -19,6 +19,8 @@ TransactionProcessing::TransactionProcessing() {
 	acc_status = 'E';
 	account_type = 'N';
 
+	parse();
+
 	while (true) {
 		getline(cin, input);
 		startTransaction(input);
@@ -196,6 +198,8 @@ bool TransactionProcessing::withdrawal() {
 	bool valid_name = true;
 	// True if the account number to withdraw is valid, False if not
 	bool valid_num = true;
+	// true if the transfer amount is under the limit, false if not
+	bool valid_under_limit = true;
 	
 	// Check whether the user logged in.  If logged in, check if they have the privilege to withdrawal money
 	// Return false if the user is not logged in
@@ -246,7 +250,7 @@ bool TransactionProcessing::withdrawal() {
 				} 
 				// if the amount is NOT valid
 				else {
-					msg = "Invalid account holder name";
+					msg = "Invalid amount";
 					cout << msg << endl;
 					return status;
 				}
@@ -260,7 +264,7 @@ bool TransactionProcessing::withdrawal() {
 		}
 		// if the acount holder name is NOT valid
 		else {
-			msg = "Invalid Amount";
+			msg = "Invalid account holder name";
 			cout << msg << endl;
 			return status;
 		}
@@ -717,4 +721,46 @@ bool TransactionProcessing::logout() {
 
 	status = true;
 	return status;
+}
+
+void TransactionProcessing::parse() {
+
+	FileReader bank_account_reader;
+	//referring to the filepath of created object
+	bank_account_reader.file_path = "BankAccounts.txt";
+	//call the readfile function on filepath given above
+	bank_account_reader.ReadFile();
+	bank_account_reader.commands = bank_account_reader.buffer;
+
+	for (int i = 0; i < bank_account_reader.commands.size(); i++) { 
+
+		bank_account temp_account;
+		// Bank account number start at 0 and have a length of 5
+		temp_account.acc_number = bank_account_reader.buffer.at(i).substr(0,5);
+		// Bank account holder name start at 6 and have a length of 20
+		temp_account.acc_holder_name = bank_account_reader.buffer.at(i).substr(6,20);
+		// Account status (Active or Disabled) at 27
+		temp_account.acc_status = bank_account_reader.buffer.at(i).at(27);
+		// Account balance start at 29 and have a length of 8
+		temp_account.acc_balance = bank_account_reader.buffer.at(i).substr(29,8);
+		// Account type (Student or Non Student) at 38
+		temp_account.acc_type = bank_account_reader.buffer.at(i).at(38);
+
+		// Remove all the white space after the last character
+		temp_account.acc_holder_name = trim(temp_account.acc_holder_name);
+
+		//cout << temp_account.acc_holder_name.length() << endl;
+
+		// push back the temp account to the all account vector
+		all_accounts.push_back(temp_account);
+
+	}
+
+}
+
+string TransactionProcessing::trim(string s)
+{
+	// find the index that not a white space
+    int last = s.find_last_not_of(' ');
+    return s.substr(0, (last + 1));
 }

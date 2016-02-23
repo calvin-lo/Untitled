@@ -49,6 +49,23 @@ private:
 	// File Writer for writing the transaction file
 	FileWriter transaction_writer;
 
+	// store the bank account
+	struct bank_account{
+		// account holder's name
+		string acc_holder_name;
+		// account number
+		string acc_number;
+		// balance
+		string acc_balance;
+		// student or non student
+		char acc_type;
+		// active or enabled accounts
+		char acc_status;
+	};
+
+	// store all the bank account in a vector
+	vector<bank_account> all_accounts;
+
 protected:
 
 public:
@@ -107,6 +124,10 @@ public:
 	// End a Front End session
 	// Returns true if the transaction su	
 	bool logout();
+	// parse the Current Bank Account File and store the information in all accounts
+	void parse();
+	// remove the trailing white spaces
+	string trim(string str);
 
 
 
