@@ -92,6 +92,7 @@ public:
 	// Set the login_mode to A if logged in admin mode
 	// Set the account_holder_name based on user input
 	// Returns true if the transaction success
+	bool goodCommand(string input);
 	bool login();
 	// Withdraw money from a bank account
 	// Returns true if the transaction success
