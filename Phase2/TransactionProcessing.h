@@ -6,6 +6,7 @@
 
 #include "FileReader.h"
 #include "FileWriter.h"
+#include <time.h>
 
 using namespace std;
 
@@ -80,10 +81,8 @@ public:
 	TransactionProcessing(string input_file);
 	// Deconstructor
 	~TransactionProcessing();
-
 	// check which transaction is required and start
 	void startTransaction(string input);
-
 	// read the command from terminal if the type is T
 	// read the command from file if the type is F
 	// return the command 
@@ -113,6 +112,7 @@ public:
 	// Returns true if the transaction success
 	bool delete1();
 	// Enable all transactions in a bank account (privileged transaction)
+	// * Used delete1 instead of delete since delete is the build in function in c++.
 	// Returns true if the transaction success
 	bool enable();
 	// Disable all transactions in a bank account (privileged transaction)
@@ -128,9 +128,6 @@ public:
 	void parse();
 	// remove the trailing white spaces
 	string trim(string str);
-
-
-
 };
 
 #endif // TransactionProcessing_h_
