@@ -61,10 +61,7 @@ TransactionProcessing::TransactionProcessing(string input_file) {
 		startTransaction(input);
 	}
 	// Start command line input when all the transaction in the input file is done
-	while (true) {
-		getline(cin, input);
-		startTransaction(input);
-	}
+	TransactionProcessing();
 }
 
 TransactionProcessing::~TransactionProcessing() {
@@ -385,53 +382,56 @@ bool TransactionProcessing::transfer() {
 							if (valid_amount == true) { 	
 
 								// if account type is student, check if bal is enough to cover fee
-								if (account_type == 'S' && valid_student_fee == true) { 
+								if (account_type == 'S') {
+									if (valid_student_fee == true) { 
+										// if amount to transfer is below limit
+										if (valid_under_limit == true) { 
+											// success 
 
-									// if amount to transfer is below limit
-									if (valid_under_limit == true) { 
-										// success 
-
-										status = true;
-										msg = "$" + transfer_amount + " transferred from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + ".";
-										cout << msg << endl;
-										transaction_writer.WriteTransation(trans_code, transfer_acc_name_from, transfer_acc_num_from, transfer_amount, miscellaneous);
-										transaction_writer.WriteTransation(trans_code, transfer_acc_name_to, transfer_acc_num_to, transfer_amount, miscellaneous);
-										return status;
-									// amount to transfer above limit
+											status = true;
+											msg = "$" + transfer_amount + " transferred from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + ".";
+											cout << msg << endl;
+											transaction_writer.WriteTransation(trans_code, transfer_acc_name_from, transfer_acc_num_from, transfer_amount, miscellaneous);
+											transaction_writer.WriteTransation(trans_code, transfer_acc_name_to, transfer_acc_num_to, transfer_amount, miscellaneous);
+											return status;
+										// amount to transfer above limit
+										} else { 
+											msg = "Transfer limit exceeded. You must transfer less than $" + transfer_amount + ".";
+											cout << msg << endl;
+											return status;
+										}
+									// student not enough to cover fee 
 									} else { 
-										msg = "Transfer limit exceeded. You must transfer less than $" + transfer_amount + ".";
+										msg = "Insufficient funds of 5 cents to transfer $" + transfer_amount + " due to transaction fee.";
 										cout << msg << endl;
 										return status;
 									}
-								// student not enough to cover fee 
-								} else { 
-									msg = "Insufficient funds of 5 cents to transfer $" + transfer_amount + " due to transaction fee.";
-									cout << msg << endl;
-									return status;
 								}
 								// if account type is non-student, check if bal is enough to cover fee
-								if (account_type == 'N' && valid_non_student_fee == true) { 
+								if (account_type == 'N') {
+									if (valid_non_student_fee == true) { 
 									// if amount to transfer is below limit
-									if (valid_under_limit == true) { 
-										// success 
+										if (valid_under_limit == true) { 
+											// success 
 
-										status = true;
-										msg = "$" + transfer_amount + "transferred from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + ".";
-										cout << msg << endl;
-										transaction_writer.WriteTransation(trans_code, transfer_acc_name_from, transfer_acc_num_from, transfer_amount, miscellaneous);
-										transaction_writer.WriteTransation(trans_code, transfer_acc_name_to, transfer_acc_num_to, transfer_amount, miscellaneous);
-										return status;
-									// amount to transfer above limit
+											status = true;
+											msg = "$" + transfer_amount + " transferred from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + ".";
+											cout << msg << endl;
+											transaction_writer.WriteTransation(trans_code, transfer_acc_name_from, transfer_acc_num_from, transfer_amount, miscellaneous);
+											transaction_writer.WriteTransation(trans_code, transfer_acc_name_to, transfer_acc_num_to, transfer_amount, miscellaneous);
+											return status;
+										// amount to transfer above limit
+										} else { 
+											msg = "Transfer limit exceeded. You must transfer less than $" + transfer_amount + ".";
+											cout << msg << endl;
+											return status;
+										}
+									// non - student not enough to cover fee 
 									} else { 
-										msg = "Transfer limit exceeded. You must transfer less than $" + transfer_amount + ".";
+										msg = "Insufficient funds of 10 cents to transfer $" + transfer_amount + " due to transaction fee.";
 										cout << msg << endl;
 										return status;
 									}
-								// non - student not enough to cover fee 
-								} else { 
-									msg = "Insufficient funds of 10 cents to transfer $" + transfer_amount + " due to transaction fee.";
-									cout << msg << endl;
-									return status;
 								}
 							// amount to transfer not valid	
 							} else { 
@@ -901,7 +901,7 @@ bool TransactionProcessing::disable() {
 		disable_account_name = input;
 		// if valid account holder name
 		if (valid_account_name == true) {
-			msg = "Accepted bank account holder's name: " + disable_account_name+ ".";
+			msg = "Accepted bank account holder's name: " + disable_account_num + ".";
 			cout << msg << endl;
 			msg = "Enter bank account number to be disabled.";
 			cout << msg << endl;
