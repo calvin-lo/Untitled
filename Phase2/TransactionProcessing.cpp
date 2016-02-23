@@ -489,6 +489,28 @@ bool TransactionProcessing::paybill() {
 }
 
 bool TransactionProcessing::deposit() {
+	// stores the name of the account holder
+	string deposit_account_holder;
+
+	// stores the account number of the account holder
+	string deposit_account_num;
+
+	// stores the amount to be deposited
+	string amount_deposit;
+	
+	// true if the account holder is valid, otherwise false
+	bool valid_account_holder = true;
+
+	// true if the account number is valid, otherwise false
+	bool valid_account_num = true;
+
+	// true if the deposit is valid, otherwise false
+	bool valid_deposit = true;
+
+	// true if the deposit is a multiple of 5, otherwise false
+	bool multiple_of_five = true;
+
+
 	// Check whether the user logged in.  If logged in, check if they have the privilege to deposit money
 	// Return false if the user is not logged
 	if (login_mode == 'N') {
@@ -498,8 +520,70 @@ bool TransactionProcessing::deposit() {
 	} else if (login_mode == 'S' || login_mode == 'A') {
 		msg = "deposit: Valid command.";
 		cout << msg << endl;
-	}
+		msg = "What is the account number?";
+		cout << msg << endl;
+		input = readCommand();
+	 	deposit_account_num = input;
+		deposit_account_holder = account_holder_name;
+		// if account number is valid
+		if (valid_account_num == true) { 
+			// if account name is valid
+			if (valid_account_holder == true) { 
+				msg = "Login successful. What is the amount to be deposited?";
+				cout << msg << endl;
+				input = readCommand();
+				amount_deposit = input;
+				
+				// if valid deposit
+				if (valid_deposit == true) { 
+					msg = "Deposit completed";
+					cout << msg << endl;
 
+					// if it is a multiple of five and student account
+					if (multiple_of_five == true && account_type == 'S') { 
+						// success
+						status = true;
+						msg = "$" + amount_deposit + " successfully deposited ($00.10 deducted for Non - Student Account transaction fees).";
+						cout << msg << endl;
+						msg = "Deposited amount usable next day only.";
+						cout << msg << endl;
+						transaction_writer.WriteTransation(trans_code, deposit_account_holder, deposit_account_num, amount, miscellaneous);
+						return status;
+						// if it is a multiple of five and a non student account
+					} else if (multiple_of_five == true && account_type == 'N') {
+						// success
+						status = true;
+						msg = "$" + amount_deposit + " successfully deposited ($00.05 deducted for Non - Student Account transaction fees).";
+						cout << msg << endl;
+						msg = "Deposited amount usable next day only.";
+						cout << msg << endl;
+						transaction_writer.WriteTransation(trans_code, deposit_account_holder, deposit_account_num, amount, miscellaneous);
+						return status;
+					//not a multiple of five
+					} else { 
+						msg = "Unable to complete deposit. Amount must be a multiple of 5.";
+						cout << msg << endl;
+						return status;
+					}
+ 				// not a valid deposit
+				} else { 
+					msg = "Amount format incorrect. Deposit failed.";
+					cout << msg << endl;
+					return status;
+				}
+			// account holder is not valid
+			} else { 
+				msg = "Name and account number do not match. Deposit rejected.";
+				cout << msg << endl;
+				return status;
+			}
+		// account number is not valid
+		} else { 
+			msg = "Name and account number do not match. Deposit rejected.";
+			cout << msg << endl;
+			return status;
+		}
+	}
 	return status;
 }
 
@@ -522,7 +606,18 @@ bool TransactionProcessing::create() {
 	return status;
 }
 
-bool TransactionProcessing::delete1() {
+bool TransactionProcessing::delete1() { 
+	// stores the name of the account holder that you want to enable
+	string delete_account_holder;
+
+	// stores the account number that you want to enable
+	string delete_account_num; 
+	// true if the account holder is valid, otherwise false
+	bool valid_account_holder = true;
+	
+	// true if the bank acconut number is valid, otherwise false
+	bool valid_bank_acc_num = true;
+
 	// Check whether the user logged in.  If logged in, check if they have the privilege to delete account
 	// Return false if the user is not logged
 	if (login_mode == 'N') {
@@ -536,16 +631,27 @@ bool TransactionProcessing::delete1() {
 	} else if (login_mode == 'A') {
 		msg = "delete: Valid command. Admin access granted.";
 		cout << msg << endl;
+		msg = "Enter the bank account holder's name to be disabled.";
+		cout << msg << endl;
+		input = readCommand();
+		// if the account holder's name is valid
+		if (valid_account_holder == true) { 
+
+		// if the account holder's name is not valid
+		} else { 
+
+		}
+
 	}	
 
 	return status;
 }
 
 bool TransactionProcessing::enable() { 
-	// stores the name of the account holder that you want to change the plan for
+	// stores the name of the account holder that you want to enable
 	string enable_account_holder;
 
-	// stores the account number that you want to change the plan for 
+	// stores the account number that you want to enable
 	string enable_account_num; 
 	// true if the account holder is valid, otherwise false
 	bool valid_account_holder = true;
