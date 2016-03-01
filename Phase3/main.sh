@@ -3,27 +3,30 @@
 function loginlogout { 
 	#! testing login and logout
 	echo -e "\e[44mTesting login and logout...\e[0m"
-	cd 1_loginlogout
+	cd 0_loginlogout
 	#! mkdir output
 	cd ../
+	echo -e "\e[45mLogin and logout test completed.\e[0m"
 }
 
 function withdrawal { 
 	#! testing withdrawal
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting withdrawal...\e[0m"
-	cd 2_withdrawal
+	cd 1_withdrawal
 	#! mkdir output
 	cd ../
+	echo -e "\e[45mWithdrawal test completed.\e[0m"
 }
 
 function transfer { 
 	#! testing transfer
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting transfer...\e[0m"
-	cd 3_transfer
+	cd 2_transfer
 	#! mkdir output
 	cd ../
+	echo -e "\e[45mTransfer test completed.\e[0m"
 }
 
 
@@ -31,18 +34,20 @@ function paybill {
 	#! testing paybill
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting paybill...\e[0m"
-	cd 4_paybill
+	cd 3_paybill
 	#! mkdir output
 	cd ../
+	echo -e "\e[45mPaybill test completed.\e[0m"
 }
 
 function deposit { 
 	#! testing deposit
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting deposit...\e[0m"
-	cd 5_deposit
+	cd 4_deposit
 	#! mkdir output
 	cd ../
+	echo -e "\e[45mDeposit test completed.\e[0m"
 }
 
 
@@ -50,18 +55,20 @@ function create {
 	#! testing create
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting create...\e[0m"
-	cd 6_create
+	cd 5_create
 	#! mkdir output
 	cd ../
+	echo -e "\e[45mCreate test completed.\e[0m"
 }
 
 function delete { 
 	#! testing delete
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting delete...\e[0m"
-	cd 7_delete
+	cd 6_delete
 	#! mkdir output
 	cd ../
+	echo -e "\e[45mDelete test completed.\e[0m"
 }
 
 
@@ -69,27 +76,30 @@ function disable {
 	#! testing disable
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting disable...\e[0m"
-	cd 8_disable
+	cd 7_disable
 	#! mkdir output
 	cd ../
+	echo -e "\e[45mDisable test completed.\e[0m"
 }
 
 function enable1 { 
 	#! testing enable
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting enable...\e[0m"
-	cd 9_enable
+	cd 8_enable
 	#! mkdir output
 	cd ../
+	echo -e "\e[45mEnable test completed.\e[0m"
 }
 
 function changeplan { 
 	#! testing changeplan
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting changeplan...\e[0m"
-	cd ../10_changeplan
+	cd 9_changeplan
 	#! mkdir output
 	cd ../
+	echo -e "\e[45mChangeplan test completed.\e[0m"
 }
 
 function all { 
@@ -103,6 +113,7 @@ function all {
 	disable
 	enable1
 	changeplan
+	echo -e "\e[45mAll tests completed.\e[0m"
 }
 #! welcome message
 echo -e "\e[36m--------------------------------"
@@ -129,6 +140,6 @@ while true; do
 		[7] ) disable ;; 
 		[8] ) enable1 ;; 
 		[9] ) changeplan ;; 
-		*) echo -e "\e[31m-------------------------------\nInvalid option, running all tests\e[0m" all ;;
+		*) echo -e "\e[31m-------------------------------\nInvalid option, running all tests\e[0m"; all ; exit ;;
     esac
 done
