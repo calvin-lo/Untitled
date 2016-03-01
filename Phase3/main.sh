@@ -3,29 +3,33 @@
 function loginlogout { 
 	#! testing login and logout
 	echo -e "\e[44mTesting login and logout...\e[0m"
-	cd 0_loginlogout
-	#! mkdir output
-	cd ../
+	./output 0_loginlogout/01_loginlogout_std_session.in 
+	
+	#foreach i (*)
+	#	echo “running test $i”
+	#	banksys currentaccounts.txt  ../outputs/$i.atf \< $i > ../outputs/$i.out
+	#end
+
 	echo -e "\e[45mLogin and logout test completed.\e[0m"
 }
 
 function withdrawal { 
 	#! testing withdrawal
+	
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting withdrawal...\e[0m"
-	cd 1_withdrawal
-	#! mkdir output
-	cd ../
+	
+	
 	echo -e "\e[45mWithdrawal test completed.\e[0m"
 }
 
 function transfer { 
 	#! testing transfer
+
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting transfer...\e[0m"
-	cd 2_transfer
-	#! mkdir output
-	cd ../
+
+
 	echo -e "\e[45mTransfer test completed.\e[0m"
 }
 
@@ -34,9 +38,7 @@ function paybill {
 	#! testing paybill
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting paybill...\e[0m"
-	cd 3_paybill
-	#! mkdir output
-	cd ../
+	
 	echo -e "\e[45mPaybill test completed.\e[0m"
 }
 
@@ -44,9 +46,7 @@ function deposit {
 	#! testing deposit
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting deposit...\e[0m"
-	cd 4_deposit
-	#! mkdir output
-	cd ../
+	
 	echo -e "\e[45mDeposit test completed.\e[0m"
 }
 
@@ -55,9 +55,7 @@ function create {
 	#! testing create
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting create...\e[0m"
-	cd 5_create
-	#! mkdir output
-	cd ../
+	
 	echo -e "\e[45mCreate test completed.\e[0m"
 }
 
@@ -65,9 +63,7 @@ function delete {
 	#! testing delete
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting delete...\e[0m"
-	cd 6_delete
-	#! mkdir output
-	cd ../
+	
 	echo -e "\e[45mDelete test completed.\e[0m"
 }
 
@@ -76,9 +72,7 @@ function disable {
 	#! testing disable
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting disable...\e[0m"
-	cd 7_disable
-	#! mkdir output
-	cd ../
+	
 	echo -e "\e[45mDisable test completed.\e[0m"
 }
 
@@ -86,9 +80,7 @@ function enable1 {
 	#! testing enable
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting enable...\e[0m"
-	cd 8_enable
-	#! mkdir output
-	cd ../
+	
 	echo -e "\e[45mEnable test completed.\e[0m"
 }
 
@@ -96,9 +88,7 @@ function changeplan {
 	#! testing changeplan
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting changeplan...\e[0m"
-	cd 9_changeplan
-	#! mkdir output
-	cd ../
+	
 	echo -e "\e[45mChangeplan test completed.\e[0m"
 }
 
@@ -115,10 +105,32 @@ function all {
 	changeplan
 	echo -e "\e[45mAll tests completed.\e[0m"
 }
+
 #! welcome message
 echo -e "\e[36m--------------------------------"
 echo -e "\e[36m| Welcome to front - end tests |"
 echo -e "\e[36m--------------------------------"
+
+timestamp=$( date +%Y-%m-%d_%H-%M-%S )
+
+mkdir results
+cd results
+mkdir $timestamp
+cd $timestamp
+echo $timestamp
+
+mkdir "0_loginlogout"
+mkdir "1_withdrawal"
+mkdir "2_transfer"
+mkdir "3_paybill"
+mkdir "4_deposit"
+mkdir "5_create"
+mkdir "6_delete"
+mkdir "7_disable"
+mkdir "8_enable"
+mkdir "9_changeplan"
+
+cd ../../
 
 echo "Which tests would you like to run?"
 
