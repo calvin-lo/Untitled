@@ -23,7 +23,7 @@ TransactionProcessing::TransactionProcessing() {
 	account_type = 'N';
 
 	// parse the current bank account file
-	parse();
+	//parse();
 
 	while (true) {
 		getline(cin, input);
@@ -31,7 +31,7 @@ TransactionProcessing::TransactionProcessing() {
 	}
 }
 
-TransactionProcessing::TransactionProcessing(string input_file) {
+TransactionProcessing::TransactionProcessing(string input_file, string transfile) {
 	// set the default login mode to 'N' (Not logged in)
 	login_mode = 'N';
 	// set the default input type to 'F' (File input)
@@ -189,6 +189,10 @@ bool TransactionProcessing::login() {
 			status = true;
 			msg = "logged in as " + account_holder_name + ".";
 			cout << msg << endl;
+
+			// Reads in the current bank accounts file
+			parse();
+
 			// write the transation file
 			transaction_writer.WriteTransation(trans_code, account_holder_name, account_number, amount, miscellaneous);
 			return status;
