@@ -74,11 +74,11 @@ public:
 	// Constructor for terminal input
 	// Set the login_mode to N
 	// Set the status to false
-	TransactionProcessing();
+	TransactionProcessing(string trans_file);
 	// Constructor for file input
 	// Set the login_mode to N
 	// Set the status to false
-	TransactionProcessing(string input_file);
+	TransactionProcessing(string input_file, string trans_file);
 	// Deconstructor
 	~TransactionProcessing();
 	// check which transaction is required and start

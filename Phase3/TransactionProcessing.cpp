@@ -3,16 +3,14 @@
 //	Member: Calvin Lo, Albert Fung, Karan Chandwaney
 #include "TransactionProcessing.h"
 
-TransactionProcessing::TransactionProcessing() {
+TransactionProcessing::TransactionProcessing(string trans_file) {
 	// set the default login mode to 'N' (Not logged in)
 	login_mode = 'N';
 	// set the default input type to 'T' (Termainal input)
 	input_type = 'T';
-	// find the time for the transaction file name
-	time_t rawtime;
-	time(&rawtime);
+
 	//referring to the filepath of created object
-	transaction_writer.file_path =  to_string(rawtime) + "-transaction.txt";
+	transaction_writer.file_path =  trans_file;
 	// Set account holder's name, bank account number, amount, account type, miscellaneous to default
 	account_holder_name = "";
 	account_number = "";
@@ -31,18 +29,15 @@ TransactionProcessing::TransactionProcessing() {
 	}
 }
 
-TransactionProcessing::TransactionProcessing(string input_file) {
+TransactionProcessing::TransactionProcessing(string input_file, string trans_file) {
 	// set the default login mode to 'N' (Not logged in)
 	login_mode = 'N';
 	// set the default input type to 'F' (File input)
 	input_type = 'F';
 	// Set the command index for the input file to 0
 	command_index = 0;
-	// find the time for the transaction file name
-	time_t rawtime;
-	time(&rawtime);
 	//referring to the filepath of created object
-	transaction_writer.file_path =  to_string(rawtime) + "-transaction.txt";
+	transaction_writer.file_path =  trans_file;
 
 
 	// parse the current bank account file
@@ -58,10 +53,10 @@ TransactionProcessing::TransactionProcessing(string input_file) {
 		input = input_reader.commands.at(command_index);
 		// increase the command index
 		command_index++;
-		startTransaction(input);
+		startTransaction(trans_file);
 	}
 	// Start command line input when all the transaction in the input file is done
-	TransactionProcessing();
+	TransactionProcessing("trans_file");
 }
 
 TransactionProcessing::~TransactionProcessing() {
@@ -1038,12 +1033,6 @@ bool TransactionProcessing::logout() {
 		transaction_writer.WriteTransation(trans_code, account_holder_name, account_number, amount, miscellaneous);
 		login_mode = 'N';
 		account_holder_name = "";
-
-		// Reset the transaction file name
-		time_t rawtime;
-		time(&rawtime);
-		//referring to the filepath of created object
-		transaction_writer.file_path =  to_string(rawtime) + "-transaction.txt";
 	}
 
 	status = true;
