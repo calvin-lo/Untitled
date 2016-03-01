@@ -112,9 +112,9 @@ echo -e "\e[36m--------------------------------"
 echo "Which tests would you like to run?"
 
 while true; do
-	echo -e "\e[36m0) 1_login/logout    5) 4_paybill	 8) 7_delete	    9) 10_changeplan
-1) 2_withdrawal	     3) 5_deposit	 6) 8_disable	    
-2) 3_transfer	     4) 6_create	 7) 9_enable"
+	echo -e "\e[36m0) 0_login/logout    3) 3_paybill	 6) 6_delete	    9) 9_changeplan
+1) 1_withdrawal	     4) 4_deposit	 7) 7_disable	    
+2) 2_transfer	     5) 5_create	 8) 8_enable"
 	read input
 
 #!select input in "1_login/logout" "2_withdrawal" "3_transfer" "4_paybill" "5_deposit" "6_create" "7_delete" "8_disable" "9_enable" "10_changeplan" "0_all"; do
