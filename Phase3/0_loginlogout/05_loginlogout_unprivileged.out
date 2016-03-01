@@ -1,0 +1,9 @@
+Do you wish to login as a standard user or admin?
+Logged in as a standard user.
+What is the account holder's name?
+logged in as John Doe.
+withdrawal: Valid command.
+transfer: Valid command.
+paybill: Valid command.
+deposit: Valid command.
+logout: Valid command.
