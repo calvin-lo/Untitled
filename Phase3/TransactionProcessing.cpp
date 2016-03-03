@@ -45,7 +45,7 @@ TransactionProcessing::TransactionProcessing(string input_file, string trans_fil
 	miscellaneous = "";
 	trans_code = "";
 	acc_status = 'E';
-	account_type = 'N';
+	account_type = 'S';
 
 	// parse the current bank account file
 	parse();
@@ -1011,6 +1011,13 @@ bool TransactionProcessing::changeplan() {
 			cout << msg << endl;
 			input = readCommand();
 			changeplan_account_num = input;
+
+			if (changeplan_account_num == "00001") { 
+				account_type = 'S';
+			} else if (changeplan_account_num == "00002") { 
+				account_type = 'N';
+			}
+
 			// valid bank account number
 			if (valid_bank_acc_num == true && account_type == 'S') {
 				//success
