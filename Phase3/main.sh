@@ -17,6 +17,9 @@ function loginlogout {
 		#echo "${num2}"
 		cd ../
 		./output 0_loginlogout/${num2} results/$timestamp/0_loginlogout/$i.testTrans
+		
+		# script cannot progress because c++ program doesnt terminate... 
+		
 		cd 0_loginlogout
 		#./output 0_loginlogout/01_loginlogout_std_session.in results/$timestamp/0_loginlogout/01_loginlogout_std_session.testTrans
 	done

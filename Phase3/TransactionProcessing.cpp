@@ -70,7 +70,7 @@ bool TransactionProcessing::startTransaction(string input) {
 	status = false;
 	// Set the miscellaneous information to empty;
 	miscellaneous = "";
-	cout << input << endl;
+	
 	if (input == "login") {
 		trans_code = "10";
 		return login();
