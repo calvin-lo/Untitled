@@ -79,6 +79,8 @@ public:
 	// Set the login_mode to N
 	// Set the status to false
 	TransactionProcessing(string input_file, string trans_file);
+
+	TransactionProcessing();
 	// Deconstructor
 	~TransactionProcessing();
 	// check which transaction is required and start

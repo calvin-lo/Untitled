@@ -13,9 +13,10 @@ int main(int argc, char*argv[]) {
 	else if (argc == 3) {
 		TransactionProcessing T(argv[1], argv[2]);
 	} 
-	else {
-		cout << "Please indicated the output file and/or input file.\n";
-	}
-
+	// if no file specified, start terminal input
+	else if (argc == 1) {
+ 		TransactionProcessing T;
+ 	} 
+ 
 	return 0;
 }

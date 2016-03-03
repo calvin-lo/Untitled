@@ -37,7 +37,7 @@ TransactionProcessing::TransactionProcessing(string input_file, string trans_fil
 	// Set the command index for the input file to 0
 	command_index = 0;
 	//referring to the filepath of created object
-	transaction_writer.file_path =  trans_file;
+	transaction_writer.file_path = trans_file;
 
 
 	// parse the current bank account file
@@ -59,6 +59,31 @@ TransactionProcessing::TransactionProcessing(string input_file, string trans_fil
 	// Start command line input when all the transaction in the input file is done
 	TransactionProcessing("trans_file");
 }
+
+TransactionProcessing::TransactionProcessing() {
+ 	// set the default login mode to 'N' (Not logged in)
+ 	login_mode = 'N';
+ 	// set the default input type to 'T' (Termainal input)
+ 	input_type = 'T';
+ 	//referring to the filepath of created object
+ 	transaction_writer.file_path = "transactions.trans";
+ 	// Set account holder's name, bank account number, amount, account type, miscellaneous to default
+ 	account_holder_name = "";
+ 	account_number = "";
+ 	amount = "";
+ 	miscellaneous = "";
+ 	trans_code = "";
+ 	acc_status = 'E';
+	account_type = 'N';
+ 
+ 	// parse the current bank account file
+ 	parse();
+ 
+ 	while (true) {
+ 		getline(cin, input);
+ 		startTransaction(input);
+ 	}
+ }
 
 TransactionProcessing::~TransactionProcessing() {
 
@@ -985,7 +1010,7 @@ bool TransactionProcessing::changeplan() {
 				//success
 
 				status = true;
-				msg = "Accepted bank account number : " + changeplan_account_num + ".";
+				msg = "Accepted bank account number: " + changeplan_account_num + ".";
 				cout << msg << endl;
 				msg = "Account " + changeplan_account_num + "from " + changeplan_account_holder + "has changed from student (SP) to non - student (NP). Information saved to bank account transaction file.";
 				cout << msg << endl;
@@ -1002,13 +1027,13 @@ bool TransactionProcessing::changeplan() {
 				return status;
 				// not valid bank account number
 			} else {
-				msg = "Rejected bank account number to to change the transaction payment plan : " + changeplan_account_num + " (Entered an invalid bank account number)";
+				msg = "Rejected bank account number to change the transaction payment plan : " + changeplan_account_num + " (Entered an invalid bank account number)";
 				cout << msg << endl;
 				return status;
 			}
 			// not valid bank account holder name
 		} else {
-			msg = "Rejected Bank account holder's name : Invalid name.  (Entered an invalid account holder's name)";
+			msg = "Rejected Bank account holder's name: Invalid name.  (Entered an invalid account holder's name)";
 			cout << msg << endl;
 			return status;
 		}
