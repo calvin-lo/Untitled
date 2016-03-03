@@ -38,7 +38,14 @@ TransactionProcessing::TransactionProcessing(string input_file, string trans_fil
 	command_index = 0;
 	//referring to the filepath of created object
 	transaction_writer.file_path = trans_file;
-
+	// Set account holder's name, bank account number, amount, account type, miscellaneous to default
+	account_holder_name = "";
+	account_number = "";
+	amount = "";
+	miscellaneous = "";
+	trans_code = "";
+	acc_status = 'E';
+	account_type = 'N';
 
 	// parse the current bank account file
 	parse();
@@ -68,12 +75,12 @@ TransactionProcessing::TransactionProcessing() {
  	//referring to the filepath of created object
  	transaction_writer.file_path = "transactions.trans";
  	// Set account holder's name, bank account number, amount, account type, miscellaneous to default
- 	account_holder_name = "";
- 	account_number = "";
- 	amount = "";
- 	miscellaneous = "";
- 	trans_code = "";
- 	acc_status = 'E';
+	account_holder_name = "";
+	account_number = "";
+	amount = "";
+	miscellaneous = "";
+	trans_code = "";
+	acc_status = 'E';
 	account_type = 'N';
  
  	// parse the current bank account file
@@ -967,7 +974,6 @@ bool TransactionProcessing::disable() {
 }
 
 bool TransactionProcessing::changeplan() {
-
 	// stores the name of the account holder that you want to change the plan for
 	string changeplan_account_holder;
 
@@ -1012,7 +1018,7 @@ bool TransactionProcessing::changeplan() {
 				status = true;
 				msg = "Accepted bank account number: " + changeplan_account_num + ".";
 				cout << msg << endl;
-				msg = "Account " + changeplan_account_num + "from " + changeplan_account_holder + "has changed from student (SP) to non - student (NP). Information saved to bank account transaction file.";
+				msg = "Account " + changeplan_account_num + " from " + changeplan_account_holder + " has changed from student (SP) to non - student (NP). Information saved to bank account transaction file.";
 				cout << msg << endl;
 				transaction_writer.WriteTransation(trans_code, changeplan_account_holder, changeplan_account_num, amount, miscellaneous);
 				return status;
@@ -1021,13 +1027,13 @@ bool TransactionProcessing::changeplan() {
 				// success
 
 				status = true;
-				msg = "Account " + changeplan_account_num + "from " + changeplan_account_holder + "has changed from non - student (NP) to student (SP). Information saved to bank account transaction file.";
+				msg = "Account " + changeplan_account_num + " from " + changeplan_account_holder + " has changed from non - student (NP) to student (SP). Information saved to bank account transaction file.";
 				cout << msg << endl;
 				transaction_writer.WriteTransation(trans_code, changeplan_account_holder, changeplan_account_num, amount, miscellaneous);
 				return status;
 				// not valid bank account number
 			} else {
-				msg = "Rejected bank account number to change the transaction payment plan : " + changeplan_account_num + " (Entered an invalid bank account number)";
+				msg = "Rejected bank account number to change the transaction payment plan: " + changeplan_account_num + " (Entered an invalid bank account number)";
 				cout << msg << endl;
 				return status;
 			}
