@@ -652,23 +652,23 @@ function changeplan {
 function all { 
 	echo "Running all tests..."
 	loginlogout
-	sleep 1
+	sleep 0.1
 	withdrawal
-	sleep 1
+	sleep 0.1
 	transfer
-	sleep 1
+	sleep 0.1
 	paybill
-	sleep 1
+	sleep 0.1
 	deposit
-	sleep 1
+	sleep 0.1
 	create
-	sleep 1
+	sleep 0.1
 	delete
-	sleep 1
+	sleep 0.1
 	disable
-	sleep 1
+	sleep 0.1
 	enable1
-	sleep 1
+	sleep 0.1
 	changeplan
 	echo -e "\e[45mAll tests completed.\e[0m"
 }
