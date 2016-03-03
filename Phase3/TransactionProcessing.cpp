@@ -1065,7 +1065,7 @@ bool TransactionProcessing::changeplan() {
 			}
 			// not valid bank account holder name
 		} else {
-			msg = "Rejected Bank account holder's name: Invalid name.  (Entered an invalid account holder's name)";
+			msg = "Rejected Bank account holder's name: Invalid name. (Entered an invalid account holder's name)";
 			cout << msg << endl;
 			return status;
 		}

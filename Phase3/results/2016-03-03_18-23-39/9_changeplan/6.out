@@ -7,7 +7,7 @@ Invalid account holder name
 changeplan: Valid command. Admin access granted.
 Enter the bank account holder's name to change the transaction payment plan.
 john doe
-Rejected Bank account holder's name: Invalid name.  (Entered an invalid account holder's name)
+Rejected Bank account holder's name: Invalid name. (Entered an invalid account holder's name)
 Invalid command.
 logout: Valid command.
 Logout Sucessfully.
