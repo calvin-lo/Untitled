@@ -3,13 +3,25 @@
 function loginlogout { 
 	#! testing login and logout
 	echo -e "\e[44mTesting login and logout...\e[0m"
-	./output 0_loginlogout/01_loginlogout_std_session.in 
-	
-	#foreach i (*)
-	#	echo “running test $i”
-	#	banksys currentaccounts.txt  ../outputs/$i.atf \< $i > ../outputs/$i.out
-	#end
+	cd 0_loginlogout
 
+	num="$(ls *.in -1 | wc -l)"
+
+	
+	#./output 0_loginlogout/01_loginlogout_std_session.in results/$timestamp/0_loginlogout/01_loginlogout_std_session.testTrans
+	
+	for ((i=1; i <= $num; i++))
+	do
+		echo Running test $i
+		num2="$(ls 0$i\_*.in)"
+		#echo "${num2}"
+		cd ../
+		./output 0_loginlogout/${num2} results/$timestamp/0_loginlogout/$i.testTrans
+		cd 0_loginlogout
+		#./output 0_loginlogout/01_loginlogout_std_session.in results/$timestamp/0_loginlogout/01_loginlogout_std_session.testTrans
+	done
+
+	cd ../
 	echo -e "\e[45mLogin and logout test completed.\e[0m"
 }
 
@@ -18,9 +30,9 @@ function withdrawal {
 	
 	echo -e "\e[0m-------------------------------\e[0m"
 	echo -e "\e[44mTesting withdrawal...\e[0m"
+	cd 1_withdrawal
 	
-	
-	echo -e "\e[45mWithdrawal test completed.\e[0m"
+	echo -e "\e[45mWithdrawal test completed.\e[0m"	
 }
 
 function transfer { 
@@ -115,6 +127,9 @@ timestamp=$( date +%Y-%m-%d_%H-%M-%S )
 
 mkdir results
 cd results
+
+rm -rf *
+
 mkdir $timestamp
 cd $timestamp
 echo $timestamp
