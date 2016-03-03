@@ -851,10 +851,10 @@ bool TransactionProcessing::enable() {
 	// stores the account number that you want to enable
 	string enable_account_num;
 	// true if the account holder is valid, otherwise false
-	bool valid_account_holder = true;
+	bool valid_account_holder = false;
 
 	// true if the bank acconut number is valid, otherwise false
-	bool valid_bank_acc_num = true;
+	bool valid_bank_acc_num = false;
 
 	// Check whether the user logged in.  If logged in, check if they have the privilege to enable account
 	// Return false if the user is not logged
@@ -873,31 +873,47 @@ bool TransactionProcessing::enable() {
 		cout << msg << endl;
 		input = readCommand();
 		enable_account_holder = input;
+
+
+		int pos = searchName(enable_account_holder);
+		if (pos != -1) { 
+			valid_account_holder = true;
+		}
 		// valid account holder
 		if (valid_account_holder == true) {
-			msg = "Accepted bank account holder's name : " + enable_account_num + ".";
+			msg = "Accepted bank account holder's name: " + enable_account_holder + ".";
 			cout << msg << endl;
 			msg = "Enter bank account number to be enabled.";
 			cout << msg << endl;
 			input = readCommand();
 			enable_account_num = input;
-			// valid bank account number, enabled account
-			if (valid_bank_acc_num == true && acc_status == 'E') {
+
+			// search bank accounts file for bank account number, if exists, set account type
+			int pos2 = searchNameAcc(enable_account_holder, enable_account_num);
+			// account name must match account number
+			if (pos2 != -1) { 
+				valid_bank_acc_num = true;
+				account_type = all_accounts[pos2].acc_type;
+				acc_status = all_accounts[pos2].acc_status;
+			}
+
+			// valid bank account number, disabled account
+			if (valid_bank_acc_num == true && acc_status == 'D') {
 				//success
 				status = true;
-				msg = "Accepted bank account number :" + enable_account_num + ".";
+				msg = "Accepted bank account number: " + enable_account_num + ".";
 				cout << msg << endl;
-				msg = "Account" + enable_account_num + "from" + enable_account_holder + "had been enabled. Information saved to bank account transaction file.";
+				msg = "Account " + enable_account_num + " from "  + enable_account_holder + " has been enabled. Information saved to bank account transaction file.";
 				cout << msg << endl;
 				transaction_writer.WriteTransation(trans_code, enable_account_holder, enable_account_num, amount, miscellaneous);
 				return status;
-				// valid bank account number, disabled account
-			} else if (valid_bank_acc_num && acc_status == 'D') {
-				msg = "Rejected bank account number to be enabled :" + enable_account_holder + "(Account " + enable_account_num + " is a enabled account.)";
+				// valid bank account number, enabled account
+			} else if (valid_bank_acc_num == true && acc_status == 'E') {
+				msg = "Rejected bank account number to be enabled: " + enable_account_holder + "(Account " + enable_account_num + " is a enabled account.)";
 				cout << msg << endl;
 				return status;
 			} else { // not valid bank account number
-				msg = "Rejected bank account number to be enabled :" + enable_account_holder + "(Account " + enable_account_num + ". (Entered an invalid bank account number)";
+				msg = "Rejected bank account number to be enabled: " + enable_account_holder + "(Account " + enable_account_num + ". (Entered an invalid bank account number)";
 				cout << msg << endl;
 				return status;
 			}
@@ -1148,6 +1164,15 @@ int TransactionProcessing::searchAcc(string accnum) {
 			return i;
 		}
 	}	
+	return -1;
+}
+
+int TransactionProcessing::searchNameAcc(string name, string accnum) { 
+	for (int i = 0; i < all_accounts.size(); i++) { 
+		if (all_accounts[i].acc_holder_name.compare(name) == 0 && all_accounts[i].acc_number.compare(accnum) == 0) { 
+			return i;
+		}
+	}
 	return -1;
 }
 
