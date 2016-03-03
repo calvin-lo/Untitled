@@ -1,4 +1,4 @@
-SUMMARY OF ENABLE FOR 2016-03-03_19-54-19
+SUMMARY OF ENABLE FOR 2016-03-03_19-55-48
 TEST 01_enable_admin_mode.out OUTPUT PASSED.
 TEST 01_enable_admin_mode.trans TRANSACTION FAILED.
 TEST 02_enable_standard_mode.out OUTPUT PASSED.
@@ -9,5 +9,5 @@ TEST 04_enable_invalid_name.out OUTPUT PASSED.
 TEST 04_enable_invalid_name.trans TRANSACTION FAILED.
 TEST 05_enable_invalid_number.out OUTPUT PASSED.
 TEST 05_enable_invalid_number.trans TRANSACTION FAILED.
-TEST 06_enable_enabled_account.out OUTPUT FAILED.
+TEST 06_enable_enabled_account.out OUTPUT PASSED.
 TEST 06_enable_enabled_account.trans TRANSACTION FAILED.
