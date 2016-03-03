@@ -909,11 +909,11 @@ bool TransactionProcessing::enable() {
 				return status;
 				// valid bank account number, enabled account
 			} else if (valid_bank_acc_num == true && acc_status == 'E') {
-				msg = "Rejected bank account number to be enabled: " + enable_account_holder + "(Account " + enable_account_num + " is a enabled account.)";
+				msg = "Rejected bank account number to be enabled: " + enable_account_holder + " (Account " + enable_account_num + " is a enabled account.)";
 				cout << msg << endl;
 				return status;
 			} else { // not valid bank account number
-				msg = "Rejected bank account number to be enabled: " + enable_account_holder + "(Account " + enable_account_num + ". (Entered an invalid bank account number)";
+				msg = "Rejected bank account number to be enabled: " + enable_account_holder + " (Account " + enable_account_num + ". Entered an invalid bank account number)";
 				cout << msg << endl;
 				return status;
 			}
