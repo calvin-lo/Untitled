@@ -194,7 +194,7 @@ bool TransactionProcessing::login() {
 		}
 
 		// set the miscel information
-		miscellaneous = + login_mode;
+		miscellaneous =+ login_mode;
 		cout << msg << endl;
 		msg = "What is the account holder's name?";
 		cout << msg << endl;
@@ -1012,12 +1012,12 @@ bool TransactionProcessing::changeplan() {
 		input = readCommand();
 		changeplan_account_holder = input;
 
-		/*
+		
 		int pos = searchName(changeplan_account_holder);
 		if (pos != -1) { 
 			valid_account_holder = true;
 		}
-		*/
+		
 
 		// if valid bank account holder name student to non student
 		if (valid_account_holder == true) {
@@ -1028,7 +1028,7 @@ bool TransactionProcessing::changeplan() {
 			input = readCommand();
 			changeplan_account_num = input;
 			
-			/*
+			
 			// search bank accounts file for bank account number, if exists, set account type
 			int pos2 = searchAcc(changeplan_account_num);
 			// account name must match account number
@@ -1036,8 +1036,7 @@ bool TransactionProcessing::changeplan() {
 				valid_bank_acc_num = true;
 				account_type = all_accounts[pos].acc_type;
 			}
-			*/
-			
+		
 			// valid bank account number
 			if (valid_bank_acc_num == true && account_type == 'S') {
 				//success
