@@ -1,0 +1,17 @@
+SUMMARY OF WITHDRAWAL FOR 2016-03-03_11-31-35
+TEST 01_disable_admin_mode.out OUTPUT FAILED.
+TEST 01_disable_admin_mode.trans TRANSACTION FAILED.
+TEST 02_disable_standard_mode.out OUTPUT FAILED.
+TEST 02_disable_standard_mode.trans TRANSACTION FAILED.
+TEST 03_disable_status_changed.out OUTPUT FAILED.
+TEST 03_disable_status_changed.trans TRANSACTION FAILED.
+TEST 04_disable_invalid_name.out OUTPUT FAILED.
+TEST 04_disable_invalid_name.trans TRANSACTION FAILED.
+TEST 05_disable_invalid_number.out OUTPUT FAILED.
+TEST 05_disable_invalid_number.trans TRANSACTION FAILED.
+TEST 06_disable_further_trans.out OUTPUT FAILED.
+TEST 06_disable_further_trans.trans TRANSACTION FAILED.
+TEST 07_disable_disabled_account.out OUTPUT FAILED.
+TEST 07_disable_disabled_account.trans TRANSACTION FAILED.
+TEST 08_disable_recent_disabled_account.out OUTPUT FAILED.
+TEST 08_disable_recent_disabled_account.trans TRANSACTION FAILED.

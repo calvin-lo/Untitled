@@ -6,10 +6,11 @@ Jane Doe
 logged in as Jane Doe.
 changeplan: Valid command. Admin access granted.
 Enter the bank account holder's name to change the transaction payment plan.
-Chris Doe
-Accepted bank account holder's name: Chris Doe.
+John Doe
+Accepted bank account holder's name: John Doe.
 Enter bank account number to change the transaction payment plan.
-00002
-Account 00002 from Chris Doe has changed from non - student (NP) to student (SP). Information saved to bank account transaction file.
+00001
+Accepted bank account number: 00001.
+Account 00001 from John Doe has changed from student (SP) to non - student (NP). Information saved to bank account transaction file.
 logout: Valid command.
 Logout Sucessfully.

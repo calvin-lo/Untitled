@@ -1,0 +1,17 @@
+Do you wish to login as a standard user or admin?
+standard session
+Logged in as a standard user.
+What is the account holder's name?
+brian doe
+logged in as brian doe.
+withdrawal: Valid command.
+brian doeset as withdrawal account holder.
+What is the account number you wish to withdrawal from?
+44444
+Valid account number 44444.
+What is the amount to withdrawal?
+400.00
+$400.00 withdrawn from account 44444.
+Invalid command.
+logout: Valid command.
+Logout Sucessfully.

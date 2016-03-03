@@ -1,0 +1,14 @@
+Do you wish to login as a standard user or admin?
+admin session
+Logged in as an admin user.
+What is the account holder's name?
+jane doe
+logged in as jane doe.
+transfer: Valid command.
+What is the account holder's name for origin transfer?
+john doe
+john doe selected as account holder name for origin transfer.
+What is the account number for origin transfer?
+logout
+Account number logout selected for origin transfer.
+What is the destination account number

@@ -1,0 +1,18 @@
+Do you wish to login as a standard user or admin?
+standard session
+Logged in as a standard user.
+What is the account holder's name?
+john doe 
+logged in as john doe .
+Invalid command.
+transfer: Valid command.
+john doe  selected as account holder name for origin transfer.
+What is the account number for origin transfer?
+paybill
+Account number paybill selected for origin transfer.
+What is the destination account number
+deposit 
+Account number deposit  set as destination account number.
+What is the amount to transfer from accounts paybill to deposit ?
+logout
+$logout transferred from accounts paybill to deposit .

@@ -1,0 +1,13 @@
+SUMMARY OF WITHDRAWAL FOR 2016-03-03_11-31-35
+TEST 01_enable_admin_mode.out OUTPUT FAILED.
+TEST 01_enable_admin_mode.trans TRANSACTION FAILED.
+TEST 02_enable_standard_mode.out OUTPUT FAILED.
+TEST 02_enable_standard_mode.trans TRANSACTION FAILED.
+TEST 03_enable_status_changed.out OUTPUT FAILED.
+TEST 03_enable_status_changed.trans TRANSACTION FAILED.
+TEST 04_enable_invalid_name.out OUTPUT FAILED.
+TEST 04_enable_invalid_name.trans TRANSACTION FAILED.
+TEST 05_enable_invalid_number.out OUTPUT FAILED.
+TEST 05_enable_invalid_number.trans TRANSACTION FAILED.
+TEST 06_enable_enabled_account.out OUTPUT FAILED.
+TEST 06_enable_enabled_account.trans TRANSACTION FAILED.

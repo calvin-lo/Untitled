@@ -1,0 +1,16 @@
+Do you wish to login as a standard user or admin?
+admin session
+Logged in as an admin user.
+What is the account holder's name?
+jane doe
+logged in as jane doe.
+withdrawal: Valid command.
+What is the account holder's name for withdrawal?
+john doe
+john doeset as withdrawal account holder.
+What is the account number you wish to withdrawal from?
+00000
+Valid account number 00000.
+What is the amount to withdrawal?
+logout
+$logout withdrawn from account 00000.
