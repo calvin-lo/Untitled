@@ -61,20 +61,20 @@ TransactionProcessing::TransactionProcessing(string input_file, string trans_fil
 		// increase the command index
 		command_index++;
 		// start transactions with given input
-		startTransaction(input); 
+		startTransaction(input);
 	}
 	// Start command line input when all the transaction in the input file is done
 	TransactionProcessing("trans_file");
 }
 
 TransactionProcessing::TransactionProcessing() {
- 	// set the default login mode to 'N' (Not logged in)
- 	login_mode = 'N';
- 	// set the default input type to 'T' (Termainal input)
- 	input_type = 'T';
- 	//referring to the filepath of created object
- 	transaction_writer.file_path = "transactions.trans";
- 	// Set account holder's name, bank account number, amount, account type, miscellaneous to default
+	// set the default login mode to 'N' (Not logged in)
+	login_mode = 'N';
+	// set the default input type to 'T' (Termainal input)
+	input_type = 'T';
+	//referring to the filepath of created object
+	transaction_writer.file_path = "transactions.trans";
+	// Set account holder's name, bank account number, amount, account type, miscellaneous to default
 	account_holder_name = "";
 	account_number = "";
 	amount = "";
@@ -82,15 +82,15 @@ TransactionProcessing::TransactionProcessing() {
 	trans_code = "";
 	acc_status = 'E';
 	account_type = 'N';
- 
- 	// parse the current bank account file
- 	parse();
- 
- 	while (true) {
- 		getline(cin, input);
- 		startTransaction(input);
- 	}
- }
+
+	// parse the current bank account file
+	parse();
+
+	while (true) {
+		getline(cin, input);
+		startTransaction(input);
+	}
+}
 
 TransactionProcessing::~TransactionProcessing() {
 
@@ -102,7 +102,7 @@ bool TransactionProcessing::startTransaction(string input) {
 	status = false;
 	// Set the miscellaneous information to empty;
 	miscellaneous = "";
-	
+
 	if (input == "login") {
 		trans_code = "10";
 		return login();
@@ -167,7 +167,8 @@ string TransactionProcessing::readCommand() {
 bool TransactionProcessing::login() {
 
 	// Keep track of valid account holder's name
-	bool valid_name = true;
+	bool valid_name = false;
+
 
 	// if there are no one logged in.
 	if (login_mode == 'N') {
@@ -200,6 +201,13 @@ bool TransactionProcessing::login() {
 		input = readCommand();
 		account_holder_name = input;
 
+		
+		// checks if name exists inside bank accounts file
+		int pos = searchName(account_holder_name);
+		if (pos != -1) { 
+			valid_name = true;
+		}
+
 		// if account holder name is valid
 		if (valid_name == true) {
 			// Sucessfully log in
@@ -210,7 +218,7 @@ bool TransactionProcessing::login() {
 			transaction_writer.WriteTransation(trans_code, account_holder_name, account_number, amount, miscellaneous);
 			return status;
 		}
-		// if account hodler name is NOT valid
+		// if account holder name is NOT valid
 		else {
 			msg = "Invalid account holder name";
 			cout << msg << endl;
@@ -980,10 +988,10 @@ bool TransactionProcessing::changeplan() {
 	// stores the account number that you want to change the plan for
 	string changeplan_account_num;
 	// true if the account holder is valid, otherwise false
-	bool valid_account_holder = true;
+	bool valid_account_holder = false;
 
 	// true if the bank acconut number is valid, otherwise false
-	bool valid_bank_acc_num = true;
+	bool valid_bank_acc_num = false;
 
 	// Check whether the user logged in.  If logged in, check if they have the privilege to change plan
 	// Return false if the user is not logged
@@ -1003,6 +1011,14 @@ bool TransactionProcessing::changeplan() {
 		cout << msg << endl;
 		input = readCommand();
 		changeplan_account_holder = input;
+
+		/*
+		int pos = searchName(changeplan_account_holder);
+		if (pos != -1) { 
+			valid_account_holder = true;
+		}
+		*/
+
 		// if valid bank account holder name student to non student
 		if (valid_account_holder == true) {
 			msg = "Accepted bank account holder's name: " + changeplan_account_holder + ".";
@@ -1011,13 +1027,17 @@ bool TransactionProcessing::changeplan() {
 			cout << msg << endl;
 			input = readCommand();
 			changeplan_account_num = input;
-
-			if (changeplan_account_num == "00001") { 
-				account_type = 'S';
-			} else if (changeplan_account_num == "00002") { 
-				account_type = 'N';
+			
+			/*
+			// search bank accounts file for bank account number, if exists, set account type
+			int pos2 = searchAcc(changeplan_account_num);
+			// account name must match account number
+			if (pos2 != -1 && pos2 == pos) { 
+				valid_bank_acc_num = true;
+				account_type = all_accounts[pos].acc_type;
 			}
-
+			*/
+			
 			// valid bank account number
 			if (valid_bank_acc_num == true && account_type == 'S') {
 				//success
@@ -1108,13 +1128,31 @@ void TransactionProcessing::parse() {
 
 		// push back the temp account to the all account vector
 		all_accounts.push_back(temp_account);
-
 	}
 
 }
 
-string TransactionProcessing::trim(string s)
-{
+
+int TransactionProcessing::searchName(string name) {
+	for (int i = 0; i < all_accounts.size(); i++) {
+		//cout << all_accounts[i].acc_holder_name << endl;
+		if (all_accounts[i].acc_holder_name.compare(name) == 0) { 
+			return i;
+		}
+	}	
+	return -1;
+}
+
+int TransactionProcessing::searchAcc(string accnum) {
+	for (int i = 0; i < all_accounts.size(); i++) {
+		if (all_accounts[i].acc_number.compare(accnum) == 0)  {
+			return i;
+		}
+	}	
+	return -1;
+}
+
+string TransactionProcessing::trim(string s) {
 	// substing from 0 to the first not white space char from the end
 	return s.substr(0, (s.find_last_not_of(' ') + 1));
 }

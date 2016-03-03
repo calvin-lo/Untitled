@@ -128,6 +128,12 @@ public:
 	bool logout();
 	// parse the Current Bank Account File and store the information in all accounts
 	void parse();
+	// search the parsed bank account name with the input, if exists, then set fill correct fields with information
+	// returns the index in the vector which the bank account exists in, if not found, returns -1
+	int searchName(string name);
+	// search the parsed bank account number with the input, if exists, then set fill correct fields with information
+	// returns the index in the vector which the bank account exists in, if not found, returns -1
+	int searchAcc(string accnum);
 	// remove the trailing white spaces
 	string trim(string str);
 };
