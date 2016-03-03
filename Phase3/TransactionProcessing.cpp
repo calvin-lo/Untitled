@@ -919,7 +919,7 @@ bool TransactionProcessing::enable() {
 			}
 			// not valid account holder
 		} else {
-			msg = "Rejected the bank account holder's name : Invalid name.  (Entered an invalid account holder's name)";
+			msg = "Rejected the bank account holder's name: Invalid name. (Entered an invalid account holder's name)";
 			cout << msg << endl;
 			return status;
 		}

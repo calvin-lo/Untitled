@@ -7,7 +7,7 @@ Invalid account holder name
 enable: Valid command. Admin access granted.
 Enter the bank account holder's name to be enabled.
 john doe
-Rejected the bank account holder's name : Invalid name.  (Entered an invalid account holder's name)
+Rejected the bank account holder's name: Invalid name. (Entered an invalid account holder's name)
 Invalid command.
 logout: Valid command.
 Logout Sucessfully.
