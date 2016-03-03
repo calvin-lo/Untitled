@@ -408,7 +408,7 @@ function delete {
 	tpass=0
 	tfail=0
 	#./output 6_delete/01_loginlogout_std_session.in results/$timestamp/6_delete/01_loginlogout_std_session.testTrans
-	echo "SUMMARY OF WITHDRAWAL FOR $timestamp" >> ../results/$timestamp/6_delete.summary
+	echo "SUMMARY OF DELETE FOR $timestamp" >> ../results/$timestamp/6_delete.summary
 	for ((i=1; i <= $num; i++))
 	do
 
@@ -472,7 +472,7 @@ function disable {
 	tpass=0
 	tfail=0
 	#./output 7_disable/01_loginlogout_std_session.in results/$timestamp/7_disable/01_loginlogout_std_session.testTrans
-	echo "SUMMARY OF WITHDRAWAL FOR $timestamp" >> ../results/$timestamp/7_disable.summary
+	echo "SUMMARY OF DISABLE FOR $timestamp" >> ../results/$timestamp/7_disable.summary
 	for ((i=1; i <= $num; i++))
 	do
 
@@ -536,7 +536,7 @@ function enable1 {
 	tpass=0
 	tfail=0
 	#./output 8_enable/01_loginlogout_std_session.in results/$timestamp/8_enable/01_loginlogout_std_session.testTrans
-	echo "SUMMARY OF WITHDRAWAL FOR $timestamp" >> ../results/$timestamp/8_enable.summary
+	echo "SUMMARY OF ENABLE FOR $timestamp" >> ../results/$timestamp/8_enable.summary
 	for ((i=1; i <= $num; i++))
 	do
 
@@ -598,7 +598,7 @@ function changeplan {
 	tpass=0
 	tfail=0
 	#./output 9_changeplan/01_loginlogout_std_session.in results/$timestamp/9_changeplan/01_loginlogout_std_session.testTrans
-	echo "SUMMARY OF WITHDRAWAL FOR $timestamp" >> ../results/$timestamp/9_changeplan.summary
+	echo "SUMMARY OF CHANGEPLAN FOR $timestamp" >> ../results/$timestamp/9_changeplan.summary
 	for ((i=1; i <= $num; i++))
 	do
 
