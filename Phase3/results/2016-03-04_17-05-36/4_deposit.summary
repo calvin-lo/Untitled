@@ -1,0 +1,23 @@
+SUMMARY OF DEPOSIT FOR 2016-03-04_17-05-36
+TEST 01_deposit_accholdernameprompt.out OUTPUT FAILED.
+TEST 01_deposit_accholdernameprompt.trans TRANSACTION FAILED.
+TEST 02_deposit_accnumprompt.out OUTPUT FAILED.
+TEST 02_deposit_accnumprompt.trans TRANSACTION FAILED.
+TEST 03_deposit_acc_name_num_match.out OUTPUT FAILED.
+TEST 03_deposit_acc_name_num_match.trans TRANSACTION FAILED.
+TEST 04_deposit_amt.out OUTPUT FAILED.
+TEST 04_deposit_amt.trans TRANSACTION FAILED.
+TEST 05_deposit_amtformatvalid.out OUTPUT FAILED.
+TEST 05_deposit_amtformatvalid.trans TRANSACTION FAILED.
+TEST 06_deposit_validacc.out OUTPUT FAILED.
+TEST 06_deposit_validacc.trans TRANSACTION FAILED.
+TEST 07_deposit_SP_transaction_fee.out OUTPUT FAILED.
+TEST 07_deposit_SP_transaction_fee.trans TRANSACTION FAILED.
+TEST 08_deposit_NP_transaction_fee.out OUTPUT FAILED.
+TEST 08_deposit_NP_transaction_fee.trans TRANSACTION FAILED.
+TEST 09_deposit_same_day_usage.out OUTPUT FAILED.
+TEST 09_deposit_same_day_usage.trans TRANSACTION FAILED.
+TEST 010_deposit_accepted_amt.out OUTPUT FAILED.
+TEST 010_deposit_accepted_amt.trans TRANSACTION FAILED.
+TEST  OUTPUT PASSED.
+TEST  OUTPUT PASSED.

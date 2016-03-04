@@ -1,0 +1,7 @@
+Do you wish to login as a standard user or admin?
+Logged in as an admin user.
+What is the account holder's name?
+Invalid account holder name.
+delete: Invalid command. You are required to be logged into the system.
+Invalid command.
+logout: Invalid command. You are required to be logged into the system.

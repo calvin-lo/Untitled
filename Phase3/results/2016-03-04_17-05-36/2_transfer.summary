@@ -1,8 +1,8 @@
-SUMMARY OF PAYBILL FOR 2016-03-04_17-02-47
-TEST 01_paybill_accname.out OUTPUT PASSED.
-TEST 01_paybill_accname.trans OUTPUT PASSED.
-TEST 02_paybill_accnum.out OUTPUT PASSED.
-TEST 02_paybill_accnum.trans OUTPUT PASSED.
+SUMMARY OF TRANSFER FOR 2016-03-04_17-05-36
+TEST 01_transfer_prompt.out OUTPUT FAILED.
+TEST 01_transfer_prompt.trans TRANSACTION FAILED.
+TEST 02_transfer_originaccnum.out OUTPUT FAILED.
+TEST 02_transfer_originaccnum.trans TRANSACTION FAILED.
 TEST 03_transfer_originaccnamenum.out OUTPUT FAILED.
 TEST 03_transfer_originaccnamenum.trans TRANSACTION FAILED.
 TEST 04_transfer_destaccnum.out OUTPUT FAILED.
@@ -17,6 +17,14 @@ TEST 08_transfer_originvalidaccnum.out OUTPUT FAILED.
 TEST 08_transfer_originvalidaccnum.trans TRANSACTION FAILED.
 TEST 09_transfer_stdmaxtransfer.out OUTPUT FAILED.
 TEST 09_transfer_stdmaxtransfer.trans TRANSACTION FAILED.
+TEST 010_transfer_posttransfer.out OUTPUT FAILED.
+TEST 010_transfer_posttransfer.trans TRANSACTION FAILED.
+TEST 011_transfer_SP_transaction_fee.out OUTPUT FAILED.
+TEST 011_transfer_SP_transaction_fee.trans TRANSACTION FAILED.
+TEST 012_transfer_NP_transaction_fee.out OUTPUT FAILED.
+TEST 012_transfer_NP_transaction_fee.trans TRANSACTION FAILED.
+TEST 013_transfer_disabled.out OUTPUT FAILED.
+TEST 013_transfer_disabled.trans TRANSACTION FAILED.
 TEST  OUTPUT PASSED.
 TEST  OUTPUT PASSED.
 TEST  OUTPUT PASSED.
