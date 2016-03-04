@@ -1,0 +1,11 @@
+Do you wish to login as a standard user or admin?
+Logged in as a standard user.
+What is the account holder's name?
+Logged in as Brian Doe.
+What is the account number for origin transfer?
+Account number 22222 selected for origin transfer.
+What is the destination account number?
+Account number 00001 set as destination account number.
+What is the amount to transfer from accounts 22222 to 00001?
+Insufficient funds of 10 cents to transfer $100.00 due to transaction fee.
+$99.90 transferred from accounts 22222 to 00001.
