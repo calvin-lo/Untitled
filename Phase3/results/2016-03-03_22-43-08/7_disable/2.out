@@ -1,0 +1,9 @@
+Do you wish to login as a standard user or admin?
+standard session
+Logged in as a standard user.
+What is the account holder's name?
+john doe
+Invalid account holder name
+disable: Invalid command. Admin access required.
+logout: Valid command.
+Logout Sucessfully.

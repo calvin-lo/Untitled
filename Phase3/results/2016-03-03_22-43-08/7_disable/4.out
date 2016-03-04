@@ -1,0 +1,13 @@
+Do you wish to login as a standard user or admin?
+admin session
+Logged in as an admin user.
+What is the account holder's name?
+jane doe
+Invalid account holder name
+disable: Valid command. Admin access granted.
+Enter the bank account holder's name to be disabled.
+invalid name
+Accepted bank account holder's name: .
+Enter bank account number to be disabled.
+logout
+Rejected bank account number to be disabled: invalid name (Account logout is an enabled account).

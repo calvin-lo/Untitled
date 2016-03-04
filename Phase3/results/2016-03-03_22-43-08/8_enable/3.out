@@ -1,0 +1,16 @@
+Do you wish to login as a standard user or admin?
+admin session
+Logged in as an admin user.
+What is the account holder's name?
+Jane Doe
+logged in as Jane Doe.
+enable: Valid command. Admin access granted.
+Enter the bank account holder's name to be enabled.
+John Doe
+Accepted bank account holder's name: John Doe.
+Enter bank account number to be enabled.
+88888
+Accepted bank account number: 88888.
+Account 88888 from John Doe has been enabled. Information saved to bank account transaction file.
+logout: Valid command.
+Logout Sucessfully.

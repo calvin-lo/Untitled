@@ -4,6 +4,6 @@ Logged in as a standard user.
 What is the account holder's name?
 John Doe
 logged in as John Doe.
-changeplan: Invalid command. Admin access required.
+enable: Invalid command. Admin access required.
 logout: Valid command.
 Logout Sucessfully.
