@@ -1,6 +1,10 @@
 login
 standard session
+<<<<<<< HEAD
 john doe
+=======
+John Doe
+>>>>>>> calvin_phase3
 withdrawal
 transfer
 paybill

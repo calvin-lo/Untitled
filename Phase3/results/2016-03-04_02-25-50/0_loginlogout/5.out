@@ -1,0 +1,23 @@
+Do you wish to login as a standard user or admin?
+standard session
+Logged in as a standard user.
+What is the account holder's name?
+john doe 
+logged in as john doe .
+withdrawal: Valid command.
+john doe set as withdrawal account holder.
+What is the account number you wish to withdrawal from?
+transfer
+transfer: Valid command.
+john doe  selected as account holder name for origin transfer.
+What is the account number for origin transfer?
+paybill
+paybill: Valid command.
+john doe  set as the account holder of the bill payment.
+What is the account number from which you wish to pay a bill from?
+deposit 
+Valid account number deposit .
+What is the amount to pay?
+logout
+logout: Valid command.
+Logout Sucessfully.

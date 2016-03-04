@@ -1,13 +1,13 @@
-SUMMARY OF ENABLE FOR 2016-03-03_22-55-12
-TEST 01_enable_admin_mode.out OUTPUT FAILED.
+SUMMARY OF ENABLE FOR 2016-03-04_02-18-25
+TEST 01_enable_admin_mode.out OUTPUT PASSED.
 TEST 01_enable_admin_mode.trans OUTPUT PASSED.
 TEST 02_enable_standard_mode.out OUTPUT PASSED.
 TEST 02_enable_standard_mode.trans OUTPUT PASSED.
-TEST 03_enable_status_changed.out OUTPUT FAILED.
+TEST 03_enable_status_changed.out OUTPUT PASSED.
 TEST 03_enable_status_changed.trans OUTPUT PASSED.
-TEST 04_enable_invalid_name.out OUTPUT FAILED.
+TEST 04_enable_invalid_name.out OUTPUT PASSED.
 TEST 04_enable_invalid_name.trans OUTPUT PASSED.
-TEST 05_enable_invalid_number.out OUTPUT FAILED.
+TEST 05_enable_invalid_number.out OUTPUT PASSED.
 TEST 05_enable_invalid_number.trans OUTPUT PASSED.
-TEST 06_enable_enabled_account.out OUTPUT FAILED.
+TEST 06_enable_enabled_account.out OUTPUT PASSED.
 TEST 06_enable_enabled_account.trans OUTPUT PASSED.

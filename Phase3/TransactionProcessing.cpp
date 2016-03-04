@@ -21,7 +21,16 @@ TransactionProcessing::TransactionProcessing(string trans_file) {
 	account_type = 'N';
 
 	// parse the current bank account file
+<<<<<<< HEAD
 	//parse();
+=======
+	parse();
+        
+        
+        // create empty transaction file
+        transaction_writer.createFile();
+        
+>>>>>>> calvin_phase3
 
 	while (true) {
 		getline(cin, input);
@@ -53,19 +62,30 @@ TransactionProcessing::TransactionProcessing(string input_file, string trans_fil
 
 	// parse the current bank account file
 	parse();
-
+        
+        // create empty transaction file
+        transaction_writer.createFile();
+        
 	//referring to the filepath of created object
 	input_reader.file_path = input_file;
 	//call the readfile function on filepath given above
 	input_reader.ReadFile();
 	input_reader.commands = input_reader.buffer;
 	// Read int the commands from the file
-	while (command_index < input_reader.commands.size()) {
+	while (command_index < input_reader.commands.size() ) {
 		input = input_reader.commands.at(command_index);
-		// increase the command index
+                
+                // increase the command index
 		command_index++;
+                
+                // change the input type to terminal when reach the last row                
+                if (command_index == input_reader.commands.size()) {
+                    input_type = 'T';
+                }
+                
 		// start transactions with given input
 		startTransaction(input);
+                
 	}
 	// Start command line input when all the transaction in the input file is done
 	TransactionProcessing("trans_file");
@@ -89,7 +109,10 @@ TransactionProcessing::TransactionProcessing() {
 
 	// parse the current bank account file
 	parse();
-
+        
+        // create empty transaction file
+        transaction_writer.createFile();
+        
 	while (true) {
 		getline(cin, input);
 		startTransaction(input);
@@ -160,11 +183,18 @@ string TransactionProcessing::readCommand() {
 	// if the input type is file input
 	else if (input_type == 'F') {
 		command = input_reader.commands.at(command_index);
+<<<<<<< HEAD
 		cout << command << endl;
 		// increase the command index)
 		command_index++;
 	}
 
+=======
+		// increase the command index
+		command_index++;
+	}
+        
+>>>>>>> calvin_phase3
 	return command;
 }
 
@@ -189,7 +219,11 @@ bool TransactionProcessing::login() {
 	if (login_mode == 'N') {
 		msg = "Do you wish to login as a standard user or admin?";
 		cout << msg << endl;
+<<<<<<< HEAD
 		input = readCommand(); if (!goodCommand(input)) return false;
+=======
+		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 		// logged in as standard mode
 		if (input == "standard session") {
 			msg = "Logged in as a standard user.";
@@ -214,10 +248,14 @@ bool TransactionProcessing::login() {
 		msg = "What is the account holder's name?";
 		cout << msg << endl;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	  	input = readCommand(); if (!goodCommand(input)) return false;
 =======
 		input = readCommand();
 >>>>>>> master
+=======
+		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 		account_holder_name = input;
 
 		
@@ -245,12 +283,13 @@ bool TransactionProcessing::login() {
 		else {
 			msg = "Invalid account holder name";
 			cout << msg << endl;
+                        login_mode = 'N';
 			return status;
 		}
 	}
 	// if there are already someone logged in
-	else {
-		msg = "login: Invalid command. User " + account_holder_name + " must be logged out before attempting to login again.";
+	else {                
+                msg = "login: Invalid command. User " + account_holder_name + " must be logged out before attempting to login again.";
 		cout << msg << endl;
 		return status;
 	}
@@ -288,10 +327,14 @@ bool TransactionProcessing::withdrawal() {
 			msg = "What is the account holder's name for withdrawal?";
 			cout << msg << endl;
 <<<<<<< HEAD
+<<<<<<< HEAD
 			input = readCommand(); if (!goodCommand(input)) return false;
 			withdrawal_acc_name = input; 
 =======
 			input = readCommand();
+=======
+			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 			withdrawal_acc_name = input;
 >>>>>>> master
 		}
@@ -302,11 +345,15 @@ bool TransactionProcessing::withdrawal() {
 
 		// if the account holder name is valid.
 		if (valid_name == true) {
-			msg =  withdrawal_acc_name + "set as withdrawal account holder.";
+			msg =  withdrawal_acc_name + " set as withdrawal account holder.";
 			cout << msg << endl;
 			msg = "What is the account number you wish to withdrawal from?";
 			cout << msg << endl;
+<<<<<<< HEAD
 			input = readCommand(); if (!goodCommand(input)) return false;
+=======
+			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 			withdrawal_acc_num = input;
 			// if the account number is valid.
 			if (valid_num == true) {
@@ -314,7 +361,11 @@ bool TransactionProcessing::withdrawal() {
 				cout << msg << endl;
 				msg = "What is the amount to withdrawal?";
 				cout << msg << endl;
+<<<<<<< HEAD
 				input = readCommand(); if (!goodCommand(input)) return false;
+=======
+				input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 				withdrawal_amount = input;
 				// if the amount is valid.
 				if (valid_amount == true) {
@@ -403,7 +454,8 @@ bool TransactionProcessing::transfer() {
 	if (login_mode == 'N') {
 		msg = "trasfer: Invalid command. You are required to be logged into the system.";
 		cout << msg << endl;
-		return status;
+		
+                return status;
 	} else if (login_mode == 'S' || login_mode == 'A') {
 		msg = "transfer: Valid command.";
 		cout << msg << endl;
@@ -413,10 +465,14 @@ bool TransactionProcessing::transfer() {
 			msg = "What is the account holder's name for origin transfer?";
 			cout << msg << endl;
 <<<<<<< HEAD
+<<<<<<< HEAD
 			input = readCommand(); if (!goodCommand(input)) return false;
 			transfer_acc_name_from = input; 
 =======
 			input = readCommand();
+=======
+			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 			transfer_acc_name_from = input;
 >>>>>>> master
 
@@ -431,7 +487,11 @@ bool TransactionProcessing::transfer() {
 			cout << msg << endl;
 			msg = "What is the account number for origin transfer?";
 			cout << msg << endl;
+<<<<<<< HEAD
 			input = readCommand(); if (!goodCommand(input)) return false;
+=======
+			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 			transfer_acc_num_from = input;
 
 			// if the origin account number is valid.
@@ -440,7 +500,11 @@ bool TransactionProcessing::transfer() {
 				cout << msg << endl;
 				msg = "What is the destination account number";
 				cout << msg << endl;
+<<<<<<< HEAD
 				input = readCommand(); if (!goodCommand(input)) return false;
+=======
+				input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 				transfer_acc_num_to = input;
 
 				// if destination account number is valid
@@ -449,7 +513,11 @@ bool TransactionProcessing::transfer() {
 					cout << msg << endl;
 					msg = "What is the amount to transfer from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + "?";
 					cout << msg << endl;
+<<<<<<< HEAD
 					input = readCommand(); if (!goodCommand(input)) return false;
+=======
+					input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 					transfer_amount = input;
 
 					//sufficient funds
@@ -583,7 +651,11 @@ bool TransactionProcessing::paybill() {
 		if (login_mode == 'A') {
 			msg = "What is the account holder's name for bill payment?";
 			cout << msg << endl;
+<<<<<<< HEAD
 			input = readCommand(); if (!goodCommand(input)) return false;
+=======
+			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 			paybill_acc_name = input;
 		}
 		// Set the account holder's name to the curretn user if logged in as standard
@@ -597,7 +669,11 @@ bool TransactionProcessing::paybill() {
 			cout << msg << endl;
 			msg = "What is the account number from which you wish to pay a bill from?";
 			cout << msg << endl;
+<<<<<<< HEAD
 			input = readCommand(); if (!goodCommand(input)) return false;
+=======
+			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 			paybill_acc_num = input;
 			// if the account number is valid
 			if (valid_num == true) {
@@ -605,7 +681,11 @@ bool TransactionProcessing::paybill() {
 				cout << msg << endl;
 				msg = "What is the amount to pay?";
 				cout << msg << endl;
+<<<<<<< HEAD
 				input = readCommand(); if (!goodCommand(input)) return false;
+=======
+				input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 				paybill_amount = input;
 				// if the amout is valid (<2000)
 				if (valid_amount == true) {
@@ -613,7 +693,11 @@ bool TransactionProcessing::paybill() {
 					cout << msg << endl;
 					msg = "What company would you like to pay the bill to?";
 					cout << msg << endl;
+<<<<<<< HEAD
 					input = readCommand(); if (!goodCommand(input)) return false;
+=======
+					input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 					paybill_company_name = input;
 					// if the company name is valid
 					if (valid_company_name == true) {
@@ -682,19 +766,23 @@ bool TransactionProcessing::deposit() {
 	// Check whether the user logged in.  If logged in, check if they have the privilege to deposit money
 	// Return false if the user is not logged
 	if (login_mode == 'N') {
-		msg = "deposit: Invalid command. You are required to be logged into the system.";
-		cout << msg << endl;
-		return status;
+            msg = "deposit: Invalid command. You are required to be logged into the system.";
+            cout << msg << endl;
+            return status;        
 	} else if (login_mode == 'S' || login_mode == 'A') {
 		msg = "deposit: Valid command.";
 		cout << msg << endl;
 		msg = "What is the account number?";
 		cout << msg << endl;
 <<<<<<< HEAD
+<<<<<<< HEAD
 		input = readCommand(); if (!goodCommand(input)) return false;
 	 	deposit_account_num = input;
 =======
 		input = readCommand();
+=======
+		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 		deposit_account_num = input;
 >>>>>>> master
 		deposit_account_holder = account_holder_name;
@@ -704,7 +792,11 @@ bool TransactionProcessing::deposit() {
 			if (valid_account_holder == true) {
 				msg = "Login successful. What is the amount to be deposited?";
 				cout << msg << endl;
+<<<<<<< HEAD
 				input = readCommand(); if (!goodCommand(input)) return false;
+=======
+				input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 				amount_deposit = input;
 
 				// if valid deposit
@@ -785,7 +877,11 @@ bool TransactionProcessing::create() {
 		cout << msg << endl;
 		msg = "Enter the new bank account holder's name to be created.";
 		cout << msg << endl;
+<<<<<<< HEAD
 		input = readCommand(); if (!goodCommand(input)) return false;
+=======
+		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 		create_account_name = input;
 		// If the account holder's name is valid
 		if (valid_account_name == true) {
@@ -793,7 +889,11 @@ bool TransactionProcessing::create() {
 			cout << msg << endl;
 			msg = "Enter the bank account number to be created.";
 			cout << msg << endl;
+<<<<<<< HEAD
 			input = readCommand(); if (!goodCommand(input)) return false;
+=======
+			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 			create_account_num = input;
 			// If account number is valid
 			if (valid_account_num == true) {
@@ -848,7 +948,11 @@ bool TransactionProcessing::delete1() {
 		cout << msg << endl;
 		msg = "Enter the bank account holder's name to be deleted.";
 		cout << msg << endl;
+<<<<<<< HEAD
 		input = readCommand(); if (!goodCommand(input)) return false;
+=======
+		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 		delete_account_holder = input;
 		// if the account holder's name is valid
 		if (valid_account_holder == true) {
@@ -856,7 +960,11 @@ bool TransactionProcessing::delete1() {
 			cout << msg << endl;
 			msg = "Enter bank account number to be deleted.";
 			cout << msg << endl;
+<<<<<<< HEAD
 			input = readCommand(); if (!goodCommand(input)) return false;
+=======
+			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 			delete_account_num = input;
 			// if account number is valid
 			if (valid_account_num == true) {
@@ -913,7 +1021,11 @@ bool TransactionProcessing::enable() {
 		cout << msg << endl;
 		msg = "Enter the bank account holder's name to be enabled.";
 		cout << msg << endl;
+<<<<<<< HEAD
 		input = readCommand(); if (!goodCommand(input)) return false;
+=======
+		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 		enable_account_holder = input;
 
 
@@ -927,7 +1039,11 @@ bool TransactionProcessing::enable() {
 			cout << msg << endl;
 			msg = "Enter bank account number to be enabled.";
 			cout << msg << endl;
+<<<<<<< HEAD
 			input = readCommand(); if (!goodCommand(input)) return false;
+=======
+			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 			enable_account_num = input;
 
 			// search bank accounts file for bank account number, if exists, set account type
@@ -997,7 +1113,11 @@ bool TransactionProcessing::disable() {
 		cout << msg << endl;
 		msg = "Enter the bank account holder's name to be disabled.";
 		cout << msg << endl;
+<<<<<<< HEAD
 		input = readCommand(); if (!goodCommand(input)) return false;
+=======
+		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 		disable_account_name = input;
 		// if valid account holder name
 		if (valid_account_name == true) {
@@ -1005,7 +1125,11 @@ bool TransactionProcessing::disable() {
 			cout << msg << endl;
 			msg = "Enter bank account number to be disabled.";
 			cout << msg << endl;
+<<<<<<< HEAD
 			input = readCommand(); if (!goodCommand(input)) return false;
+=======
+			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 			disable_account_num = input;
 			// Valid bank account number, account disabled
 			if (valid_account_number == true && acc_status == 'D') {
@@ -1068,10 +1192,14 @@ bool TransactionProcessing::changeplan() {
 		msg = "Enter the bank account holder's name to change the transaction payment plan.";
 		cout << msg << endl;
 <<<<<<< HEAD
+<<<<<<< HEAD
 		input = readCommand(); if (!goodCommand(input)) return false;
 		changeplan_account_holder = input; 
 =======
 		input = readCommand();
+=======
+		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 		changeplan_account_holder = input;
 
 		
@@ -1089,10 +1217,14 @@ bool TransactionProcessing::changeplan() {
 			msg = "Enter bank account number to change the transaction payment plan.";
 			cout << msg << endl;
 <<<<<<< HEAD
+<<<<<<< HEAD
 			input = readCommand(); if (!goodCommand(input)) return false;
 			changeplan_account_num = input; 
 =======
 			input = readCommand();
+=======
+			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+>>>>>>> calvin_phase3
 			changeplan_account_num = input;
 			
 			
@@ -1234,6 +1366,18 @@ int TransactionProcessing::searchNameAcc(string name, string accnum) {
 		}
 	}
 	return -1;
+}
+
+bool TransactionProcessing::isTransaction(string input) {
+    if (input == "login" || input == "withdrawal" || input == "transfer"  || input == "paybill"  
+        || input == "deposit" || input == "create" || input == "delete" || input == "enable"
+        || input == "disable" || input == "changeplan" || input == "logout")  {
+    
+        return true;
+        
+    }
+    return false;
+    
 }
 
 string TransactionProcessing::trim(string s) {

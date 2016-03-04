@@ -12,8 +12,10 @@ class FileWriter {
  public:
 	//stores file path
 	string file_path;
+        //Create File
+        void createFile();
 	//WriteFile function
-	void WriteFile(string);
+	void WriteFile(string line);
 	// save the transation file
 	void WriteTransation(string trans_code, string account_holder_name, string account_number, string amount, string miscellaneous);
 };

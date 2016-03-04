@@ -138,6 +138,11 @@ public:
 	// search the parsed bank account number and name with the input, if exists, then fill correct fields with information
 	// returns the index in the vector in which the account number and name exists, if not found, returns -1
 	int searchNameAcc(string name, string accnum);
+        // check input is transaction code or not
+        //
+        bool isTransaction(string input);
+        
+        
 	// remove the trailing white spaces
 	string trim(string str);
 };
