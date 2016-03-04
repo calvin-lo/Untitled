@@ -114,7 +114,7 @@ void TransactionProcessing::startTransaction(string input) {
 
 }
 
-string TransactionProcessing::readCommand() {
+void TransactionProcessing::readCommand() {
 	string command;
 	// if the input type is terminal input
 	if (input_type == 'T') {
