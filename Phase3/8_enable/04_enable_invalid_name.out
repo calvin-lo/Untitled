@@ -1,12 +1,9 @@
 Do you wish to login as a standard user or admin?
-admin session
 Logged in as an admin user.
 What is the account holder's name?
-Jane Doe
 logged in as Jane Doe.
 enable: Valid command. Admin access granted.
 Enter the bank account holder's name to be enabled.
-invalid name
 Rejected the bank account holder's name: Invalid name. (Entered an invalid account holder's name)
 logout: Valid command.
 Logout Sucessfully.

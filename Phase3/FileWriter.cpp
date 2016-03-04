@@ -8,6 +8,13 @@
 
 using namespace std;
 
+// create File
+
+void FileWriter::createFile() {
+    ofstream file; //open ifstream
+    file.open(file_path, ios::app); // append the file
+}
+
 //WriteFile function
 void FileWriter::WriteFile(string line) { 
 	ofstream file; //open ifstream
