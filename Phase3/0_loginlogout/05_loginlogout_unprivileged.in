@@ -5,8 +5,4 @@ withdrawal
 transfer
 paybill
 deposit
-create
-delete
-disable
-changeplan
 logout
