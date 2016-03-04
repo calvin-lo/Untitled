@@ -67,13 +67,13 @@ TransactionProcessing::TransactionProcessing(string input_file, string trans_fil
 	while (command_index < input_reader.commands.size() ) {
 		input = input_reader.commands.at(command_index);
                 
-                // increase the command index
+        // increase the command index
 		command_index++;
                 
-                // change the input type to terminal when reach the last row                
-                if (command_index == input_reader.commands.size()) {
-                    input_type = 'T';
-                }
+            // change the input type to terminal when reach the last row                
+            if (command_index == input_reader.commands.size()) {
+                input_type = 'T';
+            }
                 
 		// start transactions with given input
 		startTransaction(input);
@@ -175,6 +175,10 @@ string TransactionProcessing::readCommand() {
 		command = input_reader.commands.at(command_index);
 		// increase the command index
 		command_index++;
+        // change the input type to terminal when reach the last row                
+        if (command_index == input_reader.commands.size()) {
+            input_type = 'T';
+        }
 	}
         
 	return command;
@@ -208,43 +212,52 @@ bool TransactionProcessing::login() {
 			cout << msg << endl;
 			return status;
 		}
+        // set the miscel information
+        miscellaneous =+ login_mode;
+        cout << msg << endl;
+        msg = "What is the account holder's name?";
+        cout << msg << endl;
+        input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+        account_holder_name = input;
+        
+        // checks if name exists inside bank accounts file
+        int pos = searchName(account_holder_name);
+        if (pos != -1) { 
+            valid_name = true;
+        } 
+        // Set valid_name equal to true for admin mode since the name is optional.
+        else if (login_mode == 'A' && account_holder_name == "") {
+            valid_name = true;
+        }
 
-		// set the miscel information
-		miscellaneous =+ login_mode;
-		cout << msg << endl;
-		msg = "What is the account holder's name?";
-		cout << msg << endl;
-		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
-		account_holder_name = input;
-
-		
-		// checks if name exists inside bank accounts file
-		int pos = searchName(account_holder_name);
-		if (pos != -1) { 
-			valid_name = true;
-		}
-
-		// if account holder name is valid
-		if (valid_name == true) {
-			// Sucessfully log in
-			status = true;
-			msg = "logged in as " + account_holder_name + ".";
-			cout << msg << endl;
-			// write the transation file
-			transaction_writer.WriteTransation(trans_code, account_holder_name, account_number, amount, miscellaneous);
-			return status;
-		}
-		// if account holder name is NOT valid
-		else {
-			msg = "Invalid account holder name";
-			cout << msg << endl;
+        // if account holder name is valid
+        if (valid_name == true) {
+            // Sucessfully log in
+            status = true;
+            if (account_holder_name != "") {
+                msg = "logged in as " + account_holder_name + ".";
+                cout << msg << endl;
+            } 
+            else {
+                msg = "logged in as general admin mode.";
+                cout << msg << endl;
+            }
+            // write the transation file
+            transaction_writer.WriteTransation(trans_code, account_holder_name, account_number, amount, miscellaneous);
+            return status;
+        }
+        // if account holder name is NOT valid
+        else {
+            msg = "Invalid account holder name.";
+            cout << msg << endl;
                         login_mode = 'N';
-			return status;
-		}
+            return status;
+        }
+
 	}
 	// if there are already someone logged in
 	else {                
-                msg = "login: Invalid command. User " + account_holder_name + " must be logged out before attempting to login again.";
+        msg = "login: Invalid command. User " + account_holder_name + " must be logged out before attempting to login again.";
 		cout << msg << endl;
 		return status;
 	}
@@ -543,13 +556,13 @@ bool TransactionProcessing::paybill() {
 	// Keep track of the company to whom the bill is being paid
 	string paybill_company_name;
 	// True if the amount to pay is valid, False if not
-	bool valid_amount = true;
+	bool valid_amount = false;
 	// True if the account holder name to pay bill is valid, False if not
-	bool valid_name = true;
+	bool valid_name = false;
 	// True if the account holder number to pay bill is valid, False if not
-	bool valid_num = true;
+	bool valid_num = false;
 	// True if the company name to whom bill is being paid is valid, False if not
-	bool valid_company_name = true;
+	bool valid_company_name = false;
 
 	// Check whether the user logged in.  If logged in, check if they have the privilege to pay bill
 	// Return false if the user is not logged
@@ -571,6 +584,12 @@ bool TransactionProcessing::paybill() {
 		else {
 			paybill_acc_name = account_holder_name;
 		}
+		
+        // checks if name exists inside bank accounts file
+        int pos = searchName(paybill_acc_name);
+        if (pos != -1) { 
+            valid_name = true;
+        }
 
 		// if the account holder name is valid
 		if (valid_name == true) {
@@ -580,6 +599,14 @@ bool TransactionProcessing::paybill() {
 			cout << msg << endl;
 			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
 			paybill_acc_num = input;
+            
+            // search bank accounts file for bank account number
+			int pos2 = searchAcc(paybill_acc_num);
+			// account name must match account number
+			if (pos2 != -1 && pos2 == pos) { 
+				valid_num = true;
+			}
+		
 			// if the account number is valid
 			if (valid_num == true) {
 				msg = "Valid account number " + paybill_acc_num + ".";
