@@ -74,11 +74,13 @@ public:
 	// Constructor for terminal input
 	// Set the login_mode to N
 	// Set the status to false
-	TransactionProcessing();
+	TransactionProcessing(string trans_file);
 	// Constructor for file input
 	// Set the login_mode to N
 	// Set the status to false
-	TransactionProcessing(string input_file);
+	TransactionProcessing(string input_file, string trans_file);
+
+	TransactionProcessing();
 	// Deconstructor
 	~TransactionProcessing();
 	// check which transaction is required and start
@@ -127,6 +129,15 @@ public:
 	bool logout();
 	// parse the Current Bank Account File and store the information in all accounts
 	void parse();
+	// search the parsed bank account name with the input, if exists, then fill correct fields with information
+	// returns the index in the vector which the bank account exists in, if not found, returns -1
+	int searchName(string name);
+	// search the parsed bank account number with the input, if exists, then fill correct fields with information
+	// returns the index in the vector which the bank account exists in, if not found, returns -1
+	int searchAcc(string accnum);
+	// search the parsed bank account number and name with the input, if exists, then fill correct fields with information
+	// returns the index in the vector in which the account number and name exists, if not found, returns -1
+	int searchNameAcc(string name, string accnum);
 	// remove the trailing white spaces
 	string trim(string str);
 };

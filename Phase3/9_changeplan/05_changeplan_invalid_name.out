@@ -1,0 +1,12 @@
+Do you wish to login as a standard user or admin?
+admin session
+Logged in as an admin user.
+What is the account holder's name?
+Jane Doe
+logged in as Jane Doe.
+changeplan: Valid command. Admin access granted.
+Enter the bank account holder's name to change the transaction payment plan.
+invalid name
+Rejected Bank account holder's name: Invalid name. (Entered an invalid account holder's name)
+logout: Valid command.
+Logout Sucessfully.
