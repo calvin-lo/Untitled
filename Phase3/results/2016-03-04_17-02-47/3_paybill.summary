@@ -1,0 +1,27 @@
+SUMMARY OF PAYBILL FOR 2016-03-04_17-02-47
+TEST 01_paybill_accname.out OUTPUT PASSED.
+TEST 01_paybill_accname.trans OUTPUT PASSED.
+TEST 02_paybill_accnum.out OUTPUT PASSED.
+TEST 02_paybill_accnum.trans OUTPUT PASSED.
+TEST 03_transfer_originaccnamenum.out OUTPUT FAILED.
+TEST 03_transfer_originaccnamenum.trans TRANSACTION FAILED.
+TEST 04_transfer_destaccnum.out OUTPUT FAILED.
+TEST 04_transfer_destaccnum.trans TRANSACTION FAILED.
+TEST 05_transfer_destamt.out OUTPUT FAILED.
+TEST 05_transfer_destamt.trans TRANSACTION FAILED.
+TEST 06_transfer_destamtformat.out OUTPUT FAILED.
+TEST 06_transfer_destamtformat.trans TRANSACTION FAILED.
+TEST 07_transfer_destvalidaccnum.out OUTPUT FAILED.
+TEST 07_transfer_destvalidaccnum.trans TRANSACTION FAILED.
+TEST 08_transfer_originvalidaccnum.out OUTPUT FAILED.
+TEST 08_transfer_originvalidaccnum.trans TRANSACTION FAILED.
+TEST 09_transfer_stdmaxtransfer.out OUTPUT FAILED.
+TEST 09_transfer_stdmaxtransfer.trans TRANSACTION FAILED.
+TEST  OUTPUT PASSED.
+TEST  OUTPUT PASSED.
+TEST  OUTPUT PASSED.
+TEST  OUTPUT PASSED.
+TEST  OUTPUT PASSED.
+TEST  OUTPUT PASSED.
+TEST  OUTPUT PASSED.
+TEST  OUTPUT PASSED.
