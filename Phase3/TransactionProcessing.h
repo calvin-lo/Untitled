@@ -7,6 +7,7 @@
 #include "FileReader.h"
 #include "FileWriter.h"
 #include <time.h>
+#include <regex>
 
 using namespace std;
 
@@ -138,8 +139,14 @@ public:
 	// returns the index in the vector in which the account number and name exists, if not found, returns -1
 	int searchNameAcc(string name, string accnum);
         // check input is transaction code or not
-        //
         bool isTransaction(string input);
+        // check if the amount is in the format ####.##
+        bool isCorrectFormat(string input);
+        // check if the account has enough money to cover the transaction fee, 
+        // check if the account has enough money to cover the student transaction fee
+        bool enoughTransactionFee(string amount, int pos);
+        
+        
         
         
 	// remove the trailing white spaces

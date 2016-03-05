@@ -547,7 +547,7 @@ bool TransactionProcessing::transfer() {
 }
 
 bool TransactionProcessing::paybill() {
-	// Keep track of the account holder name for withdrawal
+    // Keep track of the account holder name for withdrawal
 	string paybill_acc_name;
 	// Keep track of the account holder number for withdrawal
 	string paybill_acc_num;
@@ -563,6 +563,8 @@ bool TransactionProcessing::paybill() {
 	bool valid_num = false;
 	// True if the company name to whom bill is being paid is valid, False if not
 	bool valid_company_name = false;
+
+        
 
 	// Check whether the user logged in.  If logged in, check if they have the privilege to pay bill
 	// Return false if the user is not logged
@@ -611,57 +613,111 @@ bool TransactionProcessing::paybill() {
 			if (valid_num == true) {
 				msg = "Valid account number " + paybill_acc_num + ".";
 				cout << msg << endl;
-				msg = "What is the amount to pay?";
+				msg = "What company would you like to pay the bill to?";
 				cout << msg << endl;
 				input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
-				paybill_amount = input;
-				// if the amout is valid (<2000)
-				if (valid_amount == true) {
-					msg = "Valid amount " + paybill_amount + ".";
-					cout << msg << endl;
-					msg = "What company would you like to pay the bill to?";
-					cout << msg << endl;
-					input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
-					paybill_company_name = input;
-					// if the company name is valid
-					if (valid_company_name == true) {
-						// Successfully paid bill
-						status = true;
-						msg = "$" + paybill_amount + " Successfully paid to " + paybill_company_name + " from account number " + paybill_acc_num + ".";
-						cout << msg << endl;
-						// Write the transaction file
-						transaction_writer.WriteTransation(trans_code, paybill_acc_name, paybill_acc_num, paybill_amount, paybill_company_name);
-						return status;
-					}
-					// if the company name is NOT valid
-					else {
-						msg = "Invalid company name";
-						cout << msg << endl;
-						return status;
-					}
-				}
-				// if the amount is NOT valid
-				else {
-					msg = "Invalid amount";
-					cout << msg << endl;
-					return status;
-				}
-			}
-			// if the account number is NOT valid
-			else {
-				msg = "Invalid account number";
-				cout << msg << endl;
-				return status;
-			}
-		}
-		// if the account name is NOT valid
-		else {
-			msg = "Invalid account holder name";
-			cout << msg << endl;
-			return status;
-		}
-	}
-	return status;
+				paybill_company_name = input;
+            
+                // check if company is valid
+                if (paybill_company_name == "EC" || paybill_company_name == "CQ" || paybill_company_name == "TV") {
+                    valid_company_name = true;
+                }
+                
+                
+                // if the company name is valid
+                if (valid_company_name == true) {
+                    string company_full_name;
+                    if (paybill_company_name == "EC") {
+                        company_full_name = "Bright Light Electric Comapny (EC)";
+                    } else if (paybill_company_name == "CQ") {
+                        company_full_name = "Credit Card Company (CQ)";
+                    } else if (paybill_company_name == "TV") {
+                        company_full_name = "Low Definition TV (TV)";
+                    }
+            
+                    msg = company_full_name + "selected. What is the amount of the bill payment?";
+                    cout << msg << endl;
+            
+                    msg = "What is the amount to pay?";
+                    cout << msg << endl;
+                    input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+                    paybill_amount = input;
+            
+                    // if the amount is valid (<2000)
+                    if (stof(paybill_amount) > 2000.00) {
+                        msg = "Payment cannot exceed $2000.00 in standard mode. Bill payment failed.";
+                        cout << msg << endl;
+                        return status;
+                    }
+                    // if the account balance is at least $0.00 after bill is paid
+                    if (stof(all_accounts[pos].acc_balance) - stof(paybill_amount) < 0) {
+                        msg = "Account balance after bill payment is less than $00.00. Bill payment failed.";
+                        cout << msg << endl;
+                        return status;
+                    }
+                    // if the amount is in the format ####.##
+                    if (isCorrectFormat(paybill_amount) == false)  {
+                        msg = "Amount format incorrect. Bill payment failed.";
+                        cout << msg << endl;
+                        return status;                      
+                        
+                    }
+                    
+                    // if the account has enough money to cover the transaction fee, 
+                    //if the account has enough money to cover the student transaction fee
+                    
+                    if (enoughTransactionFee(paybill_amount, pos) == false)  {
+                        msg = "Account balance is exactly $" + paybill_amount + ". Unable to process $00.05 Student account transaction fees. Bill payment failed.";
+                        cout << msg << endl; 
+                        return status;
+                    }
+                    
+
+                    
+                    if (stof(paybill_amount) < 2000.00 && stof(all_accounts[pos].acc_balance) - stof(paybill_amount) >= 0 && isCorrectFormat(paybill_amount) && enoughTransactionFee(paybill_amount, pos)) {
+                        valid_amount = true;
+                    }
+                    
+                    if (valid_amount == true) {
+                        msg = "Valid amount " + paybill_amount + ".";
+                        cout << msg << endl;
+                        
+                        
+                        // Successfully paid bill
+                        status = true;
+                        msg = "$" + paybill_amount + " Successfully paid to " + paybill_company_name + " from account number " + paybill_acc_num + ".";
+                        cout << msg << endl;
+                        // Write the transaction file
+                        transaction_writer.WriteTransation(trans_code, paybill_acc_name, paybill_acc_num, paybill_amount, paybill_company_name);
+                        return status;
+                    }
+                    // if the amount is NOT valid
+                    else {
+                        return status;
+                    }
+                }
+                // if the company name is NOT valid
+                else {
+                    msg = "Invalid company. Bill payment failed.";
+                    cout << msg << endl;
+                    return status;
+                }
+            }
+            // if the account number is NOT valid
+            else {
+                msg = "Invalid account number or Name and account number do not match. Bill payment rejected.";
+                cout << msg << endl;
+                return status;
+            }
+        }
+        // if the account name is NOT valid
+        else {
+            msg = "Invalid account holder name";
+            cout << msg << endl;
+            return status;
+        }
+    }
+    return status;
 }
 
 bool TransactionProcessing::deposit() {
@@ -754,10 +810,10 @@ bool TransactionProcessing::deposit() {
 				return status;
 			}
 			// account number is not valid
-		} else {
-			msg = "Name and account number do not match. Deposit rejected.";
-			cout << msg << endl;
-			return status;
+            } else {
+                msg = "Name and account number do not match. Deposit rejected.";
+                cout << msg << endl;
+                return status;
 		}
 	}
 	return status;
@@ -1192,7 +1248,6 @@ void TransactionProcessing::parse() {
 
 }
 
-
 int TransactionProcessing::searchName(string name) {
 	for (int i = 0; i < all_accounts.size(); i++) {
 		//cout << all_accounts[i].acc_holder_name << endl;
@@ -1230,6 +1285,22 @@ bool TransactionProcessing::isTransaction(string input) {
         
     }
     return false;
+    
+}
+
+bool TransactionProcessing::isCorrectFormat(string input) {
+    regex float_m("[[:digit:]]?[[:digit:]]?[[:digit:]?][[:digit:]].[[:digit:]][[:digit:]]");
+    
+    return (regex_match (input, float_m));
+}
+
+bool TransactionProcessing::enoughTransactionFee(string amount, int pos) {
+    if (account_type = 'S') {
+        return (stof(all_accounts[pos].acc_balance) - stof(amount) - 0.05f >= 0);        
+    }
+    if (account_type = 'N') {
+        return (stof(all_accounts[pos].acc_balance) - stof(amount) - 0.10f >= 0);   
+    }
     
 }
 
