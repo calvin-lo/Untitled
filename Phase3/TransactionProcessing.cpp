@@ -212,6 +212,7 @@ bool TransactionProcessing::login() {
 			cout << msg << endl;
 			return status;
 		}
+<<<<<<< HEAD
         // set the miscel information
         miscellaneous =+ login_mode;
         cout << msg << endl;
@@ -250,6 +251,38 @@ bool TransactionProcessing::login() {
         else {
             msg = "Invalid account holder name.";
             cout << msg << endl;
+=======
+
+		// set the miscel information
+		miscellaneous =+ login_mode;
+		cout << msg << endl;
+		msg = "What is the account holder's name?";
+		cout << msg << endl;
+		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+		account_holder_name = input;
+
+		
+		// checks if name exists inside bank accounts file
+		int pos = searchName(account_holder_name);
+		if (pos != -1) { 
+			valid_name = true;
+		}
+
+		// if account holder name is valid
+		if (valid_name == true) {
+			// Sucessfully log in
+			status = true;
+			msg = "logged in as " + account_holder_name + ".";
+			cout << msg << endl;
+			// write the transation file
+			transaction_writer.WriteTransation(trans_code, account_holder_name, account_number, amount, miscellaneous);
+			return status;
+		}
+		// if account holder name is NOT valid
+		else {
+			msg = "Invalid account holder name";
+			cout << msg << endl;
+>>>>>>> master
                         login_mode = 'N';
             return status;
         }
@@ -616,6 +649,7 @@ bool TransactionProcessing::paybill() {
 				msg = "What company would you like to pay the bill to?";
 				cout << msg << endl;
 				input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+<<<<<<< HEAD
 				paybill_company_name = input;
             
                 // check if company is valid
@@ -718,6 +752,56 @@ bool TransactionProcessing::paybill() {
         }
     }
     return status;
+=======
+				paybill_amount = input;
+				// if the amout is valid (<2000)
+				if (valid_amount == true) {
+					msg = "Valid amount " + paybill_amount + ".";
+					cout << msg << endl;
+					msg = "What company would you like to pay the bill to?";
+					cout << msg << endl;
+					input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+					paybill_company_name = input;
+					// if the company name is valid
+					if (valid_company_name == true) {
+						// Successfully paid bill
+						status = true;
+						msg = "$" + paybill_amount + " Successfully paid to " + paybill_company_name + " from account number " + paybill_acc_num + ".";
+						cout << msg << endl;
+						// Write the transaction file
+						transaction_writer.WriteTransation(trans_code, paybill_acc_name, paybill_acc_num, paybill_amount, paybill_company_name);
+						return status;
+					}
+					// if the company name is NOT valid
+					else {
+						msg = "Invalid company name";
+						cout << msg << endl;
+						return status;
+					}
+				}
+				// if the amount is NOT valid
+				else {
+					msg = "Invalid amount";
+					cout << msg << endl;
+					return status;
+				}
+			}
+			// if the account number is NOT valid
+			else {
+				msg = "Invalid account number";
+				cout << msg << endl;
+				return status;
+			}
+		}
+		// if the account name is NOT valid
+		else {
+			msg = "Invalid account holder name";
+			cout << msg << endl;
+			return status;
+		}
+	}
+	return status;
+>>>>>>> master
 }
 
 bool TransactionProcessing::deposit() {
