@@ -150,8 +150,10 @@ public:
         string minusTransactionFee(string amount, int pos);
         // return true if deposit amount is divisible by 5, return false or not
         bool isDivisibleBy5(string amount);
-        
-        
+        // truncate name if character over 20 or fill in spaces if character under 20
+        string fixName(string input);
+        // cast account number from int to string
+        string numToString (int acc_num_int);
         
         
 	// remove the trailing white spaces

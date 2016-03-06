@@ -1,4 +1,4 @@
-SUMMARY OF LOGIN/LOGOUT FOR 2016-03-05_21-26-09
+SUMMARY OF LOGIN/LOGOUT FOR 2016-03-06_00-45-17
 TEST 01_loginlogout_std_session.out OUTPUT PASSED.
 TEST 01_loginlogout_std_session.trans OUTPUT PASSED.
 TEST 02_loginlogout_begin_transactions.out OUTPUT PASSED.

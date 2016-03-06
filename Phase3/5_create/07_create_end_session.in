@@ -1,7 +1,10 @@
 login
-admin
+admin session
+
 create
-John Doe
-00000
+Ben Doe
 3000.00
 logout
+login
+standard session
+Ben Doe
