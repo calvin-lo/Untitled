@@ -1,7 +1,8 @@
 login
-admin
+admin session
+
 deposit
-John Doe
-00000
+Jane Doe
+99999
 300.00
 logout

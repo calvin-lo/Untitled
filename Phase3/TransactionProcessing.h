@@ -8,6 +8,7 @@
 #include "FileWriter.h"
 #include <time.h>
 #include <regex>
+#include <iomanip>
 
 using namespace std;
 
@@ -145,6 +146,10 @@ public:
         // check if the account has enough money to cover the transaction fee, 
         // check if the account has enough money to cover the student transaction fee
         bool enoughTransactionFee(string amount, int pos);
+        // minus the transaction fee 
+        string minusTransactionFee(string amount, int pos);
+        // return true if deposit amount is divisible by 5, return false or not
+        bool isDivisibleBy5(string amount);
         
         
         
