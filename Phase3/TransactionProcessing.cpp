@@ -187,7 +187,7 @@ string TransactionProcessing::readCommand() {
 bool TransactionProcessing::login() {
 
 	// Keep track of valid account holder's name
-	bool valid_name = false;
+	bool valid_acc_holder = false;
 
 
 	// if there are no one logged in.
@@ -212,7 +212,6 @@ bool TransactionProcessing::login() {
 			cout << msg << endl;
 			return status;
 		}
-<<<<<<< HEAD
         // set the miscel information
         miscellaneous =+ login_mode;
         cout << msg << endl;
@@ -224,15 +223,15 @@ bool TransactionProcessing::login() {
         // checks if name exists inside bank accounts file
         int pos = searchName(account_holder_name);
         if (pos != -1) { 
-            valid_name = true;
+            valid_acc_holder = true;
         } 
-        // Set valid_name equal to true for admin mode since the name is optional.
+        // Set valid_acc_holder equal to true for admin mode since the name is optional.
         else if (login_mode == 'A' && account_holder_name == "") {
-            valid_name = true;
+            valid_acc_holder = true;
         }
 
         // if account holder name is valid
-        if (valid_name == true) {
+        if (valid_acc_holder == true) {
             // Sucessfully log in
             status = true;
             if (account_holder_name != "") {
@@ -251,38 +250,6 @@ bool TransactionProcessing::login() {
         else {
             msg = "Invalid account holder name.";
             cout << msg << endl;
-=======
-
-		// set the miscel information
-		miscellaneous =+ login_mode;
-		cout << msg << endl;
-		msg = "What is the account holder's name?";
-		cout << msg << endl;
-		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
-		account_holder_name = input;
-
-		
-		// checks if name exists inside bank accounts file
-		int pos = searchName(account_holder_name);
-		if (pos != -1) { 
-			valid_name = true;
-		}
-
-		// if account holder name is valid
-		if (valid_name == true) {
-			// Sucessfully log in
-			status = true;
-			msg = "logged in as " + account_holder_name + ".";
-			cout << msg << endl;
-			// write the transation file
-			transaction_writer.WriteTransation(trans_code, account_holder_name, account_number, amount, miscellaneous);
-			return status;
-		}
-		// if account holder name is NOT valid
-		else {
-			msg = "Invalid account holder name";
-			cout << msg << endl;
->>>>>>> master
                         login_mode = 'N';
             return status;
         }
@@ -308,9 +275,9 @@ bool TransactionProcessing::withdrawal() {
 	// True if the amount to withdraw is valid, False if not
 	bool valid_amount = true;
 	// True if the account holder name to withdraw is valid, False if not
-	bool valid_name = true;
+	bool valid_acc_holder = true;
 	// True if the account number to withdraw is valid, False if not
-	bool valid_num = true;
+	bool valid_acc_num = true;
 	// true if the transfer amount is under the limit, false if not
 	bool valid_under_limit = true;
 
@@ -336,7 +303,7 @@ bool TransactionProcessing::withdrawal() {
 		}
 
 		// if the account holder name is valid.
-		if (valid_name == true) {
+		if (valid_acc_holder == true) {
 			msg =  withdrawal_acc_name + " set as withdrawal account holder.";
 			cout << msg << endl;
 			msg = "What is the account number you wish to withdrawal from?";
@@ -344,7 +311,7 @@ bool TransactionProcessing::withdrawal() {
 			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
 			withdrawal_acc_num = input;
 			// if the account number is valid.
-			if (valid_num == true) {
+			if (valid_acc_num == true) {
 				msg = "Valid account number " + withdrawal_acc_num + ".";
 				cout << msg << endl;
 				msg = "What is the amount to withdrawal?";
@@ -406,12 +373,12 @@ bool TransactionProcessing::transfer() {
 	bool valid_amount = true;
 
 	// True if the account holder names to transfer is valid, False if not
-	bool valid_name_from = true;
-	bool valid_name_to = true;
+	bool valid_acc_holder_from = true;
+	bool valid_acc_holder_to = true;
 
 	// True if the account numbers to transfer is valid, False if not
-	bool valid_num_from = true;
-	bool valid_num_to = true;
+	bool valid_acc_num_from = true;
+	bool valid_acc_num_to = true;
 
 	// true if the transfer amount is under the limit, false if not
 	bool valid_under_limit = true;
@@ -453,7 +420,7 @@ bool TransactionProcessing::transfer() {
 		}
 
 		// if name given for origin transfer is valid
-		if (valid_name_from == true) {
+		if (valid_acc_holder_from == true) {
 			msg =  transfer_acc_name_from + " selected as account holder name for origin transfer.";
 			cout << msg << endl;
 			msg = "What is the account number for origin transfer?";
@@ -462,7 +429,7 @@ bool TransactionProcessing::transfer() {
 			transfer_acc_num_from = input;
 
 			// if the origin account number is valid.
-			if (valid_num_from == true) {
+			if (valid_acc_num_from == true) {
 				msg = "Account number " + transfer_acc_num_from + " selected for origin transfer.";
 				cout << msg << endl;
 				msg = "What is the destination account number";
@@ -471,7 +438,7 @@ bool TransactionProcessing::transfer() {
 				transfer_acc_num_to = input;
 
 				// if destination account number is valid
-				if (valid_num_to == true) {
+				if (valid_acc_num_to == true) {
 					msg = "Account number " + transfer_acc_num_to + " set as destination account number.";
 					cout << msg << endl;
 					msg = "What is the amount to transfer from accounts " + transfer_acc_num_from + " to " + transfer_acc_num_to + "?";
@@ -581,7 +548,7 @@ bool TransactionProcessing::transfer() {
 
 bool TransactionProcessing::paybill() {
     // Keep track of the account holder name for withdrawal
-	string paybill_acc_name;
+	string paybill_acc_holder;
 	// Keep track of the account holder number for withdrawal
 	string paybill_acc_num;
 	// Keep track of the amount to be paid
@@ -591,9 +558,9 @@ bool TransactionProcessing::paybill() {
 	// True if the amount to pay is valid, False if not
 	bool valid_amount = false;
 	// True if the account holder name to pay bill is valid, False if not
-	bool valid_name = false;
+	bool valid_acc_holder = false;
 	// True if the account holder number to pay bill is valid, False if not
-	bool valid_num = false;
+	bool valid_acc_num = false;
 	// True if the company name to whom bill is being paid is valid, False if not
 	bool valid_company_name = false;
 
@@ -613,43 +580,42 @@ bool TransactionProcessing::paybill() {
 			msg = "What is the account holder's name for bill payment?";
 			cout << msg << endl;
 			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
-			paybill_acc_name = input;
+			paybill_acc_holder = input;
 		}
 		// Set the account holder's name to the curretn user if logged in as standard
 		else {
-			paybill_acc_name = account_holder_name;
+			paybill_acc_holder = account_holder_name;
 		}
 		
         // checks if name exists inside bank accounts file
-        int pos = searchName(paybill_acc_name);
+        int pos = searchName(paybill_acc_holder);
         if (pos != -1) { 
-            valid_name = true;
+            valid_acc_holder = true;
         }
 
 		// if the account holder name is valid
-		if (valid_name == true) {
-			msg = paybill_acc_name + " set as the account holder of the bill payment.";
+		if (valid_acc_holder == true) {
+			msg = paybill_acc_holder + " set as the account holder of the bill payment.";
 			cout << msg << endl;
 			msg = "What is the account number from which you wish to pay a bill from?";
 			cout << msg << endl;
 			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
 			paybill_acc_num = input;
             
-            // search bank accounts file for bank account number
+                        // search bank accounts file for bank account number
 			int pos2 = searchAcc(paybill_acc_num);
 			// account name must match account number
 			if (pos2 != -1 && pos2 == pos) { 
-				valid_num = true;
+				valid_acc_num = true;
 			}
 		
 			// if the account number is valid
-			if (valid_num == true) {
+			if (valid_acc_num == true) {
 				msg = "Valid account number " + paybill_acc_num + ".";
 				cout << msg << endl;
 				msg = "What company would you like to pay the bill to?";
 				cout << msg << endl;
 				input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
-<<<<<<< HEAD
 				paybill_company_name = input;
             
                 // check if company is valid
@@ -678,51 +644,53 @@ bool TransactionProcessing::paybill() {
                     paybill_amount = input;
             
                     // if the amount is valid (<2000)
+                    // return false if not
                     if (stof(paybill_amount) > 2000.00) {
                         msg = "Payment cannot exceed $2000.00 in standard mode. Bill payment failed.";
                         cout << msg << endl;
                         return status;
                     }
                     // if the account balance is at least $0.00 after bill is paid
-                    if (stof(all_accounts[pos].acc_balance) - stof(paybill_amount) < 0) {
+                    // return false if not
+                    else if (stof(all_accounts[pos].acc_balance) - stof(paybill_amount) < 0) {
                         msg = "Account balance after bill payment is less than $00.00. Bill payment failed.";
                         cout << msg << endl;
                         return status;
                     }
                     // if the amount is in the format ####.##
-                    if (isCorrectFormat(paybill_amount) == false)  {
+                    // return false if not
+                    else if (isCorrectFormat(paybill_amount) == false)  {
                         msg = "Amount format incorrect. Bill payment failed.";
                         cout << msg << endl;
                         return status;                      
-                        
                     }
-                    
                     // if the account has enough money to cover the transaction fee, 
                     //if the account has enough money to cover the student transaction fee
-                    
-                    if (enoughTransactionFee(paybill_amount, pos) == false)  {
-                        msg = "Account balance is exactly $" + paybill_amount + ". Unable to process $00.05 Student account transaction fees. Bill payment failed.";
-                        cout << msg << endl; 
+                    // return false if not
+                    else if (enoughTransactionFee(paybill_amount, pos) == false)  {
+                        msg = "Bill payment failed.";
+                        cout << msg << endl;
                         return status;
                     }
-                    
-
-                    
-                    if (stof(paybill_amount) < 2000.00 && stof(all_accounts[pos].acc_balance) - stof(paybill_amount) >= 0 && isCorrectFormat(paybill_amount) && enoughTransactionFee(paybill_amount, pos)) {
+                    // amount is valid
+                    else {
                         valid_amount = true;
                     }
                     
+                    /*if (stof(paybill_amount) < 2000.00 && stof(all_accounts[pos].acc_balance) - stof(paybill_amount) >= 0 && isCorrectFormat(paybill_amount) && enoughTransactionFee(paybill_amount, pos)) {
+                        valid_amount = true;
+                    }*/
+                    
                     if (valid_amount == true) {
-                        msg = "Valid amount " + paybill_amount + ".";
+                        msg = "Valid amount $" + paybill_amount + ".";
                         cout << msg << endl;
-                        
                         
                         // Successfully paid bill
                         status = true;
                         msg = "$" + paybill_amount + " Successfully paid to " + paybill_company_name + " from account number " + paybill_acc_num + ".";
                         cout << msg << endl;
                         // Write the transaction file
-                        transaction_writer.WriteTransation(trans_code, paybill_acc_name, paybill_acc_num, paybill_amount, paybill_company_name);
+                        transaction_writer.WriteTransation(trans_code, paybill_acc_holder, paybill_acc_num, paybill_amount, paybill_company_name);
                         return status;
                     }
                     // if the amount is NOT valid
@@ -752,79 +720,26 @@ bool TransactionProcessing::paybill() {
         }
     }
     return status;
-=======
-				paybill_amount = input;
-				// if the amout is valid (<2000)
-				if (valid_amount == true) {
-					msg = "Valid amount " + paybill_amount + ".";
-					cout << msg << endl;
-					msg = "What company would you like to pay the bill to?";
-					cout << msg << endl;
-					input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
-					paybill_company_name = input;
-					// if the company name is valid
-					if (valid_company_name == true) {
-						// Successfully paid bill
-						status = true;
-						msg = "$" + paybill_amount + " Successfully paid to " + paybill_company_name + " from account number " + paybill_acc_num + ".";
-						cout << msg << endl;
-						// Write the transaction file
-						transaction_writer.WriteTransation(trans_code, paybill_acc_name, paybill_acc_num, paybill_amount, paybill_company_name);
-						return status;
-					}
-					// if the company name is NOT valid
-					else {
-						msg = "Invalid company name";
-						cout << msg << endl;
-						return status;
-					}
-				}
-				// if the amount is NOT valid
-				else {
-					msg = "Invalid amount";
-					cout << msg << endl;
-					return status;
-				}
-			}
-			// if the account number is NOT valid
-			else {
-				msg = "Invalid account number";
-				cout << msg << endl;
-				return status;
-			}
-		}
-		// if the account name is NOT valid
-		else {
-			msg = "Invalid account holder name";
-			cout << msg << endl;
-			return status;
-		}
-	}
-	return status;
->>>>>>> master
 }
 
 bool TransactionProcessing::deposit() {
 	// stores the name of the account holder
-	string deposit_account_holder;
+	string deposit_acc_holder;
 
 	// stores the account number of the account holder
-	string deposit_account_num;
+	string deposit_acc_num;
 
 	// stores the amount to be deposited
-	string amount_deposit;
+	string deposit_amount;
 
 	// true if the account holder is valid, otherwise false
-	bool valid_account_holder = true;
+	bool valid_acc_holder = false;
 
 	// true if the account number is valid, otherwise false
-	bool valid_account_num = true;
+	bool valid_acc_num = false;
 
 	// true if the deposit is valid, otherwise false
-	bool valid_deposit = true;
-
-	// true if the deposit is a multiple of 5, otherwise false
-	bool multiple_of_five = true;
+	bool valid_amount = false;
 
 
 	// Check whether the user logged in.  If logged in, check if they have the privilege to deposit money
@@ -833,74 +748,116 @@ bool TransactionProcessing::deposit() {
             msg = "deposit: Invalid command. You are required to be logged into the system.";
             cout << msg << endl;
             return status;        
-	} else if (login_mode == 'S' || login_mode == 'A') {
-		msg = "deposit: Valid command.";
-		cout << msg << endl;
-		msg = "What is the account number?";
-		cout << msg << endl;
-		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
-		deposit_account_num = input;
-		deposit_account_holder = account_holder_name;
-		// if account number is valid
-		if (valid_account_num == true) {
-			// if account name is valid
-			if (valid_account_holder == true) {
-				msg = "Login successful. What is the amount to be deposited?";
-				cout << msg << endl;
-				input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
-				amount_deposit = input;
-
-				// if valid deposit
-				if (valid_deposit == true) {
-					msg = "Deposit completed";
-					cout << msg << endl;
-
-					// if it is a multiple of five and student account
-					if (multiple_of_five == true && account_type == 'S') {
-						// success
-						status = true;
-						msg = "$" + amount_deposit + " successfully deposited ($00.10 deducted for Non - Student Account transaction fees).";
-						cout << msg << endl;
-						msg = "Deposited amount usable next day only.";
-						cout << msg << endl;
-						transaction_writer.WriteTransation(trans_code, deposit_account_holder, deposit_account_num, amount, miscellaneous);
-						return status;
-						// if it is a multiple of five and a non student account
-					} else if (multiple_of_five == true && account_type == 'N') {
-						// success
-						status = true;
-						msg = "$" + amount_deposit + " successfully deposited ($00.05 deducted for Non - Student Account transaction fees).";
-						cout << msg << endl;
-						msg = "Deposited amount usable next day only.";
-						cout << msg << endl;
-						transaction_writer.WriteTransation(trans_code, deposit_account_holder, deposit_account_num, amount, miscellaneous);
-						return status;
-						//not a multiple of five
-					} else {
-						msg = "Unable to complete deposit. Amount must be a multiple of 5.";
-						cout << msg << endl;
-						return status;
-					}
-					// not a valid deposit
-				} else {
-					msg = "Amount format incorrect. Deposit failed.";
-					cout << msg << endl;
-					return status;
-				}
-				// account holder is not valid
-			} else {
-				msg = "Name and account number do not match. Deposit rejected.";
-				cout << msg << endl;
-				return status;
-			}
-			// account number is not valid
-            } else {
-                msg = "Name and account number do not match. Deposit rejected.";
+	} 
+	else if (login_mode == 'S' || login_mode == 'A') {
+            msg = "deposit: Valid command.";
+            cout << msg << endl;
+            
+            // Ask for the account holder's name if logged in as admin
+            if (login_mode == 'A') {
+                    msg = "What is the account holder's name which you wish to deposit to?";
+                    cout << msg << endl;
+                    input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+                    deposit_acc_holder = input;
+            }
+            // Set the account holder's name to the curretn user if logged in as standard
+            else {
+                    deposit_acc_holder = account_holder_name;
+            }
+            
+            // checks if name exists inside bank accounts file
+            int pos = searchName(deposit_acc_holder);
+            if (pos != -1) { 
+                valid_acc_holder = true;
+            }
+            
+            // if account name is valid
+            if (valid_acc_holder == true) {
+                msg = deposit_acc_holder + " set as the account holder of the deposit.";
+                cout << msg << endl;
+                msg = "What is the account number which you wish to deposit to?";
+                cout << msg << endl;
+                input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+                deposit_acc_num = input;
+                
+                
+                // search bank accounts file for bank account number
+                int pos2 = searchAcc(deposit_acc_num);
+                // account name must match account number
+                if (pos2 != -1 && pos2 == pos) { 
+                    valid_acc_num = true;
+                }
+                
+                // if account number is valid
+                if (valid_acc_num == true) {
+                    msg = deposit_acc_num + " set as the account number of the deposit.";
+                    cout << msg << endl;
+                    msg = "What is the amount to be deposited?";
+                    cout << msg << endl;
+                    input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+                    deposit_amount = input;
+                    
+                    // if the amount is in the format ####.## 
+                    // return false if not
+                    if (isCorrectFormat(deposit_amount) == false)  {
+                        msg = "Amount format incorrect. Deposit failed.";
+                        cout << msg << endl;
+                        return status;           
+                    } 
+                    // check for multiple of five                    
+                    else if (isDivisibleBy5(deposit_amount) == false) {
+                        msg = "Unable to complete deposit. Amount must be a multiple of 5.";
+                        cout << msg << endl;
+                        return status;
+                    }
+                    // if is correct format
+                    else {
+                        valid_amount = true;
+                    }
+                    
+                    
+                    // if valid amount 
+                    if (valid_amount == true) {
+                        msg = "Valid amount $" + deposit_amount + ".";
+                        cout << msg << endl;
+                        
+                        // check for account type and minus corresponding transaction fee 
+                        deposit_amount = minusTransactionFee(deposit_amount, pos);
+                        // check if the amount minus transaction fee is greater than 0
+                        if (deposit_amount != "BELOW 0") {
+                            status = true; 
+                            msg = "$" + deposit_amount + " successfully deposited.";
+                            cout << msg << endl;
+                            msg = "Deposited amount usable next day only.";
+                            cout << msg << endl;
+                        }
+                        else {
+                            return false;
+                        }
+                        
+                    
+                    }
+                    // if amount is not valud
+                    else {
+                        return status;
+                    }
+                }
+                // if account number is not valid
+                else {
+                    msg = "Invalid account number or Name and account number do not match. Deposit failed.";
+                    cout << msg << endl;
+                    return status;
+                }
+                
+            } 
+            //if account name is not valid 
+            else {
+                msg = "Invalid account holder name. Deposit failed.";
                 cout << msg << endl;
                 return status;
-		}
-	}
-	return status;
+            }
+        }
+    return status;
 }
 
 bool TransactionProcessing::create() {
@@ -911,7 +868,7 @@ bool TransactionProcessing::create() {
 	// True if the account name is valid, otherwise false
 	bool valid_account_name = true;
 	// True if the account number is valid, otherwise false
-	bool valid_account_num = true;
+	bool valid_acc_num = true;
 
 	// Check whether the user logged in.  If logged in, check if they have the privilege to create account
 	// Return false if the user is not logged
@@ -939,7 +896,7 @@ bool TransactionProcessing::create() {
 			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
 			create_account_num = input;
 			// If account number is valid
-			if (valid_account_num == true) {
+			if (valid_acc_num == true) {
 				// Successfully created account
 				status = true;
 				msg = "Accepted bank account number to be created: " + create_account_num + " for " + create_account_name + ". Information saved to bank account transaction file.";
@@ -971,10 +928,10 @@ bool TransactionProcessing::delete1() {
 	// stores the account number that you want to delete
 	string delete_account_num;
 	// true if the account holder is valid, otherwise false
-	bool valid_account_holder = true;
+	bool valid_acc_holder = true;
 
 	// true if the bank acconut number is valid, otherwise false
-	bool valid_account_num = true;
+	bool valid_acc_num = true;
 
 	// Check whether the user logged in.  If logged in, check if they have the privilege to delete account
 	// Return false if the user is not logged
@@ -994,7 +951,7 @@ bool TransactionProcessing::delete1() {
 		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
 		delete_account_holder = input;
 		// if the account holder's name is valid
-		if (valid_account_holder == true) {
+		if (valid_acc_holder == true) {
 			msg = "Accepted bank account holder's name: " + delete_account_holder + ".";
 			cout << msg << endl;
 			msg = "Enter bank account number to be deleted.";
@@ -1002,7 +959,7 @@ bool TransactionProcessing::delete1() {
 			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
 			delete_account_num = input;
 			// if account number is valid
-			if (valid_account_num == true) {
+			if (valid_acc_num == true) {
 				// success
 				status = true;
 				msg = "Accepted bank account number to be deleted: " + delete_account_num + ".";
@@ -1036,10 +993,10 @@ bool TransactionProcessing::enable() {
 	// stores the account number that you want to enable
 	string enable_account_num;
 	// true if the account holder is valid, otherwise false
-	bool valid_account_holder = false;
+	bool valid_acc_holder = false;
 
 	// true if the bank acconut number is valid, otherwise false
-	bool valid_bank_acc_num = false;
+	bool valid_acc_num = false;
 
 	// Check whether the user logged in.  If logged in, check if they have the privilege to enable account
 	// Return false if the user is not logged
@@ -1062,10 +1019,10 @@ bool TransactionProcessing::enable() {
 
 		int pos = searchName(enable_account_holder);
 		if (pos != -1) { 
-			valid_account_holder = true;
+			valid_acc_holder = true;
 		}
 		// valid account holder
-		if (valid_account_holder == true) {
+		if (valid_acc_holder == true) {
 			msg = "Accepted bank account holder's name: " + enable_account_holder + ".";
 			cout << msg << endl;
 			msg = "Enter bank account number to be enabled.";
@@ -1077,13 +1034,13 @@ bool TransactionProcessing::enable() {
 			int pos2 = searchNameAcc(enable_account_holder, enable_account_num);
 			// account name must match account number
 			if (pos2 != -1) { 
-				valid_bank_acc_num = true;
+				valid_acc_num = true;
 				account_type = all_accounts[pos2].acc_type;
 				acc_status = all_accounts[pos2].acc_status;
 			}
 
 			// valid bank account number, disabled account
-			if (valid_bank_acc_num == true && acc_status == 'D') {
+			if (valid_acc_num == true && acc_status == 'D') {
 				//success
 				status = true;
 				msg = "Accepted bank account number: " + enable_account_num + ".";
@@ -1093,7 +1050,7 @@ bool TransactionProcessing::enable() {
 				transaction_writer.WriteTransation(trans_code, enable_account_holder, enable_account_num, amount, miscellaneous);
 				return status;
 				// valid bank account number, enabled account
-			} else if (valid_bank_acc_num == true && acc_status == 'E') {
+			} else if (valid_acc_num == true && acc_status == 'E') {
 				msg = "Rejected bank account number to be enabled: " + enable_account_holder + " (Account " + enable_account_num + " is a enabled account.)";
 				cout << msg << endl;
 				return status;
@@ -1123,7 +1080,7 @@ bool TransactionProcessing::disable() {
 	// True if the account holder name is valid, False if not
 	bool valid_account_name = true;
 	// True if the account holder number is valid, False if not
-	bool valid_account_number = true;
+	bool valid_acc_number = true;
 
 	// Check whether the user logged in.  If logged in, check if they have the privilege to disable account
 	// Return false if the user is not logged
@@ -1151,7 +1108,7 @@ bool TransactionProcessing::disable() {
 			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
 			disable_account_num = input;
 			// Valid bank account number, account disabled
-			if (valid_account_number == true && acc_status == 'D') {
+			if (valid_acc_number == true && acc_status == 'D') {
 				// Successfully disabled
 				status = true;
 				msg = "Accepted bank account number: " + disable_account_num + ".";
@@ -1161,7 +1118,7 @@ bool TransactionProcessing::disable() {
 				transaction_writer.WriteTransation(trans_code, disable_account_name, disable_account_num, amount, miscellaneous);
 				return status;
 				// Valid bank account number, enabled account
-			} else if (valid_account_number && acc_status == 'E') {
+			} else if (valid_acc_number && acc_status == 'E') {
 				msg = "Rejected bank account number to be disabled: " + disable_account_name + " (Account " + disable_account_num + " is an enabled account).";
 				cout << msg << endl;
 				return status;
@@ -1189,10 +1146,10 @@ bool TransactionProcessing::changeplan() {
 	// stores the account number that you want to change the plan for
 	string changeplan_account_num;
 	// true if the account holder is valid, otherwise false
-	bool valid_account_holder = false;
+	bool valid_acc_holder = false;
 
 	// true if the bank acconut number is valid, otherwise false
-	bool valid_bank_acc_num = false;
+	bool valid_acc_num = false;
 
 	// Check whether the user logged in.  If logged in, check if they have the privilege to change plan
 	// Return false if the user is not logged
@@ -1216,12 +1173,12 @@ bool TransactionProcessing::changeplan() {
 		
 		int pos = searchName(changeplan_account_holder);
 		if (pos != -1) { 
-			valid_account_holder = true;
+			valid_acc_holder = true;
 		}
 		
 
 		// if valid bank account holder name student to non student
-		if (valid_account_holder == true) {
+		if (valid_acc_holder == true) {
 			msg = "Accepted bank account holder's name: " + changeplan_account_holder + ".";
 			cout << msg << endl;
 			msg = "Enter bank account number to change the transaction payment plan.";
@@ -1234,12 +1191,12 @@ bool TransactionProcessing::changeplan() {
 			int pos2 = searchAcc(changeplan_account_num);
 			// account name must match account number
 			if (pos2 != -1 && pos2 == pos) { 
-				valid_bank_acc_num = true;
+				valid_acc_num = true;
 				account_type = all_accounts[pos].acc_type;
 			}
 		
 			// valid bank account number
-			if (valid_bank_acc_num == true && account_type == 'S') {
+			if (valid_acc_num == true && account_type == 'S') {
 				//success
 
 				status = true;
@@ -1250,7 +1207,7 @@ bool TransactionProcessing::changeplan() {
 				transaction_writer.WriteTransation(trans_code, changeplan_account_holder, changeplan_account_num, amount, miscellaneous);
 				return status;
 				// valid bank account number non student to student
-			} else if (valid_bank_acc_num == true && account_type == 'N') {
+			} else if (valid_acc_num == true && account_type == 'N') {
 				// success
 
 				status = true;
@@ -1379,13 +1336,63 @@ bool TransactionProcessing::isCorrectFormat(string input) {
 }
 
 bool TransactionProcessing::enoughTransactionFee(string amount, int pos) {
-    if (account_type = 'S') {
-        return (stof(all_accounts[pos].acc_balance) - stof(amount) - 0.05f >= 0);        
+    bool result;
+    if (all_accounts[pos].acc_type == 'S') { 
+        result = stof(all_accounts[pos].acc_balance) - stof(amount) - 0.05f >= 0;  
+        if (result == false) {
+            msg = "Account balance is exactly $" + amount + ". Unable to process $0.05 Student account transaction fees.";
+            cout << msg << endl;
+        }
     }
-    if (account_type = 'N') {
-        return (stof(all_accounts[pos].acc_balance) - stof(amount) - 0.10f >= 0);   
+    if (all_accounts[pos].acc_type == 'N') {
+        result =  stof(all_accounts[pos].acc_balance) - stof(amount) - 0.10f >= 0;   
+        if (result == false) {
+            msg = "Account balance is exactly $" + amount + ". Unable to process $0.10 Non Student account transaction fees.";
+            cout << msg << endl; 
+        }
     }
     
+    return result;
+}
+
+
+string TransactionProcessing::minusTransactionFee(string amount, int pos) {
+    float temp_amount = stof(amount);
+    ostringstream s;
+    if (all_accounts[pos].acc_type == 'S') {
+        temp_amount -= 0.05;
+        if (temp_amount <= 0) {
+            msg = "Deposit amount is exactly $0.05. Unable to process $0.10 Non Student account transaction fees.";
+            return ("BELOW 0");
+        }
+        s << fixed <<setprecision(2) << temp_amount;
+        msg = "$0.05 deducted for Student Account transaction fees.";
+        cout << msg << endl;
+    }
+    if (all_accounts[pos].acc_type == 'N') {
+        temp_amount -= 0.10;
+        if (temp_amount <= 0) {
+            msg = "Deposit amount is exactly $0.10. Unable to process $0.10 Non Student account transaction fees.";
+            return ("BELOW 0");
+        }
+        s << fixed <<setprecision(2) << temp_amount;
+        msg = "$0.10 deducted for Non - Student Account transaction fees.";
+        cout << msg << endl;
+    }
+    amount = s.str();
+    return amount;
+    
+}
+
+bool TransactionProcessing::isDivisibleBy5(string amount)  {
+    float temp_amount_f = stof(amount);
+    int temp_amount_i = temp_amount_f;
+    if (ceilf(temp_amount_f) == temp_amount_f) {
+        return (temp_amount_i%5 == 0);  
+    }
+    else {
+        return false;
+    }
 }
 
 string TransactionProcessing::trim(string s) {
