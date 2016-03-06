@@ -862,13 +862,17 @@ bool TransactionProcessing::deposit() {
 
 bool TransactionProcessing::create() {
 	// Stores the name of the account holder you want to create
-	string create_account_name;
+	string create_acc_name;
 	// Stores the account number that you want to create
-	string create_account_num;
+	string create_acc_num;
+        // Stores the balance that you want to create
+        string create_acc_balance;
 	// True if the account name is valid, otherwise false
-	bool valid_account_name = true;
+	bool valid_acc_name = false;
 	// True if the account number is valid, otherwise false
-	bool valid_acc_num = true;
+	bool valid_acc_num = false;
+        // True if the balance is valid, otherwise false
+        bool valid_acc_balance = false;
 
 	// Check whether the user logged in.  If logged in, check if they have the privilege to create account
 	// Return false if the user is not logged
@@ -880,45 +884,100 @@ bool TransactionProcessing::create() {
 		msg = "create: Invalid command. Admin access required.";
 		cout << msg << endl;
 		return status;
-	} else if (login_mode == 'A') {
-		msg = "create: Valid command. Admin access granted.";
-		cout << msg << endl;
-		msg = "Enter the new bank account holder's name to be created.";
-		cout << msg << endl;
-		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
-		create_account_name = input;
-		// If the account holder's name is valid
-		if (valid_account_name == true) {
-			msg = "Accepted new bank account name: " + create_account_name + ".";
-			cout << msg << endl;
-			msg = "Enter the bank account number to be created.";
-			cout << msg << endl;
-			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
-			create_account_num = input;
-			// If account number is valid
-			if (valid_acc_num == true) {
-				// Successfully created account
-				status = true;
-				msg = "Accepted bank account number to be created: " + create_account_num + " for " + create_account_name + ". Information saved to bank account transaction file.";
-				cout << msg << endl;
-				transaction_writer.WriteTransation(trans_code, create_account_name, create_account_num, amount, miscellaneous);
-				return status;
-				// If the account number is not valid
-			} else {
-				msg = "Rejected bank account number to be created: " + create_account_num + ". (Entered an invalid bank account number)";
-				cout << msg << endl;
-				return status;
-			}
-			// If the account holder's name is not valid
-		} else {
-			msg = "Rejected bank account holder's name. (Entered an invalid account holder name).";
-			cout << msg << endl;
-			return status;
-		}
-	}
-	msg = "Account creation unsuccessful.";
-	cout << msg << endl;
-	return status;
+        } else if (login_mode == 'A') {
+            msg = "create: Valid command. Admin access granted.";
+            cout << msg << endl;
+            msg = "Enter the new bank account holder's name to be created.";
+            cout << msg << endl;
+            input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+            create_acc_name = input;
+            
+            // fix create_acc_name
+            create_acc_name = fixName(create_acc_name);
+            if (create_acc_name.length() == 20) {
+                valid_acc_name = true;
+            }
+            
+            // If the account holder's name is valid
+            if (valid_acc_name == true) {
+                msg = "Accepted new bank account name: " + trim(create_acc_name) + ".";
+                cout << msg << endl;
+                
+                msg = "What is the initial balance of the account?";
+                cout << msg << endl;
+                input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+                create_acc_balance = input;
+                
+                
+                // check if balance is less than $99999.99
+                // return false if not
+                if (stof(create_acc_balance) > 99999.99) {
+                    msg = "Balance is over $99999.99. Account creation unsuccessful.";
+                    cout << msg << endl;
+                    return status;
+                }
+                // check if it is the good format
+                // return false if not
+                else if (isCorrectFormat(create_acc_balance) == false)  {
+                    msg = "Amount format incorrect. Account creation unsuccessful.";
+                    cout << msg << endl;
+                    return status;  
+                }
+                // balance is valid
+                else {
+                    valid_acc_balance = true;
+                }
+                
+                if (valid_acc_balance == true) {
+                    msg = "Accepted inital balance $" + create_acc_balance + ".";
+                    cout << msg << endl;
+                    
+                    // create and check account number
+                    // start from 00001 and find the next available number
+                    int create_acc_num_int = 1;
+                    create_acc_num = numToString(create_acc_num_int);
+                    while (searchAcc(create_acc_num) != -1)  {
+                        ++create_acc_num_int;
+                        create_acc_num = numToString(create_acc_num_int);
+                    }
+                    
+                    // double check if the cerated account number is unique
+                    int pos2 = searchAcc(create_acc_num);
+                    if (pos2 == -1) { 
+                            valid_acc_num = true;
+                    }
+                    // If account number is valid
+                    if (valid_acc_num == true) {
+                        // Successfully created account
+                        // set default account type in save as miscellaneous information
+                        miscellaneous += 'N';
+                        status = true;
+                        msg = "Accepted bank account number to be created: " + create_acc_num + " for " + trim(create_acc_name) +".";
+                        cout << msg << endl;
+                        msg = "Account type: Non-Student Plan.";
+                        cout << msg << endl;
+                        transaction_writer.WriteTransation(trans_code, create_acc_name, create_acc_num, amount, miscellaneous);
+                    } 
+                    // if account number is not valid
+                    else {
+                        msg = "Account number already exists. Account creation unsuccessful";
+                        cout << msg << endl;
+                    }
+                }
+                // if balance is not valid
+                else {
+                    msg = "Invalid Balance. Account creation unsuccessful";
+                    cout << msg << endl;
+                    
+                }
+            // If the account holder's name is not valid
+            } else {
+                msg = "Rejected bank account holder's name. (Entered an invalid account holder name).";
+                cout << msg << endl;
+                return status;
+            }
+        }
+    return status;
 }
 
 bool TransactionProcessing::delete1() {
@@ -1078,7 +1137,7 @@ bool TransactionProcessing::disable() {
 	// Keep track of the account number to disable
 	string disable_account_num;
 	// True if the account holder name is valid, False if not
-	bool valid_account_name = true;
+	bool valid_acc_name = true;
 	// True if the account holder number is valid, False if not
 	bool valid_acc_number = true;
 
@@ -1100,7 +1159,7 @@ bool TransactionProcessing::disable() {
 		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
 		disable_account_name = input;
 		// if valid account holder name
-		if (valid_account_name == true) {
+		if (valid_acc_name == true) {
 			msg = "Accepted bank account holder's name: " + disable_account_num + ".";
 			cout << msg << endl;
 			msg = "Enter bank account number to be disabled.";
@@ -1330,7 +1389,7 @@ bool TransactionProcessing::isTransaction(string input) {
 }
 
 bool TransactionProcessing::isCorrectFormat(string input) {
-    regex float_m("[[:digit:]]?[[:digit:]]?[[:digit:]?][[:digit:]].[[:digit:]][[:digit:]]");
+    regex float_m("[[:digit:]]?[[:digit:]]?[[:digit:]]?[[:digit:]?][[:digit:]].[[:digit:]][[:digit:]]");
     
     return (regex_match (input, float_m));
 }
@@ -1354,7 +1413,6 @@ bool TransactionProcessing::enoughTransactionFee(string amount, int pos) {
     
     return result;
 }
-
 
 string TransactionProcessing::minusTransactionFee(string amount, int pos) {
     float temp_amount = stof(amount);
@@ -1393,6 +1451,35 @@ bool TransactionProcessing::isDivisibleBy5(string amount)  {
     else {
         return false;
     }
+}
+
+string TransactionProcessing::fixName(string name)  {
+    if (input.length() > 20) {
+            input = input.substr(0,20);
+    } else if (input.length() < 20) {
+            for (int i = input.length(); i < 20; i++) {
+                    input += " ";
+            }
+    }
+    return input;
+    
+}
+
+string TransactionProcessing::numToString(int acc_num_int) {
+    string acc_num = "00000";
+
+    string acc_num_temp = to_string(acc_num_int);
+
+    int index = 0;
+    for (int i = 0; i < 5; i++ ) {
+        acc_num[index++] = '0';
+    }
+    index = 4;
+    for (int i = acc_num_temp.length(); i > 0; i--) {
+        acc_num[index--] = acc_num_temp.at(i-1); // at(i-1) because the length is 5 but the index is 4 (start with 0)
+    }
+    return acc_num;
+    
 }
 
 string TransactionProcessing::trim(string s) {
