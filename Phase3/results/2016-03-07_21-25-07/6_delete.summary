@@ -1,0 +1,15 @@
+SUMMARY OF 6_delete FOR 2016-03-07_21-25-07
+TEST 01_delete_admin_mode.out FAILED.
+TEST 01_delete_admin_mode.trans PASSED.
+TEST 02_delete_standard_mode.out FAILED.
+TEST 02_delete_standard_mode.trans PASSED.
+TEST 03_delete_valid.out FAILED.
+TEST 03_delete_valid.trans PASSED.
+TEST 04_delete_invalid_name.out FAILED.
+TEST 04_delete_invalid_name.trans PASSED.
+TEST 05_delete_invalid_number.out FAILED.
+TEST 05_delete_invalid_number.trans PASSED.
+TEST 06_delete_further_trans.out FAILED.
+TEST 06_delete_further_trans.trans FAILED.
+TEST 07_delete_disable.out FAILED.
+TEST 07_delete_disable.trans FAILED.

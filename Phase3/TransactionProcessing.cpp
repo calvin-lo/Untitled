@@ -1056,7 +1056,7 @@ bool TransactionProcessing::delete1() {
 		cout << msg << endl;
 		msg = "Enter the bank account holder's name to be deleted.";
 		cout << msg << endl;
-		input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
+		input = readCommand(); 
 		delete_acc_holder = input;
 
 		int pos = searchName(delete_acc_holder);
@@ -1073,9 +1073,13 @@ bool TransactionProcessing::delete1() {
 			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
 			delete_acc_num = input;
 
-			int pos2 = searchAcc(delete_acc_num);
-			if (pos2 != -1 && pos2 == pos) {
+			// search bank accounts file for bank account number, if exists, set account type
+			int pos2 = searchNameAcc(delete_acc_holder, delete_acc_num);
+			// account name must match account number
+			if (pos2 != -1) { 
 				valid_acc_num = true;
+				account_type = all_accounts[pos2].acc_type;
+				acc_status = all_accounts[pos2].acc_status;
 			}
 
 			// if account number is valid
@@ -1084,7 +1088,7 @@ bool TransactionProcessing::delete1() {
 				status = true;
 				msg = "Accepted bank account number to be deleted: " + delete_acc_num + ".";
 				cout << msg << endl;
-				msg = "Account " + delete_acc_num + "from " + delete_acc_holder + " has been deleted. Information saved to bank account transaction file.";
+				msg = "Account " + delete_acc_num + " from " + delete_acc_holder + " has been deleted. Information saved to bank account transaction file.";
 				cout << msg << endl;
 				transaction_writer.WriteTransation(trans_code, delete_acc_holder, delete_acc_num, amount, miscellaneous);
 				return status;
