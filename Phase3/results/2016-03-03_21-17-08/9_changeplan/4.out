@@ -1,0 +1,15 @@
+Do you wish to login as a standard user or admin?
+admin session
+Logged in as an admin user.
+What is the account holder's name?
+Jane Doe
+logged in as Jane Doe.
+changeplan: Valid command. Admin access granted.
+Enter the bank account holder's name to change the transaction payment plan.
+Chris Doe
+Accepted bank account holder's name: Chris Doe.
+Enter bank account number to change the transaction payment plan.
+00002
+Account 00002 from Chris Doe has changed from non - student (NP) to student (SP). Information saved to bank account transaction file.
+logout: Valid command.
+Logout Sucessfully.

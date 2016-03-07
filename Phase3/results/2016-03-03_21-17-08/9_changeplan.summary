@@ -1,0 +1,13 @@
+SUMMARY OF CHANGEPLAN FOR 2016-03-03_21-17-08
+TEST 01_changeplan_admin_mode.out OUTPUT PASSED.
+TEST 01_changeplan_admin_mode.trans TRANSACTION FAILED.
+TEST 02_changeplan_standard_mode.out OUTPUT PASSED.
+TEST 02_changeplan_standard_mode.trans TRANSACTION FAILED.
+TEST 03_changeplan_SP_to_NP.out OUTPUT PASSED.
+TEST 03_changeplan_SP_to_NP.trans TRANSACTION FAILED.
+TEST 04_changeplan_NP_to_SP.out OUTPUT PASSED.
+TEST 04_changeplan_NP_to_SP.trans TRANSACTION FAILED.
+TEST 05_changeplan_invalid_name.out OUTPUT PASSED.
+TEST 05_changeplan_invalid_name.trans TRANSACTION FAILED.
+TEST 06_changeplan_invalid_number.out OUTPUT PASSED.
+TEST 06_changeplan_invalid_number.trans TRANSACTION FAILED.
