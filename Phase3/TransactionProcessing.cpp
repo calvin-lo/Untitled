@@ -1248,12 +1248,12 @@ bool TransactionProcessing::disable() {
 			}
 
 			// Valid bank account number, enabled account
-			if (valid_acc_num == true && acc_status == 'E') {
+			if (valid_acc_num == true && acc_status == 'A') {
 				// Successfully disabled
 				status = true;
 				msg = "Accepted bank account number: " + disable_account_num + ".";
 				cout << msg << endl;
-				msg = "Account" + disable_account_num + " from " + disable_account_holder + " has been disabled. Information saved to bank account transaction file.";
+				msg = "Account " + disable_account_num + " from " + disable_account_holder + " has been disabled. Information saved to bank account transaction file.";
 				cout << msg << endl;
 				transaction_writer.WriteTransation(trans_code, disable_account_holder, disable_account_num, amount, miscellaneous);
 				return status;

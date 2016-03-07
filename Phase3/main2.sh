@@ -160,7 +160,7 @@ mkdir results
 cd results
 
 # delete old tests 
-#rm -rf *
+rm -rf *
 
 # make directory with current runtime of the script
 mkdir $timestamp
