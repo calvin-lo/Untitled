@@ -370,31 +370,31 @@ bool TransactionProcessing::transfer() {
 	string transfer_amount;
 
 	// True if the amount to transfer is valid, False if not
-	bool valid_amount = true;
+	bool valid_amount = false;
 
 	// True if the account holder names to transfer is valid, False if not
-	bool valid_acc_holder_from = true;
-	bool valid_acc_holder_to = true;
+	bool valid_acc_holder_from = false;
+	bool valid_acc_holder_to = false;
 
 	// True if the account numbers to transfer is valid, False if not
-	bool valid_acc_num_from = true;
-	bool valid_acc_num_to = true;
+	bool valid_acc_num_from = false;
+	bool valid_acc_num_to = false;
 
 	// true if the transfer amount is under the limit, false if not
-	bool valid_under_limit = true;
+	bool valid_under_limit = false;
 
 	// true if the account to transfer to is not disabled, false if not
-	bool valid_not_disabled = true;
+	bool valid_not_disabled = false;
 
 	// true if the account has enough money to cover the transaction fee, false if not
-	bool valid_non_student_fee = true;
+	bool valid_non_student_fee = false;
 
 	// true if the account has enough money to cover the student transaction fee, false if not
-	bool valid_student_fee = true;
+	bool valid_student_fee = false;
 
 	// true if the account has sufficient funds to cover transfer, false if not
 
-	bool sufficient_funds = true;
+	bool sufficient_funds = false;
 
 	// Check whether the user logged in.  If logged in, check if they have the privilege to transfer money
 	// Return false if the user is not logged
@@ -418,6 +418,11 @@ bool TransactionProcessing::transfer() {
 		} else {
 			transfer_acc_name_from = account_holder_name;
 		}
+		
+                int pos = searchName(transfer_acc_name_from);
+                if (pos != -1) { 
+                    valid_acc_holder_from = true;
+                } 
 
 		// if name given for origin transfer is valid
 		if (valid_acc_holder_from == true) {
@@ -427,6 +432,14 @@ bool TransactionProcessing::transfer() {
 			cout << msg << endl;
 			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
 			transfer_acc_num_from = input;
+                        
+                        // search bank accounts file for bank account number
+			int pos2 = searchAcc(transfer_acc_num_from);
+			// account name must match account number
+			if (pos2 != -1 && pos2 == pos) { 
+                            valid_acc_num_from= true;
+			}
+                        
 
 			// if the origin account number is valid.
 			if (valid_acc_num_from == true) {
@@ -436,7 +449,15 @@ bool TransactionProcessing::transfer() {
 				cout << msg << endl;
 				input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
 				transfer_acc_num_to = input;
-
+                                
+                                int pos3 = searchAcc(transfer_acc_num_to);
+                                if (pos3 != -1) {
+                                    valid_acc_num_to = true;
+                                    // find the account name
+                                    transfer_acc_name_to = all_accounts[pos3].acc_holder_name;
+                                    
+                                }
+                                
 				// if destination account number is valid
 				if (valid_acc_num_to == true) {
 					msg = "Account number " + transfer_acc_num_to + " set as destination account number.";
@@ -447,17 +468,33 @@ bool TransactionProcessing::transfer() {
 					transfer_amount = input;
 
 					//sufficient funds
+                                        sufficient_funds = stof(all_accounts[pos].acc_balance) - stof(transfer_amount) >= 0 
+                                                            && stof(all_accounts[pos3].acc_balance) + stof(transfer_amount) >= 0;;
 					if (sufficient_funds == true) {
-						// destination account number not disabled
+                                                                                                                                                                 
+                                                // destination account number not disabled
+                                                if (all_accounts[pos3].acc_status == 'A') {
+                                                    valid_not_disabled = true; 
+                                                } 
 						if (valid_not_disabled == true) {
 
 							// if valid amount to transfer
+                                                        
+                                                        if (isCorrectFormat(transfer_amount) == true) {
+                                                            valid_amount = true;
+                                                            
+                                                        }
+                                                        
 							if (valid_amount == true) {
 
 								// if account type is student, check if bal is enough to cover fee
 								if (account_type == 'S') {
+                                                                        valid_student_fee = enoughTransactionFee(transfer_amount, pos);
 									if (valid_student_fee == true) {
 										// if amount to transfer is below limit
+                                                                            
+                                                                                
+                                                                                valid_under_limit = stof(transfer_amount) <= 1000.00;
 										if (valid_under_limit == true) {
 											// success
 
@@ -481,7 +518,9 @@ bool TransactionProcessing::transfer() {
 									}
 								}
 								// if account type is non-student, check if bal is enough to cover fee
+								
 								if (account_type == 'N') {
+                                                                        valid_non_student_fee = enoughTransactionFee(transfer_amount, pos);
 									if (valid_non_student_fee == true) {
 										// if amount to transfer is below limit
 										if (valid_under_limit == true) {
