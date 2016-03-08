@@ -304,11 +304,7 @@ bool TransactionProcessing::withdrawal() {
 		if (login_mode == 'A') {
 			msg = "What is the account holder's name for withdrawal?";
 			cout << msg << endl;
-                        input = readCommand(); 
-                        if (isTransaction(input) == true) {
-                            startTransaction(input); 
-                            return false;
-                        }
+			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
 			withdrawal_acc_holder = input;
 		}
 		// Set the account holder's name to the current user if logged in as standard
@@ -328,11 +324,7 @@ bool TransactionProcessing::withdrawal() {
 			cout << msg << endl;
 			msg = "What is the account number you wish to withdraw from?";
 			cout << msg << endl;
-                        input = readCommand(); 
-                        if (isTransaction(input) == true) {
-                            startTransaction(input); 
-                            return false;
-                        }
+			input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
 			withdrawal_acc_num = input;
 
 			// search bank accounts file for bank account number
@@ -348,17 +340,13 @@ bool TransactionProcessing::withdrawal() {
 				cout << msg << endl;
 				msg = "What is the amount to withdraw?";
 				cout << msg << endl;
-                                input = readCommand(); 
-                                if (isTransaction(input) == true) {
-                                    startTransaction(input); 
-                                    return false;
-                                }
+				input = readCommand(); if (isTransaction(input) == true) { startTransaction(input); return false ;}
 				withdrawal_amount = input;
 
 				// if the amount is in the format ####.##
 				// return false if not
 				if (isCorrectFormat(withdrawal_amount) == false) {
-					msg = "Amount format incorrect. Deposit failed.";
+					msg = "Amount format incorrect. Withdrawal failed.";
 					cout << msg << endl;
 					return status;
 				}
@@ -377,24 +365,25 @@ bool TransactionProcessing::withdrawal() {
 
 				// check if valid amount
 				if (valid_amount == true) {
-                                    msg = "Valid amount $" +withdrawal_amount + ".";
-                                    cout << msg << endl;
+					msg = "Valid amount $" +withdrawal_amount + ".";
+					cout << msg << endl;
+				}
 
-                                    // check for the account type and subtract corresponding transaction fee
-                                    withdrawal_amount = minusTransactionFee(withdrawal_amount, pos);
-                                    // check if the amount to withdraw minus transaction fee is below 500
-                                    if (withdrawal_amount != "ABOVE 500") {
-                                            status = true;
-                                            msg = "$" + withdrawal_amount + " successfully withdrawn.";
-                                            cout << msg << endl;
-                                    }
+				// check for the account type and subtract corresponding transaction fee
+				withdrawal_amount = minusTransactionFee(withdrawal_amount, pos);
+				// check if the amount to withdraw minus transaction fee is below 500
+				if (withdrawal_amount != "ABOVE 500") {
+					status = true;
+					msg = "$" + withdrawal_amount + " successfully withdrawn.";
+					cout << msg << endl;
+				}
 
 				// write the transaction file
 					transaction_writer.WriteTransation(trans_code, withdrawal_acc_holder, withdrawal_acc_num, withdrawal_amount, miscellaneous);
 					return status;
 				}
 				// if the amount is NOT valid
-                                else {
+				else {
 					msg = "Invalid amount. Withdrawal failed.";
 					cout << msg << endl;
 					return status;
@@ -413,8 +402,6 @@ bool TransactionProcessing::withdrawal() {
 			cout << msg << endl;
 			return status;
 		}
-
-	}
 	return status;
 }
 
