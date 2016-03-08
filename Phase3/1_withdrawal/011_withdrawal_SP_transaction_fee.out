@@ -1,9 +1,12 @@
 Do you wish to login as a standard user or admin?
 Logged in as a standard user.
 What is the account holder's name?
-Logged in as Tom Doe.
+Logged in as Brian Doe.
+withdrawal: Valid command.
 What is the account number for withdrawal?
 Valid account number 44444.
 What is the amount you wish to withdrawal?
 $400.00 withdrawal failed. You do not have 5 cents to cover the transaction fee.
 $395.00 has been withdrawn from account number 44444.
+logout: Valid command.
+Logout Successfully.

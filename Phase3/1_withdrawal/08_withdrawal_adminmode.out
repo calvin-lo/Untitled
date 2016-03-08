@@ -2,10 +2,13 @@ Do you wish to login as a standard user or admin?
 Logged in as a admin user.
 What is the account holder's name?
 Logged in as Jane Doe.
-hat is the account holder's name for withdrawal?
+withdrawal: Valid command.
+What is the account holder's name for withdrawal?
 John Doe set as withdrawal account holder.
 What is the account number for withdrawal?
 Valid account number 00001.
 What is the amount you wish to withdrawal?
-$501.00 has been withdrawn from account number 00001.
+$0.10 deducted for Non - Student Account transaction fees.
 $1000.00 has been withdrawn from account number 00001.
+logout: Valid command.
+Logout Successfully.
