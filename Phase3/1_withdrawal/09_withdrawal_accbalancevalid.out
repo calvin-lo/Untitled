@@ -2,13 +2,10 @@ Do you wish to login as a standard user or admin?
 Logged in as a standard user.
 What is the account holder's name?
 Logged in as Brian Doe.
-withdrawal: Valid command.
 What is the account number for withdrawal?
-Valid account number 00001.
+Valid account number 22222.
 What is the amount you wish to withdrawal?
-Insufficient funds to withdrawal $500.00. Try again.
-Insufficient funds to withdrawal $100.01. Try again.
-Insufficient funds to withdrawal $101.00. Try again.
+Insufficient funds to withdrawal $500.00.
+Insufficient funds to withdrawal $100.01.
+Insufficient funds to withdrawal $101.00.
 $100.00 has been withdrawn from account number 22222.
-logout: Valid command.
-Logout Successfully.

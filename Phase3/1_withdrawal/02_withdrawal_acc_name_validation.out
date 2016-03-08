@@ -1,6 +1,5 @@
 Do you wish to login as a standard user or admin?
 Logged in as a standard user.
 What is the account holder's name?
-What is the account holder's number?
-Logged in as Ted Doe.
-withdrawal: Valid command.
+Invalid account holder name.
+Logged in as John Doe.

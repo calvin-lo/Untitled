@@ -5,4 +5,4 @@ Logged in as Jane Doe.
 What is the account holder's name for withdrawal?
 John Doe set as withdrawal account holder.
 What is the account number for withdrawal?
-Account number does not match account name. Withdraw unsuccessful.
+Invalid account number.

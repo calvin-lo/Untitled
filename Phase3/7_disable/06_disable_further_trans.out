@@ -10,5 +10,4 @@ Enter account number that money will be paid from.
 paybill unsucessfully (Try to pay bill from a disabled account)
 Enter account number that money will be deposit to.
 deposit unsucessfully (Try to deposit a disabled account)
-logout: Valid command.
 Logout sucessfully. 

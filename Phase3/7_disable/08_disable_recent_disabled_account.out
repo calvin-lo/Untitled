@@ -4,28 +4,27 @@ What is the account holder's name?
 logged in as Jane Doe.
 disable: Valid command. Admin access granted.
 Enter the bank account holder's name to be disabled.
-Accepted bank account holder's name: John Doe.
+Accepted bank account holder's name : john doe.
 Enter bank account number to be disabled.
-Accepted bank account number: 00001.
+Accepted bank account number : 00001.
 Account 00001 from John Doe had been disabled. Information saved to bank account transaction file.
 Enter the bank account holder's name to be withdrawn.
 Enter bank account number to be withdrawn.
 withdraw unsucessfully (Try to withdraw from a disabled account)
 Enter the bank account holder's name that money will be transfered from.
-Accepted bank account holder's name: John Doe.
+Accepted bank account holder's name : john doe.
 Enter account number that money will be transferred from.
 transfer unsucessfully (Try to transfer from a disabled account)
 Enter the bank account holder's name that monet will be paid from.
-Accepted bank account holder's name: John Doe.
+Accepted bank account holder's name : john doe.
 Enter account number that money will be paid from.
 paybill unsucessfully (Try to pay bill from a disabled account)
 Enter the bank account holder's name that money will be deposit to.
-Accepted bank account holder's name: John Doe.
+Accepted bank account holder's name : john doe.
 Enter account number that money will be deposit to.
 deposit unsucessfully (Try to deposit a disabled account)
 Enter the bank account holder's name to change the transaction payment plan.
-Accepted bank account holder's name: John Doe.
+Accepted bank account holder's name : john doe.
 Enter bank account number to change the transaction payment plan.
 changeplan unsucessfully (Try to change a disabled account's plan)
-logout: Valid command.
 Logout Sucessfully.
