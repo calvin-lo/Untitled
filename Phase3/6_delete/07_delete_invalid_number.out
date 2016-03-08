@@ -6,6 +6,7 @@ delete: Valid command. Admin access granted.
 Enter the bank account holder's name to be deleted.
 Accepted Bank account holder's name to be delete: john doe.
 Enter bank account number to be deleted.
-Rejected bank account number to be deleted : 00000. (Entered an invalid bank account number)
+Rejected bank account number to be deleted: 00000. (Entered an invalid bank account number)
 Delete Unsucessfully.
+logout: Valid command.
 Logout Sucessfully.
