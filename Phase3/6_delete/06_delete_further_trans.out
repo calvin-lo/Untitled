@@ -2,11 +2,10 @@ Do you wish to login as a standard user or admin?
 Logged in as a standard user.
 What is the account holder's name?
 logged in as John Doe.
-withdrawal: Valid command.
-John Doe set as withdrawal account holder.
-What is the account number you wish to withdraw from?
-Invalid account number. Withdrawal failed.
-transfer: blah
+transfer: Valid command.
+John Doe selected as account holder name for origin transfer.
+What is the account number for origin transfer?
+Invalid account number for origin of transfer.
 paybill: Valid command.
 John Doe set as the account holder of the bill payment.
 What is the account number from which you wish to pay a bill from?
