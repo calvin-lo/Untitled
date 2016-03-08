@@ -4,5 +4,7 @@
 //	Purpose: reads in files for the back end
 
 public class FileReader { 
+	public FileReader() { 
 
+	}
 }

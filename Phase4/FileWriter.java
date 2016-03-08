@@ -4,5 +4,7 @@
 //	Purpose: writes out files for the back end
 
 public class FileWriter { 
+	public FileWriter() { 
 
+	}
 }

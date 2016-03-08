@@ -7,6 +7,7 @@ JC = javac
 CLASSES = \
 	FileReader.java \
 	FileWriter.java \
+	Transactions.java \
 	Main.java 
 
 default: classes
