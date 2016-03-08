@@ -1,0 +1,17 @@
+SUMMARY OF DISABLE FOR 2016-03-07_22-56-19
+TEST 01_disable_admin_mode.out OUTPUT PASSED.
+TEST 01_disable_admin_mode.trans TRANSACTION FAILED.
+TEST 02_disable_standard_mode.out OUTPUT PASSED.
+TEST 02_disable_standard_mode.trans OUTPUT PASSED.
+TEST 03_disable_status_changed.out OUTPUT PASSED.
+TEST 03_disable_status_changed.trans OUTPUT PASSED.
+TEST 04_disable_invalid_name.out OUTPUT PASSED.
+TEST 04_disable_invalid_name.trans OUTPUT PASSED.
+TEST 05_disable_invalid_number.out OUTPUT PASSED.
+TEST 05_disable_invalid_number.trans OUTPUT PASSED.
+TEST 06_disable_further_trans.out OUTPUT FAILED.
+TEST 06_disable_further_trans.trans OUTPUT PASSED.
+TEST 07_disable_disabled_account.out OUTPUT PASSED.
+TEST 07_disable_disabled_account.trans TRANSACTION FAILED.
+TEST 08_disable_recent_disabled_account.out OUTPUT FAILED.
+TEST 08_disable_recent_disabled_account.trans TRANSACTION FAILED.
