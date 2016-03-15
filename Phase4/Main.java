@@ -7,7 +7,22 @@
 // 	How this is intended to run: 
 
 public class Main { 
+
 	public static void main (String args[]) { 
+		String mergedPath, transDir;
+		
+		try { 
+		
+			mergedPath = args[0];
+			transDir = args[1];
+
+			// FileReader
+
+
+		} catch (Exception e) { 
+			System.out.println("No arguments specified!");
+		}
+		
 		
 	}
 }
