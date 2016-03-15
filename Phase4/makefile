@@ -10,7 +10,8 @@ CLASSES = \
 	Transactions.java \
 	Main.java 
 
-default: classes
+default: 
+	$(JC) $(JFLAGS) $(CLASSES)
 
 classes: $(CLASSES:.java=.class)
 
