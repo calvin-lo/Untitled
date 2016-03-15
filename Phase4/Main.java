@@ -23,6 +23,8 @@ public class Main {
 			System.out.println("No arguments specified!");
 		}
 		
+		Transactions T = new Transactions();
+		
 		
 	}
 }

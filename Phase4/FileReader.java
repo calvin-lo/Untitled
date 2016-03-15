@@ -8,9 +8,24 @@ import java.io.*;
 public class FileReader { 
 	List<String> transFiles = new ArrayList<String>();
 	String filePath, mergedPath;
-
 	public FileReader(String path, String merge) { 
 		filePath = path;
 		mergedPath = merge;
 	}
+	
+	// read file
+	public List<String> readFile(String filename) {
+            List<String> results = new ArrayList<String>();
+            try {
+                BufferedReader br = new BufferedReader(new java.io.FileReader(filename));
+                String s;
+                while ((s = br.readLine()) != null) {
+                    results.add(s);
+                }
+            } catch (IOException e) {
+                System.out.println("ERROR: Input/Output error");
+            }
+            
+            return results;
+	}	
 }
