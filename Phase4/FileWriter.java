@@ -16,10 +16,9 @@ public class FileWriter {
             }
 	}
 	
-	// produces a new Current Bank File
-	public void writeCBAF(List<account> updated_accounts) {
+	// produces a new Current Bank Account File
+	public void writeCurrent(List<account> updated_accounts) {
             // loop all the updated accounts and write the information to the new file
-            int length = 39;
             for (int i = 0; i < updated_accounts.size(); i++) {
                     // init variables
                     int index = 0;
@@ -43,17 +42,25 @@ public class FileWriter {
                     // fill in the account status
                     line += updated_accounts.get(i).acc_status + " ";
                     // fill in the account balance
+                     String balance = updated_accounts.get(i).acc_balance;
+                    // check the decimal
+                    if (balance.contains(".")) {
+                        if (balance.indexOf('.') == (balance.length() - 2)) {
+                            balance += '0';
+                        }
+                    
+                    }
                     // make sure the account balance have a length of 8
-                    if ( updated_accounts.get(i).acc_balance.length() < 8) {
+                    if ( balance.length() < 8) {
                         // fill out the 0 first
-                        for (int j = 0; j < 8 - updated_accounts.get(i).acc_balance.length(); j++) {
+                        for (int j = 0; j < 8 - balance.length(); j++) {
                             line += "0";
                         }
                         // fill out the actual balance
-                        line += updated_accounts.get(i).acc_balance + " ";
+                        line += balance + " ";
                     }
-                    else if ( updated_accounts.get(i).acc_balance.length() == 8) {
-                        line += updated_accounts.get(i).acc_balance + " ";
+                    else if ( balance.length() == 8) {
+                        line += balance + " ";
                     }
                     // fill in teh account type
                     line += updated_accounts.get(i).acc_type;
@@ -66,6 +73,85 @@ public class FileWriter {
                     }
             }
         }
+	
+	// produces a new master bank account file
+	public void writeMaster(List<account> updated_accounts) {
+            // loop all the updated accounts and write the information to the new file
+            for (int i = 0; i < updated_accounts.size(); i++) {
+                    // init variables
+                    int index = 0;
+                    String line = "";
+                    // fill in the account number
+                    line += updated_accounts.get(i).acc_num + " ";
+                    // fill in the account holder
+                    // if the account holder name is less than 20 characters
+                    if (updated_accounts.get(i).acc_holder.length() < 20) {
+                        // fill out the name first and space separator
+                        line += updated_accounts.get(i).acc_holder + " ";
+                        // fill out the remaining spaces
+                        for (int j = 0; j < 20 - updated_accounts.get(i).acc_holder.length(); j++) {
+                            line += " ";
+                        }
+                    } 
+                    // if the account holder name had exactly 20 characters
+                    else if (updated_accounts.get(i).acc_holder.length() == 20) {
+                        line += updated_accounts.get(i).acc_holder + " ";
+                    }
+                    // fill in the account status
+                    line += updated_accounts.get(i).acc_status + " ";
+                    // fill in the account balance
+                    String balance = updated_accounts.get(i).acc_balance;
+                    // check the decimal
+                    
+                    if (balance.contains(".")) {
+                        if (balance.indexOf('.') == (balance.length() - 2)) {
+                            balance += '0';
+                        }
+                    
+                    }
+                    
+                    // make sure the account balance have a length of 8
+                    if ( balance.length() < 8) {
+                        // fill out the 0 first
+                        for (int j = 0; j < 8 - balance.length(); j++) {
+                            line += "0";
+                        }
+                        // fill out the actual balance
+                        line += balance + " ";
+                    }
+                    else if ( balance.length() == 8) {
+                        line += balance + " ";
+                    }
+                    // fill in the account type
+                    line += updated_accounts.get(i).acc_type + " ";
+                    
+                    // fill in the number of transactions
+                    String num_trans =  Integer.toString(updated_accounts.get(i).num_trans);
+                    // fill in 0 if the length of the num_trans is less than 4
+                    if (num_trans.length() < 4) {
+                        // fill in 0 first
+                        for (int j = 0 ; j < 4-num_trans.length(); j++) {
+                            line += "0";
+                        }
+                        // fill in the actual number
+                        line += num_trans;
+                    } 
+                    else if (num_trans.length() == 4) {
+                        line += num_trans;
+                    } 
+                    // if the num of trans is greater than 4 digits
+                    else if (num_trans.length() > 4) {
+                        line += "9999";
+                    }
+                    
+                    // Write the information
+                    try {
+                        FW.write(line + '\n');
+                    } catch (IOException e) {
+                        System.out.println("ERROR: Cannot write file");
+                    }
+            }
+	}
 	
 	// close the FileWriter
 	public void close() {
