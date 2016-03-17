@@ -9,7 +9,8 @@
 public class Main { 
 
 	public static void main (String args[]) { 
-		String mergedPath, transDir;
+		String mergedPath = "";
+		String transDir = "";
 		
 		try { 
 		
@@ -23,7 +24,7 @@ public class Main {
 			System.out.println("No arguments specified!");
 		}
 		
-		Transactions T = new Transactions();
+		Transactions T = new Transactions(transDir, mergedPath);
 		
 		
 	}
