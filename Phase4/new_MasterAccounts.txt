@@ -3,4 +3,4 @@
 00002 Chris Doe            A 10000.00 N 0000
 99999 Jane Doe             A 00000000 N 0000
 22222 Brian Doe            A 01100.00 N 0000
-44444 Tom Doe              A 00400.00 S 0000
+44444 Tom Doe              A 00400.00 S 1111

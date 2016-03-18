@@ -5,7 +5,6 @@
 
 import java.util.*;
 
-
 // Store the account information
 class account {
     public String acc_holder;
