@@ -190,6 +190,8 @@ public class Transactions {
 
 	// login
 	public void login() {
+		// search the position that matches the account name and number
+		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
 
 	}
 
@@ -240,6 +242,27 @@ public class Transactions {
 
 	// paybill
 	public void paybill() {
+		// withdraw money from the current index account
+		withdrawal();
+		// increase the trans_index by 1
+		trans_index++;
+		// deposit money to the current index account
+		// search position that matches account name and number
+		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
+
+		// reduce amount from account
+		if (pos != -1) {
+			add(pos, all_trans.get(trans_index).amount, 0);
+		}
+		// if the account doesn't exist, despoit amount back
+		else {
+			System.out.println("ERROR: Account doesn't exist.");
+			int pos2 = searchNameAcc(all_trans.get(trans_index - 1).acc_holder, all_trans.get(trans_index - 1).acc_num);
+
+			// used - the transaction fee to add back the transaction fee
+			add(pos2, all_trans.get(trans_index).amount, -all_accounts.get(pos2).acc_type);
+
+		}
 
 	}
 
@@ -264,31 +287,99 @@ public class Transactions {
 
 	// create
 	public void create() {
+		// increase trans_index by 1
+		trans_index++;
+		// search the position that match the account name and account number
+		int pos = searchNameAcc(all_accounts.get(trans_index).acc_holder, all_accounts.get(trans_index).acc_num);
 
+		if (pos != -1) {
+			add(pos, all_trans.get(trans_index).amount, getTransactionFee(pos));
+			all_accounts.get(pos).num_trans++;
+		}
+		// if the account doesn't exist
+		else {
+			System.out.println("ERROR: Account doesn't exist.");
+		}
 	}
 
 	// delete
 	public void delete() {
+		// withdraw to close account with $0 remaining funds
+		withdrawal();
+		// increase trans_index by 1
+		trans_index++;
+		// search the position that match the account name and account number
+		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
 
+		if (pos != -1) {
+			add(pos, all_trans.get(trans_index).amount, getTransactionFee(pos));
+			all_accounts.get(pos).num_trans--;
+		}
+		// if the account doesn't exist
+		else {
+			System.out.println("ERROR: Account doesn't exist.");
+		}
 	}
 
 	// enable
 	public void enable() {
+		// search the position that match the account name and account number
+		int pos = searchNameAcc(all_accounts.get(trans_index).acc_holder, all_accounts.get(trans_index).acc_num);
 
+		if (pos != -1) {
+			add(pos, all_trans.get(trans_index).amount, getTransactionFee(pos));
+			all_accounts.get(pos).num_trans++;
+		}
+		// if the account doesn't exist
+		else {
+			System.out.println("ERROR: Account doesn't exist.");
+		}
 	}
 
 	// Disable
 	public void disable() {
+		// search the position that match the account name and account number
+		int pos = searchNameAcc(all_accounts.get(trans_index).acc_holder, all_accounts. get(trans_index).acc_num);
+		
+		if (pos != -1) {
+			add(pos, all_trans.get(trans_index).amount, getTransactionFee(pos));
+			all_accounts.get(pos).num_trans--;
+		}
+		// if the account doesn't exist
+		else {
+			System.out.println("ERROR: Account doesn't exist.");
+		}
 
 	}
 
 	// changeplan
 	public void changeplan() {
+		// search the position that match the account name and account number
+		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
 
+		if (pos != -1) {
+			minus(pos, all_trans.get(trans_index).amount, getTransactionFee(pos));
+		}
+		// if the account doesn't exist
+		else {
+			System.out.println("ERROR: Account doesn't exist.");
+		}
 	}
 
 	// logout
 	public void logout() {
+		// search the position that match the account name and account number
+		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
+
+		/*
+		// if the account doesn't exist
+		if (pos != -1) { 
+
+		}
+		else {
+			System.out.println("ERROR: Account doesn't exist.");
+		}
+		*/
 
 	}
 
