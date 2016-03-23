@@ -32,8 +32,12 @@ public class Transactions {
 	FileReader FR;
 	// store the current index of the transactions list
 	int trans_index;
+	// store the current login mode
+	int curr_login_mode;
 
 	public Transactions(String transDir, String mergedPath) {
+		// set the default login mode as standard
+		curr_login_mode = 'S';
 		all_accounts = new ArrayList<account>();
 		all_trans = new ArrayList<trans>();
 		FR = new FileReader(transDir, mergedPath);
@@ -51,10 +55,19 @@ public class Transactions {
 			trans_index++;
 		}
 
+		// calculate the trans fee
+		for (int i = 0; i < all_accounts.size(); i++) {
+			float trans_fee = all_accounts.get(i).num_trans * getTransactionFee(i);
+			String trans_fee_S = Float.toString(trans_fee);
+			minus(i, trans_fee_S);
+		}
+
 		// create new current bank account file
 		createNewCurrent(all_accounts);
 		// create new master bank account file
 		createNewMaster(all_accounts);
+
+
 	}
 
 	// Write Current Bank Account File
@@ -119,8 +132,8 @@ public class Transactions {
 			// Account type (Student or Non Student) at 38
 			temp_account.acc_type = masterFile.get(i).charAt(38);
 			// number of transaction start at 40 to 43
-			temp_account.num_trans = Integer.parseInt(masterFile.get(i).substring(40, 44));
-
+			//temp_account.num_trans = Integer.parseInt(masterFile.get(i).substring(40, 44));
+			temp_account.num_trans = 0;
 			// Remove all the white space after the last character
 			temp_account.acc_holder = temp_account.acc_holder.trim();
 
@@ -163,7 +176,9 @@ public class Transactions {
 
 		// get the file from the file reader
 		List<String> transFile = new ArrayList<String>();
-		transFile = FR.readFile("merged.trans");
+		transFile = FR.readFile("MergedBankAccountTrans.trans");
+		//transFile = FR.readFile("merged.trans");
+		//transFile = FR.readFile("MergedBankAccountTrans.trans");
 		// loop all the transaction
 		for (int i = 0; i < transFile.size(); i++) {
 			trans temp_trans = new trans();
@@ -191,20 +206,35 @@ public class Transactions {
 	// login
 	public void login() {
 		// search the position that matches the account name and number
-		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
+		int pos = searchName(all_trans.get(trans_index).acc_holder);
+
+		// set the login mode
+		if (pos != -1) {
+			// set the login mode to A if log in as admin. (default as standard)
+			if (all_trans.get(trans_index).mis_info.charAt(0) == 'A') {
+				curr_login_mode = 'A';
+			} 
+		}
+		// if the account doesn't exist
+		else {
+			System.out.println("ERROR: Account doesn't exist.");
+		}
+	
 
 	}
 
 	// withdrawal
-	public void withdrawal() {
+ 	public void withdrawal() {
 		// search the position that match the account name and account number
 		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
 
 		// reduce the amount from that account
 		if (pos != -1) {
-			minus(pos, all_trans.get(trans_index).amount, getTransactionFee(pos));
-			// increase the number of transaction
-			all_accounts.get(pos).num_trans++;
+			minus(pos, all_trans.get(trans_index).amount);
+			// increase the number of transaction if in standard mode
+			if (curr_login_mode == 'S') {
+				all_accounts.get(pos).num_trans++;
+			}
 
 		}
 		// if the account doesn't exist
@@ -226,7 +256,7 @@ public class Transactions {
 
 		// reduce the amount from that account
 		if (pos != -1) {
-			add(pos, all_trans.get(trans_index).amount, 0);
+			add(pos, all_trans.get(trans_index).amount);
 		}
 		// if the account doesn't exist
 		// deposit the amount back
@@ -235,7 +265,7 @@ public class Transactions {
 			int pos2 = searchNameAcc(all_trans.get(trans_index - 1).acc_holder, all_trans.get(trans_index - 1).acc_num);
 
 			// used - the transaction fee to add back the transaction fee
-			add(pos2, all_trans.get(trans_index).amount, -all_accounts.get(pos2).acc_type);
+			add(pos2, all_trans.get(trans_index).amount);
 
 		}
 	}
@@ -244,8 +274,9 @@ public class Transactions {
 	public void paybill() {
 		// withdraw money from the current index account
 		withdrawal();
+		
 		// increase the trans_index by 1
-		trans_index++;
+		/*trans_index++;
 		// deposit money to the current index account
 		// search position that matches account name and number
 		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
@@ -262,7 +293,7 @@ public class Transactions {
 			// used - the transaction fee to add back the transaction fee
 			add(pos2, all_trans.get(trans_index).amount, -all_accounts.get(pos2).acc_type);
 
-		}
+		}*/
 
 	}
 
@@ -273,9 +304,11 @@ public class Transactions {
 
 		// reduce the amount from that account
 		if (pos != -1) {
-			add(pos, all_trans.get(trans_index).amount, getTransactionFee(pos));
-			// increase the number of transaction
-			all_accounts.get(pos).num_trans++;
+			add(pos, all_trans.get(trans_index).amount);
+			// increase the number of transaction if in standard mode
+			if (curr_login_mode == 'S') {
+				all_accounts.get(pos).num_trans++;
+			}
 
 		}
 		// if the account doesn't exist
@@ -287,6 +320,17 @@ public class Transactions {
 
 	// create
 	public void create() {
+
+		account acc = new account();
+		acc.acc_holder = all_trans.get(trans_index).acc_holder;
+		acc.acc_num = all_trans.get(trans_index).acc_num;
+		acc.acc_balance = all_trans.get(trans_index).amount;
+		acc.acc_type = all_trans.get(trans_index).mis_info.charAt(0);
+		acc.acc_status = 'A';
+		acc.num_trans = 0;
+
+		all_accounts.add(acc);
+		/*
 		// increase trans_index by 1
 		trans_index++;
 		// search the position that match the account name and account number
@@ -299,11 +343,27 @@ public class Transactions {
 		// if the account doesn't exist
 		else {
 			System.out.println("ERROR: Account doesn't exist.");
-		}
+		}*/
+
+
 	}
 
 	// delete
 	public void delete() {
+
+		// search the position that match the account name and account number
+		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
+		
+		// remove the account from the all accounts
+		if (pos != -1) {
+			all_accounts.remove(pos);
+		}
+		// if the account doesn't exist
+		else {
+			System.out.println("ERROR: Account doesn't exist.");
+		}
+
+		/*
 		// withdraw to close account with $0 remaining funds
 		withdrawal();
 		// increase trans_index by 1
@@ -318,38 +378,39 @@ public class Transactions {
 		// if the account doesn't exist
 		else {
 			System.out.println("ERROR: Account doesn't exist.");
-		}
+		}*/
 	}
 
 	// enable
 	public void enable() {
+		
 		// search the position that match the account name and account number
-		int pos = searchNameAcc(all_accounts.get(trans_index).acc_holder, all_accounts.get(trans_index).acc_num);
-
+		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
+		
+		// change the account status to active
 		if (pos != -1) {
-			add(pos, all_trans.get(trans_index).amount, getTransactionFee(pos));
-			all_accounts.get(pos).num_trans++;
+			all_accounts.get(pos).acc_status = 'A';
 		}
 		// if the account doesn't exist
 		else {
 			System.out.println("ERROR: Account doesn't exist.");
 		}
+		
 	}
 
 	// Disable
 	public void disable() {
 		// search the position that match the account name and account number
-		int pos = searchNameAcc(all_accounts.get(trans_index).acc_holder, all_accounts. get(trans_index).acc_num);
+		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
 		
+		// change the account status to disable
 		if (pos != -1) {
-			add(pos, all_trans.get(trans_index).amount, getTransactionFee(pos));
-			all_accounts.get(pos).num_trans--;
+			all_accounts.get(pos).acc_status = 'D';
 		}
 		// if the account doesn't exist
 		else {
 			System.out.println("ERROR: Account doesn't exist.");
 		}
-
 	}
 
 	// changeplan
@@ -357,30 +418,26 @@ public class Transactions {
 		// search the position that match the account name and account number
 		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
 
+		// change the plan
 		if (pos != -1) {
-			minus(pos, all_trans.get(trans_index).amount, getTransactionFee(pos));
+			if (all_accounts.get(pos).acc_type == 'N') {
+				all_accounts.get(pos).acc_type = 'S';
+			}
+			else if (all_accounts.get(pos).acc_type == 'S') {
+				all_accounts.get(pos).acc_type = 'N';
+			}
 		}
 		// if the account doesn't exist
 		else {
 			System.out.println("ERROR: Account doesn't exist.");
 		}
+		
 	}
 
 	// logout
 	public void logout() {
-		// search the position that match the account name and account number
-		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
-
-		/*
-		// if the account doesn't exist
-		if (pos != -1) { 
-
-		}
-		else {
-			System.out.println("ERROR: Account doesn't exist.");
-		}
-		*/
-
+		// set the current login mode to standard as default
+		curr_login_mode = 'S';
 	}
 
 	// search the target account by name
@@ -421,19 +478,19 @@ public class Transactions {
 
 	// minus the amount from a specfic account position
 	// return true if succesfully minus, else return false
-	boolean minus(int pos, String value, float transFee) {
+	boolean minus(int pos, String value) {
 		// convert value to float
 		float amount = Float.parseFloat(value);
 		float balance = Float.parseFloat(all_accounts.get(pos).acc_balance);
 		// minus the amount and transaction fee
-		float new_balance = balance - amount - transFee;
+		float new_balance = balance - amount;
 		// if the new balance is less than 0
 		if (new_balance < 0) {
 			System.out.println("ERROR: Below 0.");
 			return false;
 		} else {
 			// convert back the new balance to string and save it the account
-			all_accounts.get(pos).acc_balance = Float.toString(new_balance);
+			all_accounts.get(pos).acc_balance = String.format("%.2f", new_balance);
 		}
 
 		return true;
@@ -441,12 +498,12 @@ public class Transactions {
 
 	// add the amount from a specfic account position
 	// return true if succesfully add, else return false
-	boolean add(int pos, String value, float transFee) {
+	boolean add(int pos, String value) {
 		// convert value to float
 		float amount = Float.parseFloat(value);
 		float balance = Float.parseFloat(all_accounts.get(pos).acc_balance);
 		// add the amount and minus the transaction fee
-		float new_balance = balance + amount - transFee;
+		float new_balance = balance + amount;
 		// if the new balance is greater than 99999
 		if (new_balance > 99999) {
 			System.out.println("ERROR: Over 99999.");
@@ -458,7 +515,7 @@ public class Transactions {
 			return false;
 		} else {
 			// convert back the new balance to string and save it the account
-			all_accounts.get(pos).acc_balance = Float.toString(new_balance);
+			all_accounts.get(pos).acc_balance = String.format("%.2f", new_balance);
 		}
 		return true;
 	}

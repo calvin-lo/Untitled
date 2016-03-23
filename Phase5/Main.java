@@ -35,7 +35,7 @@ public class Main {
 		fr.mergeTrans();
 
 		// create a new file writer
-		FileWriter wr = new FileWriter("MergedBackAccountTrans.trans");
+		FileWriter wr = new FileWriter("MergedBankAccountTrans.trans");
 		// get the transactions from the file reader and write them to the new file
 		wr.writeTransaction(fr.get());
 		// close the file
