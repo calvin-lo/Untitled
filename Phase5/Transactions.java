@@ -50,8 +50,8 @@ public class Transactions {
 		all_accounts = new ArrayList<account>();
 		all_trans = new ArrayList<trans>();
 		FR = new FileReader();
-		parseMaster("MasterAccounts.txt");
-		parseMerged(mergedPath);
+		all_accounts = parseMaster("MasterAccounts.txt");
+		all_trans = parseMerged(mergedPath);
 
 		// init trans_index to zero;
 		trans_index = 0;
@@ -76,20 +76,6 @@ public class Transactions {
 		createNewCurrent(all_accounts);
 		// create new master bank account file
 		createNewMaster(all_accounts);
-	}
-
-	// Write Current Bank Account File
-	public void createNewCurrent(List<account> updated_accounts) {
-		FileWriter FW = new FileWriter("new_BankAccounts.txt");
-		FW.writeCurrent(updated_accounts);
-		FW.close();
-	}
-
-	// Write Master Bank Account File
-	public void createNewMaster(List<account> updated_accounts) {
-		FileWriter FW = new FileWriter("new_MasterAccounts.txt");
-		FW.writeMaster(updated_accounts);
-		FW.close();
 	}
 
 	// execute the commands based on the code
@@ -122,7 +108,8 @@ public class Transactions {
 	}
 
 	// read Master bank account file
-	public void parseMaster(String path) {
+	public List<account> parseMaster(String path) {
+                List<account> result = new ArrayList<account>();
 		// get the file from the file reader
 		List<String> masterFile = new ArrayList<String>();
 		masterFile = FR.readFile(path);
@@ -145,13 +132,15 @@ public class Transactions {
 			temp_account.acc_holder = temp_account.acc_holder.trim();
 
 			// put the temp account to the list
-			all_accounts.add(temp_account);
+			result.add(temp_account);
 		}
+		
+		return result;
 	}
 
 	// read the merged Transaction file
-	public void parseMerged(String path) {
-
+	public List<trans> parseMerged(String path) {
+                List<trans> result = new ArrayList<trans>();
 		// get the file from the file reader
 		List<String> transFile = new ArrayList<String>();
 		transFile = FR.readFile(path);
@@ -175,12 +164,27 @@ public class Transactions {
 			temp_trans.acc_holder = temp_trans.acc_holder.trim();
 
 			// put the temp account to the list
-			all_trans.add(temp_trans);
-
+			result.add(temp_trans);
 		}
+		
+                return result;
 
 	}
 
+        // Write Current Bank Account File
+	public void createNewCurrent(List<account> updated_accounts) {
+		FileWriter FW = new FileWriter("new_BankAccounts.txt");
+		FW.writeCurrent(updated_accounts);
+		FW.close();
+	}
+
+	// Write Master Bank Account File
+	public void createNewMaster(List<account> updated_accounts) {
+		FileWriter FW = new FileWriter("new_MasterAccounts.txt");
+		FW.writeMaster(updated_accounts);
+		FW.close();
+	}
+	
 	// login
 	public void login(trans current_trans) {
 		// search the position that matches the account name and number

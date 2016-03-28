@@ -28,46 +28,6 @@ public class TransactionTest {
         trans t = new trans();
     }
     
-    // Test createNewCurrent with a testing accounts list
-    @Test
-    public void testCreateNewCurrent() {
-        Transactions T = new Transactions();
-        List<account> accounts = new ArrayList<account>();
-        
-        // create test accounts
-        account acc = new account();
-        acc.acc_holder = "Test";
-        acc.acc_num = "00001";
-        acc.acc_status = 'A';
-        acc.acc_balance = "100.00";
-        acc.acc_type = 'N';
-        
-        accounts.add(acc);
-        
-        T.createNewCurrent(accounts);
-    }
-    // Test createNewMaster with a testing accounts list
-    @Test
-    public void testCreateNewMaster() {
-        Transactions T = new Transactions();
-        List<account> accounts = new ArrayList<account>();
-        
-        // create test accounts
-        account acc = new account();
-        acc.acc_holder = "Test";
-        acc.acc_num = "00001";
-        acc.acc_status = 'A';
-        acc.acc_balance = "100.00";
-        acc.acc_type = 'N';
-        acc.num_trans = 1;
-        
-        accounts.add(acc);
-        
-        T.createNewMaster(accounts);
-        
-        
-    }
-    
     // Test execute
     
     // Test parseMaster with existing file
@@ -94,6 +54,37 @@ public class TransactionTest {
     // Test parseMerged with not existing file
     @Test
     public void testParseMerged2() {
+        Transactions T = new Transactions();
+        T.parseMerged("NOT_EXIST_FILE");
+    }
+    
+    // create a testing account database and trans database
+    List<account> testAccounts;
+    List<trans> testTrans;
+    
+    public void createTestingData() {
+        Transactions test = new Transactions();
+        testAccounts = test.parseMaster("MasterAccounts.txt");
+        testTrans = test.parseMerged("merged.trans");
+    }
+    
+    // Test createNewCurrent with a testing accounts list
+    @Test
+    public void testCreateNewCurrent() {
+        Transactions T = new Transactions();
+        createTestingData();
+        T.createNewCurrent(testAccounts);
+    }
+    
+    // Test createNewMaster with a testing accounts list
+    @Test
+    public void testCreateNewMaster() {
+        Transactions T = new Transactions();
+        createTestingData();
+        T.createNewMaster(testAccounts);
+        
+        
+    }
     
     // Test login 
     
@@ -122,9 +113,6 @@ public class TransactionTest {
     // Test searchNameAcc
     
     // Test minus
-        Transactions T = new Transactions();
-        T.parseMaster("NOT_EXIST_FILE");
-    }
     
     // Test add
     
