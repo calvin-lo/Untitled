@@ -15,13 +15,20 @@ public class TransactionTest {
         Transactions T = new Transactions(".", "merged.trans");
     }
     
-    // Test parseMaster
+    // Test parseMaster with existing file
     @Test
-    public void testParseMaster() {
+    public void testParseMaster1() {
         Transactions T = new Transactions(".", "merged.trans");
-        T.parseMaster();
+        T.parseMaster("MasterAccounts.txt");
     }
-
+    
+    // Test parseMaster with not existing file
+    @Test
+    public void testParseMaster2() {
+        Transactions T = new Transactions(".", "merged.trans");
+        T.parseMaster("NOT_EXIST_FILE");
+    }
+    
     public static junit.framework.Test suite() {
         return new JUnit4TestAdapter(TransactionTest.class);
     }

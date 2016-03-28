@@ -34,8 +34,6 @@ public class Transactions {
 	int trans_index;
 	// store the current login mode
 	int curr_login_mode;
-	// store the merged transaction file
-	String merged_path;
 
 	public Transactions(String transDir, String mergedPath) {
 		// set the default login mode as standard
@@ -43,16 +41,16 @@ public class Transactions {
 		all_accounts = new ArrayList<account>();
 		all_trans = new ArrayList<trans>();
 		FR = new FileReader(transDir, mergedPath);
-		merged_path = mergedPath;
-		parseMaster();
-		parseMerged();
+		parseMaster("MasterAccounts.txt");
+		parseMerged(mergedPath);
 
 		// init trans_index to zero;
 		trans_index = 0;
 
 		// loop all transaction and execute corresponding commands
 		while (trans_index < all_trans.size()) {
-			execute(all_trans.get(trans_index).code);
+                        trans current_trans = all_trans.get(trans_index);
+			execute(current_trans.code, current_trans);
 
 			// add 1 to trans_index;
 			trans_index++;
@@ -86,39 +84,39 @@ public class Transactions {
 	}
 
 	// execute the commands based on the code
-	public void execute(String code) {
+	public void execute(String code, trans current_trans) {
 		if (code.equals("10")) {
-			login();
+			login(current_trans);
 		} else if (code.equals("01")) {
-			withdrawal();
+			withdrawal(current_trans);
 		} else if (code.equals("02")) {
-			transfer();
+			transfer(current_trans);
 		} else if (code.equals("03")) {
-			paybill();
+			paybill(current_trans);
 		} else if (code.equals("04")) {
-			deposit();
+			deposit(current_trans);
 		} else if (code.equals("05")) {
-			create();
+			create(current_trans);
 		} else if (code.equals("06")) {
-			delete();
+			delete(current_trans);
 		} else if (code.equals("07")) {
-			disable();
+			disable(current_trans);
 		} else if (code.equals("08")) {
-			changeplan();
+			changeplan(current_trans);
 		} else if (code.equals("09")) {
-			enable();
+			enable(current_trans);
 		} else if (code.equals("00")) {
-			logout();
+			logout(current_trans);
 		} else {
 			System.out.println("ERROR: Invalid transaction code!");
 		}
 	}
 
 	// read Master bank account file
-	public void parseMaster() {
+	public void parseMaster(String path) {
 		// get the file from the file reader
 		List<String> masterFile = new ArrayList<String>();
-		masterFile = FR.readFile("MasterAccounts.txt");
+		masterFile = FR.readFile(path);
 		for (int i = 0; i < masterFile.size(); i++) {
 			account temp_account = new account();
 			// Bank account number start at pos 0 and end at 5.
@@ -143,11 +141,11 @@ public class Transactions {
 	}
 
 	// read the merged Transaction file
-	public void parseMerged() {
+	public void parseMerged(String path) {
 
 		// get the file from the file reader
 		List<String> transFile = new ArrayList<String>();
-		transFile = FR.readFile(merged_path);
+		transFile = FR.readFile(path);
 		//transFile = FR.readFile("merged.trans");
 		//transFile = FR.readFile("MergedBankAccountTrans.trans");
 		// loop all the transaction
@@ -175,14 +173,14 @@ public class Transactions {
 	}
 
 	// login
-	public void login() {
+	public void login(trans current_trans) {
 		// search the position that matches the account name and number
-		int pos = searchName(all_trans.get(trans_index).acc_holder);
+		int pos = searchName(current_trans.acc_holder);
 
 		// set the login mode
 		if (pos != -1) {
 			// set the login mode to A if log in as admin. (default as standard)
-			if (all_trans.get(trans_index).mis_info.charAt(0) == 'A') {
+			if (current_trans.mis_info.charAt(0) == 'A') {
 				curr_login_mode = 'A';
 			} 
 		}
@@ -195,13 +193,13 @@ public class Transactions {
 	}
 
 	// withdrawal
- 	public void withdrawal() {
+ 	public void withdrawal(trans current_trans) {
 		// search the position that match the account name and account number
-		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 
 		// reduce the amount from that account
 		if (pos != -1) {
-			minus(pos, all_trans.get(trans_index).amount);
+			minus(pos, current_trans.amount);
 			// increase the number of transaction if in standard mode
 			if (curr_login_mode == 'S') {
 				all_accounts.get(pos).num_trans++;
@@ -216,18 +214,18 @@ public class Transactions {
 	}
 
 	// transfer
-	public void transfer() {
+	public void transfer(trans current_trans) {
 		// withdrawal money from the current index account
-		withdrawal();
+		withdrawal(current_trans);
 		// increase the trans_index by 1
 		trans_index++;
 		// depost money to the current index account
 		// search the position that match the account name and account number
-		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 
 		// reduce the amount from that account
 		if (pos != -1) {
-			add(pos, all_trans.get(trans_index).amount);
+			add(pos, current_trans.amount);
 		}
 		// if the account doesn't exist
 		// deposit the amount back
@@ -236,25 +234,25 @@ public class Transactions {
 			int pos2 = searchNameAcc(all_trans.get(trans_index - 1).acc_holder, all_trans.get(trans_index - 1).acc_num);
 
 			// used - the transaction fee to add back the transaction fee
-			add(pos2, all_trans.get(trans_index).amount);
+			add(pos2, current_trans.amount);
 
 		}
 	}
 
 	// paybill
-	public void paybill() {
+	public void paybill(trans current_trans) {
 		// withdraw money from the current index account
-		withdrawal();
+		withdrawal(current_trans);
 		
 		// increase the trans_index by 1
 		/*trans_index++;
 		// deposit money to the current index account
 		// search position that matches account name and number
-		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 
 		// reduce amount from account
 		if (pos != -1) {
-			add(pos, all_trans.get(trans_index).amount, 0);
+			add(pos, current_trans.amount, 0);
 		}
 		// if the account doesn't exist, despoit amount back
 		else {
@@ -262,20 +260,20 @@ public class Transactions {
 			int pos2 = searchNameAcc(all_trans.get(trans_index - 1).acc_holder, all_trans.get(trans_index - 1).acc_num);
 
 			// used - the transaction fee to add back the transaction fee
-			add(pos2, all_trans.get(trans_index).amount, -all_accounts.get(pos2).acc_type);
+			add(pos2, current_trans.amount, -all_accounts.get(pos2).acc_type);
 
 		}*/
 
 	}
 
 	// deposit
-	public void deposit() {
+	public void deposit(trans current_trans) {
 		// search the position that match the account name and account number
-		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 
 		// reduce the amount from that account
 		if (pos != -1) {
-			add(pos, all_trans.get(trans_index).amount);
+			add(pos, current_trans.amount);
 			// increase the number of transaction if in standard mode
 			if (curr_login_mode == 'S') {
 				all_accounts.get(pos).num_trans++;
@@ -290,13 +288,13 @@ public class Transactions {
 	}
 
 	// create
-	public void create() {
+	public void create(trans current_trans) {
 
 		account acc = new account();
-		acc.acc_holder = all_trans.get(trans_index).acc_holder;
-		acc.acc_num = all_trans.get(trans_index).acc_num;
-		acc.acc_balance = all_trans.get(trans_index).amount;
-		acc.acc_type = all_trans.get(trans_index).mis_info.charAt(0);
+		acc.acc_holder = current_trans.acc_holder;
+		acc.acc_num = current_trans.acc_num;
+		acc.acc_balance = current_trans.amount;
+		acc.acc_type = current_trans.mis_info.charAt(0);
 		acc.acc_status = 'A';
 		acc.num_trans = 0;
 
@@ -308,7 +306,7 @@ public class Transactions {
 		int pos = searchNameAcc(all_accounts.get(trans_index).acc_holder, all_accounts.get(trans_index).acc_num);
 
 		if (pos != -1) {
-			add(pos, all_trans.get(trans_index).amount, getTransactionFee(pos));
+			add(pos, current_trans.amount, getTransactionFee(pos));
 			all_accounts.get(pos).num_trans++;
 		}
 		// if the account doesn't exist
@@ -320,10 +318,10 @@ public class Transactions {
 	}
 
 	// delete
-	public void delete() {
+	public void delete(trans current_trans) {
 
 		// search the position that match the account name and account number
-		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 		
 		// remove the account from the all accounts
 		if (pos != -1) {
@@ -340,10 +338,10 @@ public class Transactions {
 		// increase trans_index by 1
 		trans_index++;
 		// search the position that match the account name and account number
-		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 
 		if (pos != -1) {
-			add(pos, all_trans.get(trans_index).amount, getTransactionFee(pos));
+			add(pos, current_trans.amount, getTransactionFee(pos));
 			all_accounts.get(pos).num_trans--;
 		}
 		// if the account doesn't exist
@@ -353,10 +351,10 @@ public class Transactions {
 	}
 
 	// enable
-	public void enable() {
+	public void enable(trans current_trans) {
 		
 		// search the position that match the account name and account number
-		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 		
 		// change the account status to active
 		if (pos != -1) {
@@ -370,9 +368,9 @@ public class Transactions {
 	}
 
 	// Disable
-	public void disable() {
+	public void disable(trans current_trans) {
 		// search the position that match the account name and account number
-		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 		
 		// change the account status to disable
 		if (pos != -1) {
@@ -385,9 +383,9 @@ public class Transactions {
 	}
 
 	// changeplan
-	public void changeplan() {
+	public void changeplan(trans current_trans) {
 		// search the position that match the account name and account number
-		int pos = searchNameAcc(all_trans.get(trans_index).acc_holder, all_trans.get(trans_index).acc_num);
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 
 		// change the plan
 		if (pos != -1) {
@@ -406,7 +404,7 @@ public class Transactions {
 	}
 
 	// logout
-	public void logout() {
+	public void logout(trans current_trans) {
 		// set the current login mode to standard as default
 		curr_login_mode = 'S';
 	}
