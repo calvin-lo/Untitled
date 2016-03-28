@@ -34,13 +34,22 @@ public class Transactions {
 	int trans_index;
 	// store the current login mode
 	int curr_login_mode;
-
-	public Transactions(String transDir, String mergedPath) {
+	
+	
+	// empty constructor for testing
+	public Transactions() {
+            curr_login_mode = 'S';
+            all_accounts = new ArrayList<account>();
+            all_trans = new ArrayList<trans>();
+            FR = new FileReader();
+	}
+	
+	public Transactions(String mergedPath) {
 		// set the default login mode as standard
 		curr_login_mode = 'S';
 		all_accounts = new ArrayList<account>();
 		all_trans = new ArrayList<trans>();
-		FR = new FileReader(transDir, mergedPath);
+		FR = new FileReader();
 		parseMaster("MasterAccounts.txt");
 		parseMerged(mergedPath);
 
@@ -421,17 +430,6 @@ public class Transactions {
 		return -1;
 	}
 
-	// search the target account by account number
-	// return the position of the account
-	// return -1 if not found
-	int searchAcc(String acc_num) {
-		for (int i = 0; i < all_accounts.size(); i++) {
-			if (all_accounts.get(i).acc_num.equals(acc_num)) {
-				return i;
-			}
-		}
-		return -1;
-	}
 
 	// search the target account by name AND account number
 	// return the position of the account

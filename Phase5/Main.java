@@ -41,9 +41,8 @@ public class Main {
 		// close the file
 		wr.close();
 
-	
 
-		Transactions T = new Transactions(transDir, mergedPath);
+		Transactions T = new Transactions(mergedPath);
 
 	}
 }

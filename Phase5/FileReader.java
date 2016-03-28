@@ -25,6 +25,10 @@ public class FileReader {
 		mergedPath = merge;
 	}
 
+        // empty constructor
+	public FileReader() {
+	}
+	
 	// read file
 	// arguments: filename of the file to read
 	public List<String> readFile(String filename) {
