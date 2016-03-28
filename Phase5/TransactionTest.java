@@ -10,48 +10,48 @@ import java.util.*;
 
 public class TransactionTest {
     
-    // Test create a new Transactions class
+    // Test Transaction class: create a new Transactions class
     @Test
-    public void testEmptyConstructor() {
+    public void testCreateTransaction() {
         Transactions T = new Transactions();
     }
     
-    // create a account class
+    // Test account class: create a new account class
     @Test
-    public void testAccountCreate() {
+    public void testCreateAccountCreate() {
         account acc = new account();
     }
 
-    // create a Transactions class
+    // Test trans: create a new trans class
     @Test
-    public void testTransCreate() {
+    public void testCreateTransCreate() {
         trans t = new trans();
     }
     
     // Test execute
     
-    // Test parseMaster with existing file
+    // Test parseMaster: with existing file
     @Test
     public void testParseMaster1() {
         Transactions T = new Transactions();
         T.parseMaster("MasterAccounts.txt");
     }
     
-    // Test parseMaster with not existing file
+    // Test parseMaster: with a not existing file
     @Test
     public void testParseMaster2() {
         Transactions T = new Transactions();
         T.parseMaster("NOT_EXIST_FILE");
     }
     
-    // Test parseMerged with existing file
+    // Test parseMerged: with existing file
     @Test
     public void testParseMerged1() {
         Transactions T = new Transactions();
         T.parseMaster("merged.trans");
     }
     
-    // Test parseMerged with not existing file
+    // Test parseMerged: with a not existing file
     @Test
     public void testParseMerged2() {
         Transactions T = new Transactions();
@@ -68,7 +68,7 @@ public class TransactionTest {
         testTrans = test.parseMerged("merged.trans");
     }
     
-    // Test createNewCurrent with a testing accounts list
+    // Test createNewCurrent: with a testing accounts list
     @Test
     public void testCreateNewCurrent() {
         Transactions T = new Transactions();
@@ -76,15 +76,70 @@ public class TransactionTest {
         T.createNewCurrent(testAccounts);
     }
     
-    // Test createNewMaster with a testing accounts list
+    // Test createNewMaster: with a testing accounts list
     @Test
     public void testCreateNewMaster() {
         Transactions T = new Transactions();
         createTestingData();
         T.createNewMaster(testAccounts);
-        
+    }
+    
+    // Test searchName: Search a name that exist in the test data
+    @Test
+    public void testSearchName1() {
+        Transactions T = new Transactions();
+        String name = "John Doe";
+        T.searchName(name);
+    }
+    
+    // Test searchName: Search a name that does not exist in the test data
+    @Test
+    public void testSearchName2() {
+        Transactions T = new Transactions();
+        String name = "NOT EXIST";
+        T.searchName(name);
+    }
+    
+    // Test searchNameAcc:
+    @Test
+    public void testSearchNameAcc1() {
+        Transactions T = new Transactions(); 
+        String name = "John Doe";
+        String number = "00001";
+        T.searchNameAcc(name, number);
         
     }
+    
+    // Test searchNameAcc:
+    @Test
+    public void testSearchNameAcc2() {
+        Transactions T = new Transactions();  
+        String name = "NOT EXIST";
+        String number = "NOT EXIST";
+        T.searchNameAcc(name, number);
+    }
+    
+    // Test searchNameAcc:
+    @Test
+    public void testSearchNameAcc3() {
+        Transactions T = new Transactions();    
+        String name = "NOT EXIST";
+        String number = "00001";
+        T.searchNameAcc(name, number);
+    }
+    
+    // Test searchNameAcc:
+    @Test
+    public void testSearchNameAcc4() {
+        Transactions T = new Transactions();    
+        String name = "John Doe";
+        String number = "NOT EXIST";
+        T.searchNameAcc(name, number);
+    }
+    
+    // Test minus
+    
+    // Test add
     
     // Test login 
     
@@ -108,13 +163,6 @@ public class TransactionTest {
     
     // Test logout
     
-    // Test searchName
-    
-    // Test searchNameAcc
-    
-    // Test minus
-    
-    // Test add
     
     // Test getTransactionFee
     

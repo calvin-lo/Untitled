@@ -185,243 +185,7 @@ public class Transactions {
 		FW.close();
 	}
 	
-	// login
-	public void login(trans current_trans) {
-		// search the position that matches the account name and number
-		int pos = searchName(current_trans.acc_holder);
-
-		// set the login mode
-		if (pos != -1) {
-			// set the login mode to A if log in as admin. (default as standard)
-			if (current_trans.mis_info.charAt(0) == 'A') {
-				curr_login_mode = 'A';
-			} 
-		}
-		// if the account doesn't exist
-		else {
-			System.out.println("ERROR: Account doesn't exist.");
-		}
 	
-
-	}
-
-	// withdrawal
- 	public void withdrawal(trans current_trans) {
-		// search the position that match the account name and account number
-		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
-
-		// reduce the amount from that account
-		if (pos != -1) {
-			minus(pos, current_trans.amount);
-			// increase the number of transaction if in standard mode
-			if (curr_login_mode == 'S') {
-				all_accounts.get(pos).num_trans++;
-			}
-
-		}
-		// if the account doesn't exist
-		else {
-			System.out.println("ERROR: Account doesn't exist.");
-		}
-
-	}
-
-	// transfer
-	public void transfer(trans current_trans) {
-		// withdrawal money from the current index account
-		withdrawal(current_trans);
-		// increase the trans_index by 1
-		trans_index++;
-		// depost money to the current index account
-		// search the position that match the account name and account number
-		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
-
-		// reduce the amount from that account
-		if (pos != -1) {
-			add(pos, current_trans.amount);
-		}
-		// if the account doesn't exist
-		// deposit the amount back
-		else {
-			System.out.println("ERROR: Account doesn't exist.");
-			int pos2 = searchNameAcc(all_trans.get(trans_index - 1).acc_holder, all_trans.get(trans_index - 1).acc_num);
-
-			// used - the transaction fee to add back the transaction fee
-			add(pos2, current_trans.amount);
-
-		}
-	}
-
-	// paybill
-	public void paybill(trans current_trans) {
-		// withdraw money from the current index account
-		withdrawal(current_trans);
-		
-		// increase the trans_index by 1
-		/*trans_index++;
-		// deposit money to the current index account
-		// search position that matches account name and number
-		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
-
-		// reduce amount from account
-		if (pos != -1) {
-			add(pos, current_trans.amount, 0);
-		}
-		// if the account doesn't exist, despoit amount back
-		else {
-			System.out.println("ERROR: Account doesn't exist.");
-			int pos2 = searchNameAcc(all_trans.get(trans_index - 1).acc_holder, all_trans.get(trans_index - 1).acc_num);
-
-			// used - the transaction fee to add back the transaction fee
-			add(pos2, current_trans.amount, -all_accounts.get(pos2).acc_type);
-
-		}*/
-
-	}
-
-	// deposit
-	public void deposit(trans current_trans) {
-		// search the position that match the account name and account number
-		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
-
-		// reduce the amount from that account
-		if (pos != -1) {
-			add(pos, current_trans.amount);
-			// increase the number of transaction if in standard mode
-			if (curr_login_mode == 'S') {
-				all_accounts.get(pos).num_trans++;
-			}
-
-		}
-		// if the account doesn't exist
-		else {
-			System.out.println("ERROR: Account doesn't exist.");
-		}
-
-	}
-
-	// create
-	public void create(trans current_trans) {
-
-		account acc = new account();
-		acc.acc_holder = current_trans.acc_holder;
-		acc.acc_num = current_trans.acc_num;
-		acc.acc_balance = current_trans.amount;
-		acc.acc_type = current_trans.mis_info.charAt(0);
-		acc.acc_status = 'A';
-		acc.num_trans = 0;
-
-		all_accounts.add(acc);
-		/*
-		// increase trans_index by 1
-		trans_index++;
-		// search the position that match the account name and account number
-		int pos = searchNameAcc(all_accounts.get(trans_index).acc_holder, all_accounts.get(trans_index).acc_num);
-
-		if (pos != -1) {
-			add(pos, current_trans.amount, getTransactionFee(pos));
-			all_accounts.get(pos).num_trans++;
-		}
-		// if the account doesn't exist
-		else {
-			System.out.println("ERROR: Account doesn't exist.");
-		}*/
-
-
-	}
-
-	// delete
-	public void delete(trans current_trans) {
-
-		// search the position that match the account name and account number
-		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
-		
-		// remove the account from the all accounts
-		if (pos != -1) {
-			all_accounts.remove(pos);
-		}
-		// if the account doesn't exist
-		else {
-			System.out.println("ERROR: Account doesn't exist.");
-		}
-
-		/*
-		// withdraw to close account with $0 remaining funds
-		withdrawal();
-		// increase trans_index by 1
-		trans_index++;
-		// search the position that match the account name and account number
-		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
-
-		if (pos != -1) {
-			add(pos, current_trans.amount, getTransactionFee(pos));
-			all_accounts.get(pos).num_trans--;
-		}
-		// if the account doesn't exist
-		else {
-			System.out.println("ERROR: Account doesn't exist.");
-		}*/
-	}
-
-	// enable
-	public void enable(trans current_trans) {
-		
-		// search the position that match the account name and account number
-		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
-		
-		// change the account status to active
-		if (pos != -1) {
-			all_accounts.get(pos).acc_status = 'A';
-		}
-		// if the account doesn't exist
-		else {
-			System.out.println("ERROR: Account doesn't exist.");
-		}
-		
-	}
-
-	// Disable
-	public void disable(trans current_trans) {
-		// search the position that match the account name and account number
-		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
-		
-		// change the account status to disable
-		if (pos != -1) {
-			all_accounts.get(pos).acc_status = 'D';
-		}
-		// if the account doesn't exist
-		else {
-			System.out.println("ERROR: Account doesn't exist.");
-		}
-	}
-
-	// changeplan
-	public void changeplan(trans current_trans) {
-		// search the position that match the account name and account number
-		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
-
-		// change the plan
-		if (pos != -1) {
-			if (all_accounts.get(pos).acc_type == 'N') {
-				all_accounts.get(pos).acc_type = 'S';
-			}
-			else if (all_accounts.get(pos).acc_type == 'S') {
-				all_accounts.get(pos).acc_type = 'N';
-			}
-		}
-		// if the account doesn't exist
-		else {
-			System.out.println("ERROR: Account doesn't exist.");
-		}
-		
-	}
-
-	// logout
-	public void logout(trans current_trans) {
-		// set the current login mode to standard as default
-		curr_login_mode = 'S';
-	}
-
 	// search the target account by name
 	// return the position of the account
 	// return -1 if not found
@@ -431,9 +195,10 @@ public class Transactions {
 				return i;
 			}
 		}
+		// if the account doesn't exist
+		System.out.println("ERROR: Account doesn't exist.");
 		return -1;
 	}
-
 
 	// search the target account by name AND account number
 	// return the position of the account
@@ -444,6 +209,8 @@ public class Transactions {
 				return i;
 			}
 		}
+                // if the account doesn't exist
+		System.out.println("ERROR: Account doesn't exist.");
 		return -1;
 	}
 
@@ -491,6 +258,158 @@ public class Transactions {
 		return true;
 	}
 
+	
+	// login
+	public void login(trans current_trans) {
+		// search the position that matches the account name and number
+		int pos = searchName(current_trans.acc_holder);
+
+		// set the login mode
+		if (pos != -1) {
+			// set the login mode to A if log in as admin. (default as standard)
+			if (current_trans.mis_info.charAt(0) == 'A') {
+				curr_login_mode = 'A';
+			} 
+		}
+
+	}
+
+	// withdrawal
+ 	public void withdrawal(trans current_trans) {
+		// search the position that match the account name and account number
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
+
+		// reduce the amount from that account
+		if (pos != -1) {
+			minus(pos, current_trans.amount);
+			// increase the number of transaction if in standard mode
+			if (curr_login_mode == 'S') {
+				all_accounts.get(pos).num_trans++;
+			}
+
+		}
+
+	}
+
+	// transfer
+	public void transfer(trans current_trans) {
+		// withdrawal money from the current index account
+		withdrawal(current_trans);
+		// increase the trans_index by 1
+		trans_index++;
+		// depost money to the current index account
+		// search the position that match the account name and account number
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
+
+		// reduce the amount from that account
+		if (pos != -1) {
+			add(pos, current_trans.amount);
+		}
+		// if the account doesn't exist
+		// deposit the amount back
+		else {
+			int pos2 = searchNameAcc(all_trans.get(trans_index - 1).acc_holder, all_trans.get(trans_index - 1).acc_num);
+			// used - the transaction fee to add back the transaction fee
+			add(pos2, current_trans.amount);
+		}
+	}
+
+	// paybill
+	public void paybill(trans current_trans) {
+		// withdraw money from the current index account
+		withdrawal(current_trans);
+	}
+
+	// deposit
+	public void deposit(trans current_trans) {
+		// search the position that match the account name and account number
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
+
+		// reduce the amount from that account
+		if (pos != -1) {
+			add(pos, current_trans.amount);
+			// increase the number of transaction if in standard mode
+			if (curr_login_mode == 'S') {
+				all_accounts.get(pos).num_trans++;
+			}
+
+		}
+	}
+
+	// create
+	public void create(trans current_trans) {
+
+		account acc = new account();
+		acc.acc_holder = current_trans.acc_holder;
+		acc.acc_num = current_trans.acc_num;
+		acc.acc_balance = current_trans.amount;
+		acc.acc_type = current_trans.mis_info.charAt(0);
+		acc.acc_status = 'A';
+		acc.num_trans = 0;
+
+		all_accounts.add(acc);
+
+	}
+
+	// delete
+	public void delete(trans current_trans) {
+
+		// search the position that match the account name and account number
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
+		
+		// remove the account from the all accounts
+		if (pos != -1) {
+			all_accounts.remove(pos);
+		}
+	}
+
+	// enable
+	public void enable(trans current_trans) {
+		
+		// search the position that match the account name and account number
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
+		
+		// change the account status to active
+		if (pos != -1) {
+			all_accounts.get(pos).acc_status = 'A';
+		}
+		
+	}
+
+	// Disable
+	public void disable(trans current_trans) {
+		// search the position that match the account name and account number
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
+		
+		// change the account status to disable
+		if (pos != -1) {
+			all_accounts.get(pos).acc_status = 'D';
+		}
+	}
+
+	// changeplan
+	public void changeplan(trans current_trans) {
+		// search the position that match the account name and account number
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
+
+		// change the plan
+		if (pos != -1) {
+			if (all_accounts.get(pos).acc_type == 'N') {
+				all_accounts.get(pos).acc_type = 'S';
+			}
+			else if (all_accounts.get(pos).acc_type == 'S') {
+				all_accounts.get(pos).acc_type = 'N';
+			}
+		}
+		
+	}
+
+	// logout
+	public void logout(trans current_trans) {
+		// set the current login mode to standard as default
+		curr_login_mode = 'S';
+	}
+	
 	// minus the transaction fee
 	float getTransactionFee(int pos) {
 		if (all_accounts.get(pos).acc_type == 'S') {
