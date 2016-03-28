@@ -34,6 +34,8 @@ public class Transactions {
 	int trans_index;
 	// store the current login mode
 	int curr_login_mode;
+	// store the merged transaction file
+	String merged_path;
 
 	public Transactions(String transDir, String mergedPath) {
 		// set the default login mode as standard
@@ -41,6 +43,7 @@ public class Transactions {
 		all_accounts = new ArrayList<account>();
 		all_trans = new ArrayList<trans>();
 		FR = new FileReader(transDir, mergedPath);
+		merged_path = mergedPath;
 		parseMaster();
 		parseMerged();
 
@@ -66,8 +69,6 @@ public class Transactions {
 		createNewCurrent(all_accounts);
 		// create new master bank account file
 		createNewMaster(all_accounts);
-
-
 	}
 
 	// Write Current Bank Account File
@@ -115,7 +116,6 @@ public class Transactions {
 
 	// read Master bank account file
 	public void parseMaster() {
-
 		// get the file from the file reader
 		List<String> masterFile = new ArrayList<String>();
 		masterFile = FR.readFile("MasterAccounts.txt");
@@ -139,35 +139,6 @@ public class Transactions {
 
 			// put the temp account to the list
 			all_accounts.add(temp_account);
-
-		}
-	}
-
-	// read current bank account file (maybe not needed)
-	public void parseCurrent() {
-
-		// get the file from the file reader
-		List<String> currAccFile = new ArrayList<String>();
-		currAccFile = FR.readFile("BankAccounts.txt");
-		for (int i = 0; i < currAccFile.size(); i++) {
-			account temp_account = new account();
-			// Bank account number start at pos 0 and end at 5.
-			temp_account.acc_num = currAccFile.get(i).substring(0, 5);
-			// Bank account holder name start at 6 and end at 26;
-			temp_account.acc_holder = currAccFile.get(i).substring(6, 26);
-			// Account status (Active or Disabled) at 27
-			temp_account.acc_status = currAccFile.get(i).charAt(27);
-			// Accpunt balance start at 29 and end at 37
-			temp_account.acc_balance = currAccFile.get(i).substring(29, 37);
-			// Account type (Student or Non Student) at 38
-			temp_account.acc_type = currAccFile.get(i).charAt(38);
-
-			// Remove all the white space after the last character
-			temp_account.acc_holder = temp_account.acc_holder.trim();
-
-			// put the temp account to the list
-			all_accounts.add(temp_account);
-
 		}
 	}
 
@@ -176,7 +147,7 @@ public class Transactions {
 
 		// get the file from the file reader
 		List<String> transFile = new ArrayList<String>();
-		transFile = FR.readFile("MergedBankAccountTrans.trans");
+		transFile = FR.readFile(merged_path);
 		//transFile = FR.readFile("merged.trans");
 		//transFile = FR.readFile("MergedBankAccountTrans.trans");
 		// loop all the transaction

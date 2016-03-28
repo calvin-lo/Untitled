@@ -1,9 +1,6 @@
-00002 Chris Doe            A 10000.00 S 0000
+00001 John Doe             A 10000.00 S 0000
+88888 John Doe             D 00000.00 S 0000
+00002 Chris Doe            A 10000.00 N 0000
 99999 Jane Doe             A 00000.00 N 0000
-22222 Brian Doe            A 00999.70 N 0004
-44444 Tom Doe              A 00095.05 S 0001
-00003 John Doe             A 00000.00 N 0000
-00003 John Doe             A 00000.00 N 0000
-00003 Ben Doe              A 00000.00 N 0000
-00003 John Doe Longnameso  A 00000.00 N 0000
-00003 John Doe             A 00000.00 N 0000
+22222 Brian Doe            A 00100.00 N 0001
+44444 Tom Doe              A 00400.00 S 0000
