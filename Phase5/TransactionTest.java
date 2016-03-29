@@ -34,19 +34,27 @@ public class TransactionTest {
     @Test
     public void testParseMaster1() {
         Transactions T = new Transactions();
+<<<<<<< HEAD
 
 
         assertEquals(true, T.parseMaster("MasterAccounts.txt"));
+=======
+        T.parseMaster("MasterAccounts.txt");
+>>>>>>> 7704494e7134bf7c08a856f53fd2fc83bc579246
     }
     
     // Test parseMerged: with existing file
     @Test
     public void testParseMerged1() {
         Transactions T = new Transactions();
+<<<<<<< HEAD
         
         assertEquals(true, T.parseMaster("merged.trans"));
 
 
+=======
+        T.parseMaster("merged.trans");
+>>>>>>> 7704494e7134bf7c08a856f53fd2fc83bc579246
     }
     
     // Test createNewCurrent: with a testing accounts list
@@ -97,7 +105,10 @@ public class TransactionTest {
         assertEquals(false, T.searchName(name));
     }
     
+<<<<<<< HEAD
     
+=======
+>>>>>>> 7704494e7134bf7c08a856f53fd2fc83bc579246
     // Test searchNameAcc: Search both name and account number that exist in the test data
     @Test
     public void testSearchNameAcc1() {
@@ -125,11 +136,17 @@ public class TransactionTest {
         // set up the test data
         String name = "NOT EXIST";
         String number = "NOT EXIST";
+<<<<<<< HEAD
 
         assertEquals(false, T.searchNameAcc(name, number));
     }
     
     
+=======
+        T.searchNameAcc(name, number);
+    }
+    
+>>>>>>> 7704494e7134bf7c08a856f53fd2fc83bc579246
     // Test minus: when input a correct position and an amount greater the the relative account’s balance
     @Test
     public void testMinus1() {
@@ -146,7 +163,12 @@ public class TransactionTest {
         
     }
     
+<<<<<<< HEAD
     // Test minus: when input a invalid position
+=======
+    
+    // Test minus: when input an amount less than the account balance
+>>>>>>> 7704494e7134bf7c08a856f53fd2fc83bc579246
     @Test
     public void testMinus2() {
         Transactions T = new Transactions();
@@ -155,10 +177,16 @@ public class TransactionTest {
         T.all_accounts = T.parseMaster("MasterAccounts.txt");
         
         // set up the test data
+<<<<<<< HEAD
         int pos = -1;
         String value = "100.00";
         
         assertEquals(false, T.minus(pos, value));
+=======
+        int pos = 4;
+        String value = "500.00";
+        
+        T.minus(pos, value);
         
     }
     
@@ -174,11 +202,12 @@ public class TransactionTest {
         int pos = 4;
         String value = "100.00";
         
-        assertEquals(true, T.add(pos, value));
+        T.add(pos, value);
+>>>>>>> 7704494e7134bf7c08a856f53fd2fc83bc579246
         
     }
     
-    // Test add: when input a invalid position
+    // Test add: when input an amount greater than 99999
     @Test
     public void testAdd2() {
         Transactions T = new Transactions();
@@ -187,12 +216,75 @@ public class TransactionTest {
         T.all_accounts = T.parseMaster("MasterAccounts.txt");
         
         // set up the test data
+        int pos = 4;
+        String value = "99999.00";
+        
+        assertEquals(true, T.add(pos, value));
+        
+    }
+    
+    // Test login: when input a admin login transaction 
+    @Test
+    public void testLogin1() {
+        Transactions T = new Transactions();
+        
+<<<<<<< HEAD
+        // parse the master bank accounts file and set the all_accounts variable
+        T.all_accounts = T.parseMaster("MasterAccounts.txt");
+        
+        // set up the test data
         int pos = -1;
         String value = "100.00";
         
         assertEquals(false, T.add(pos, value));
+=======
+        // set up test data
+        trans t = new trans();
+        t.code = "10";
+        t.mis_info = "A";
+        
+        T.login(t);
+    }
+    
+    // Test withdrawal: input a valid account
+    @Test
+    public void testWithdrawal1() {
+        Transactions T = new Transactions();
+        
+        // set up test data
+        trans t = new trans();
+        t.code = "01";
+        t.acc_holder = "John Doe";
+        t.acc_num = "00001";
+        t.amount = "100.00";
+        
+        T.withdrawal(t);
+    }
+    
+    // Test transfer
+    @Test
+    public void testTransfer1() {
+        Transactions T = new Transactions();
         
     }
+    
+    // Test paybill: call the withdrawal method
+    @Test
+    public void testPaybill1() {
+        Transactions T = new Transactions();
+        
+        // set up test data
+        trans t = new trans();
+        t.code = "03";
+        t.acc_holder = "John Doe";
+        t.acc_num = "00001";
+        t.amount = "100.00";
+        t.mis_info = "EC";
+>>>>>>> 7704494e7134bf7c08a856f53fd2fc83bc579246
+        
+        T.paybill(t);
+    }
+<<<<<<< HEAD
      
     // Test login 
     
@@ -201,6 +293,8 @@ public class TransactionTest {
     // Test transfer
     
     // Test paybill 
+=======
+>>>>>>> 7704494e7134bf7c08a856f53fd2fc83bc579246
     
     // Test deposit
     
@@ -259,8 +353,6 @@ public class TransactionTest {
 
         
     }
-    
-    
     
     public static junit.framework.Test suite() {
         return new JUnit4TestAdapter(TransactionTest.class);
