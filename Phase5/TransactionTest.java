@@ -37,25 +37,11 @@ public class TransactionTest {
         T.parseMaster("MasterAccounts.txt");
     }
     
-    // Test parseMaster: with a not existing file
-    @Test
-    public void testParseMaster2() {
-        Transactions T = new Transactions();
-        T.parseMaster("NOT_EXIST_FILE");
-    }
-    
     // Test parseMerged: with existing file
     @Test
     public void testParseMerged1() {
         Transactions T = new Transactions();
         T.parseMaster("merged.trans");
-    }
-    
-    // Test parseMerged: with a not existing file
-    @Test
-    public void testParseMerged2() {
-        Transactions T = new Transactions();
-        T.parseMerged("NOT_EXIST_FILE");
     }
     
     // Test createNewCurrent: with a testing accounts list
@@ -116,8 +102,6 @@ public class TransactionTest {
         T.searchName(name);
     }
     
-    
-    
     // Test searchNameAcc: Search both name and account number that exist in the test data
     @Test
     public void testSearchNameAcc1() {
@@ -147,46 +131,6 @@ public class TransactionTest {
         T.searchNameAcc(name, number);
     }
     
-    // Test searchNameAcc: Search only account number that exist in the test data
-    @Test
-    public void testSearchNameAcc3() {
-        Transactions T = new Transactions();  
-        
-        // parse the master bank accounts file and set the all_accounts variable
-        T.all_accounts = T.parseMaster("MasterAccounts.txt");
-        
-        // set up the test data
-        String name = "NOT EXIST";
-        String number = "00001";
-        T.searchNameAcc(name, number);
-    }
-    
-    // Test searchNameAcc: Search only name that doesn’t exist in the test data
-    @Test
-    public void testSearchNameAcc4() {
-        Transactions T = new Transactions();    
-        
-        // parse the master bank accounts file and set the all_accounts variable
-        T.all_accounts = T.parseMaster("MasterAccounts.txt");
-        
-        // set up the test data
-        String name = "John Doe";
-        String number = "NOT EXIST";
-        T.searchNameAcc(name, number);
-    }
-    
-        
-    // Test searchNameAcc: when there are not any accounts
-    @Test
-    public void testSearchNameAcc5() {
-        Transactions T = new Transactions();    
-        
-        // set up the test data
-        String name = "John Doe";
-        String number = "00001";
-        T.searchNameAcc(name, number);
-    }
-    
     // Test minus: when input a correct position and an amount greater the the relative account’s balance
     @Test
     public void testMinus1() {
@@ -203,7 +147,8 @@ public class TransactionTest {
         
     }
     
-    // Test minus: when input a invalid position
+    
+    // Test minus: when input an amount less than the account balance
     @Test
     public void testMinus2() {
         Transactions T = new Transactions();
@@ -212,53 +157,8 @@ public class TransactionTest {
         T.all_accounts = T.parseMaster("MasterAccounts.txt");
         
         // set up the test data
-        int pos = -1;
-        String value = "100.00";
-        
-        T.minus(pos, value);
-        
-    }
-    
-    // Test minus: when input an amount less than the account balance
-    @Test
-    public void testMinus3() {
-        Transactions T = new Transactions();
-        
-        // parse the master bank accounts file and set the all_accounts variable
-        T.all_accounts = T.parseMaster("MasterAccounts.txt");
-        
-        // set up the test data
         int pos = 4;
         String value = "500.00";
-        
-        T.minus(pos, value);
-        
-    }
-    
-    // Test minus: when input an invalid amount format
-    @Test
-    public void testMinus4() {
-        Transactions T = new Transactions();
-        
-        // parse the master bank accounts file and set the all_accounts variable
-        T.all_accounts = T.parseMaster("MasterAccounts.txt");
-        
-        // set up the test data
-        int pos = 4;
-        String value = "INVALID";
-        
-        T.minus(pos, value);
-        
-    }
-    
-    // Test minus:  when there are not any accounts
-    @Test
-    public void testMinus5() {
-        Transactions T = new Transactions();
-        
-        // set up the test data
-        int pos = 4;
-        String value = "100.00";
         
         T.minus(pos, value);
         
@@ -280,25 +180,9 @@ public class TransactionTest {
         
     }
     
-    // Test add: when input a invalid position
-    @Test
-    public void testAdd2() {
-        Transactions T = new Transactions();
-        
-        // parse the master bank accounts file and set the all_accounts variable
-        T.all_accounts = T.parseMaster("MasterAccounts.txt");
-        
-        // set up the test data
-        int pos = -1;
-        String value = "100.00";
-        
-        T.add(pos, value);
-        
-    }
-    
     // Test add: when input an amount greater than 99999
     @Test
-    public void testAdd3() {
+    public void testAdd2() {
         Transactions T = new Transactions();
         
         // parse the master bank accounts file and set the all_accounts variable
@@ -312,43 +196,56 @@ public class TransactionTest {
         
     }
     
-    // Test add: when input an invalid amount format
+    // Test login: when input a admin login transaction 
     @Test
-    public void testAdd4() {
+    public void testLogin1() {
         Transactions T = new Transactions();
         
-        // parse the master bank accounts file and set the all_accounts variable
-        T.all_accounts = T.parseMaster("MasterAccounts.txt");
+        // set up test data
+        trans t = new trans();
+        t.code = "10";
+        t.mis_info = "A";
         
-        // set up the test data
-        int pos = 4;
-        String value = "INVALID";
-        
-        T.add(pos, value);
-        
+        T.login(t);
     }
     
-    // Test add:  when there are not any accounts
+    // Test withdrawal: input a valid account
     @Test
-    public void testAdd5() {
+    public void testWithdrawal1() {
         Transactions T = new Transactions();
         
-        // set up the test data
-        int pos = 4;
-        String value = "100.00";
+        // set up test data
+        trans t = new trans();
+        t.code = "01";
+        t.acc_holder = "John Doe";
+        t.acc_num = "00001";
+        t.amount = "100.00";
         
-        T.add(pos, value);
-        
+        T.withdrawal(t);
     }
-    
-    
-    // Test login 
-    
-    // Test withdrawal
     
     // Test transfer
+    @Test
+    public void testTransfer1() {
+        Transactions T = new Transactions();
+        
+    }
     
-    // Test paybill 
+    // Test paybill: call the withdrawal method
+    @Test
+    public void testPaybill1() {
+        Transactions T = new Transactions();
+        
+        // set up test data
+        trans t = new trans();
+        t.code = "03";
+        t.acc_holder = "John Doe";
+        t.acc_num = "00001";
+        t.amount = "100.00";
+        t.mis_info = "EC";
+        
+        T.paybill(t);
+    }
     
     // Test deposit
     
@@ -406,8 +303,6 @@ public class TransactionTest {
         T.getTransactionFee(pos);
         
     }
-    
-    
     
     public static junit.framework.Test suite() {
         return new JUnit4TestAdapter(TransactionTest.class);
