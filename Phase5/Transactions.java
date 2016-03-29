@@ -217,11 +217,29 @@ public class Transactions {
 	// minus the amount from a specfic account position
 	// return true if succesfully minus, else return false
 	boolean minus(int pos, String value) {
+	
+                // check if the pos is valid
+                if (pos < 0 || pos > all_accounts.size()) {
+                    // if the account doesn't exist
+                    System.out.println("ERROR: Account doesn't exist.");
+                    return false;
+                }
+                
+                
+                float amount = 0;
+                float balance = 0;
 		// convert value to float
-		float amount = Float.parseFloat(value);
-		float balance = Float.parseFloat(all_accounts.get(pos).acc_balance);
+		try {
+                    amount = Float.parseFloat(value);
+                    balance = Float.parseFloat(all_accounts.get(pos).acc_balance);
+		} catch (Exception e) {
+                    System.out.println("ERROR: Invalid amount format");
+                    return false;
+		}
+		
 		// minus the amount and transaction fee
 		float new_balance = balance - amount;
+		
 		// if the new balance is less than 0
 		if (new_balance < 0) {
 			System.out.println("ERROR: Below 0.");
@@ -237,9 +255,25 @@ public class Transactions {
 	// add the amount from a specfic account position
 	// return true if succesfully add, else return false
 	boolean add(int pos, String value) {
+		
+		// check if the pos is valid
+                if (pos < 0 || pos > all_accounts.size()) {
+                    // if the account doesn't exist
+                    System.out.println("ERROR: Account doesn't exist.");
+                    return false;
+                }
+		
+                float amount = 0;
+                float balance = 0;
 		// convert value to float
-		float amount = Float.parseFloat(value);
-		float balance = Float.parseFloat(all_accounts.get(pos).acc_balance);
+		try {
+                    amount = Float.parseFloat(value);
+                    balance = Float.parseFloat(all_accounts.get(pos).acc_balance);
+		} catch (Exception e) {
+                    System.out.println("ERROR: Invalid amount format");
+                    return false;
+		}
+		
 		// add the amount and minus the transaction fee
 		float new_balance = balance + amount;
 		// if the new balance is greater than 99999
@@ -412,12 +446,20 @@ public class Transactions {
 	
 	// minus the transaction fee
 	float getTransactionFee(int pos) {
-		if (all_accounts.get(pos).acc_type == 'S') {
-			return 0.05f;
-		} else if (all_accounts.get(pos).acc_type == 'N') {
-			return 0.10f;
-		}
-		return 0.0f;
-	}
+	
+            // check if the pos is valid
+            if (pos < 0 || pos > all_accounts.size()) {
+                // if the account doesn't exist
+                System.out.println("ERROR: Account doesn't exist.");
+                return 0.0f;
+            }
+            
+            if (all_accounts.get(pos).acc_type == 'S') {
+                    return 0.05f;
+            } else if (all_accounts.get(pos).acc_type == 'N') {
+                    return 0.10f;
+            }
+            return 0.0f;
+    }
 
 }
