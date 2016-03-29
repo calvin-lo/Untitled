@@ -42,6 +42,7 @@ public class Transactions {
             all_accounts = new ArrayList<account>();
             all_trans = new ArrayList<trans>();
             FR = new FileReader();
+            trans_index = 0;
 	}
 	
 	public Transactions(String mergedPath) {
@@ -50,8 +51,8 @@ public class Transactions {
 		all_accounts = new ArrayList<account>();
 		all_trans = new ArrayList<trans>();
 		FR = new FileReader();
-		all_accounts = parseMaster("MasterAccounts.txt");
-		all_trans = parseMerged(mergedPath);
+		parseMaster("MasterAccounts.txt");
+		parseMerged(mergedPath);
 
 		// init trans_index to zero;
 		trans_index = 0;
@@ -79,37 +80,41 @@ public class Transactions {
 	}
 
 	// execute the commands based on the code
-	public void execute(String code, trans current_trans) {
+	public boolean execute(String code, trans current_trans) {
 		if (code.equals("10")) {
-			login(current_trans);
+			return login(current_trans);
 		} else if (code.equals("01")) {
-			withdrawal(current_trans);
+			return withdrawal(current_trans);
 		} else if (code.equals("02")) {
-			transfer(current_trans);
+                        trans_index++;
+                        trans next_trans = all_trans.get(trans_index);
+			return transfer(current_trans, next_trans);
 		} else if (code.equals("03")) {
-			paybill(current_trans);
+			return paybill(current_trans);
 		} else if (code.equals("04")) {
-			deposit(current_trans);
+			return deposit(current_trans);
 		} else if (code.equals("05")) {
-			create(current_trans);
+			return create(current_trans);
 		} else if (code.equals("06")) {
-			delete(current_trans);
+			return delete(current_trans);
 		} else if (code.equals("07")) {
-			disable(current_trans);
+			return disable(current_trans);
 		} else if (code.equals("08")) {
-			changeplan(current_trans);
+			return changeplan(current_trans);
 		} else if (code.equals("09")) {
 			enable(current_trans);
 		} else if (code.equals("00")) {
-			logout(current_trans);
+			return logout(current_trans);
 		} else {
 			System.out.println("ERROR: Invalid transaction code!");
 		}
+		
+		return false;
 	}
 
 	// read Master bank account file
-	public List<account> parseMaster(String path) {
-                List<account> result = new ArrayList<account>();
+	
+	public boolean parseMaster(String path) {
 		// get the file from the file reader
 		List<String> masterFile = new ArrayList<String>();
 		masterFile = FR.readFile(path);
@@ -132,15 +137,14 @@ public class Transactions {
 			temp_account.acc_holder = temp_account.acc_holder.trim();
 
 			// put the temp account to the list
-			result.add(temp_account);
+			all_accounts.add(temp_account);
 		}
 		
-		return result;
+		return true;
 	}
 
 	// read the merged Transaction file
-	public List<trans> parseMerged(String path) {
-                List<trans> result = new ArrayList<trans>();
+	public boolean parseMerged(String path) {
 		// get the file from the file reader
 		List<String> transFile = new ArrayList<String>();
 		transFile = FR.readFile(path);
@@ -164,10 +168,10 @@ public class Transactions {
 			temp_trans.acc_holder = temp_trans.acc_holder.trim();
 
 			// put the temp account to the list
-			result.add(temp_trans);
+			all_trans.add(temp_trans);
 		}
 		
-                return result;
+                return true;
 
 	}
 
@@ -217,25 +221,10 @@ public class Transactions {
 	// minus the amount from a specfic account position
 	// return true if succesfully minus, else return false
 	boolean minus(int pos, String value) {
-	
-                // check if the pos is valid
-                if (pos < 0 || pos > all_accounts.size()) {
-                    // if the account doesn't exist
-                    System.out.println("ERROR: Account doesn't exist.");
-                    return false;
-                }
                 
-                
-                float amount = 0;
-                float balance = 0;
 		// convert value to float
-		try {
-                    amount = Float.parseFloat(value);
-                    balance = Float.parseFloat(all_accounts.get(pos).acc_balance);
-		} catch (Exception e) {
-                    System.out.println("ERROR: Invalid amount format");
-                    return false;
-		}
+                float amount = Float.parseFloat(value);
+                float balance = Float.parseFloat(all_accounts.get(pos).acc_balance);
 		
 		// minus the amount and transaction fee
 		float new_balance = balance - amount;
@@ -255,24 +244,10 @@ public class Transactions {
 	// add the amount from a specfic account position
 	// return true if succesfully add, else return false
 	boolean add(int pos, String value) {
-		
-		// check if the pos is valid
-                if (pos < 0 || pos > all_accounts.size()) {
-                    // if the account doesn't exist
-                    System.out.println("ERROR: Account doesn't exist.");
-                    return false;
-                }
-		
-                float amount = 0;
-                float balance = 0;
+
 		// convert value to float
-		try {
-                    amount = Float.parseFloat(value);
-                    balance = Float.parseFloat(all_accounts.get(pos).acc_balance);
-		} catch (Exception e) {
-                    System.out.println("ERROR: Invalid amount format");
-                    return false;
-		}
+                float amount = Float.parseFloat(value);
+                float balance = Float.parseFloat(all_accounts.get(pos).acc_balance);
 		
 		// add the amount and minus the transaction fee
 		float new_balance = balance + amount;
@@ -281,11 +256,7 @@ public class Transactions {
 			System.out.println("ERROR: Over 99999.");
 			return false;
 		}
-		// if the new balance is less than 0
-		else if (new_balance < 0) {
-			System.out.println("ERROR: Below 0.");
-			return false;
-		} else {
+		else {
 			// convert back the new balance to string and save it the account
 			all_accounts.get(pos).acc_balance = String.format("%.2f", new_balance);
 		}
@@ -294,22 +265,18 @@ public class Transactions {
 
 	
 	// login
-	public void login(trans current_trans) {
-		// search the position that matches the account name and number
-		int pos = searchName(current_trans.acc_holder);
+	public boolean login(trans current_trans) {
 
-		// set the login mode
-		if (pos != -1) {
-			// set the login mode to A if log in as admin. (default as standard)
-			if (current_trans.mis_info.charAt(0) == 'A') {
-				curr_login_mode = 'A';
-			} 
-		}
+            if (current_trans.mis_info.charAt(0) == 'A') {
+                curr_login_mode = 'A';
+            }
+            return true;
 
 	}
 
 	// withdrawal
- 	public void withdrawal(trans current_trans) {
+ 	public boolean withdrawal(trans current_trans) {
+                boolean result = false;
 		// search the position that match the account name and account number
 		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 
@@ -320,42 +287,49 @@ public class Transactions {
 			if (curr_login_mode == 'S') {
 				all_accounts.get(pos).num_trans++;
 			}
+			result = true;
 
 		}
+		return result;
 
 	}
 
 	// transfer
-	public void transfer(trans current_trans) {
+	public boolean transfer(trans current_trans, trans next_trans) {
+	
+                boolean result = false;
 		// withdrawal money from the current index account
 		withdrawal(current_trans);
-		// increase the trans_index by 1
-		trans_index++;
-		// depost money to the current index account
+		
+		// deposit money to the next index account
 		// search the position that match the account name and account number
-		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
+		int pos = searchNameAcc(next_trans.acc_holder, next_trans.acc_num);
 
-		// reduce the amount from that account
+		// add the amount from that account
 		if (pos != -1) {
-			add(pos, current_trans.amount);
+			add(pos, next_trans.amount);
+			result = true;
 		}
 		// if the account doesn't exist
 		// deposit the amount back
 		else {
-			int pos2 = searchNameAcc(all_trans.get(trans_index - 1).acc_holder, all_trans.get(trans_index - 1).acc_num);
+			int pos2 = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 			// used - the transaction fee to add back the transaction fee
 			add(pos2, current_trans.amount);
 		}
+		
+		return result;
 	}
 
 	// paybill
-	public void paybill(trans current_trans) {
+	public boolean paybill(trans current_trans) {
 		// withdraw money from the current index account
-		withdrawal(current_trans);
+		return (withdrawal(current_trans));
 	}
 
 	// deposit
-	public void deposit(trans current_trans) {
+	public boolean deposit(trans current_trans) {
+                boolean result = false;
 		// search the position that match the account name and account number
 		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 
@@ -366,13 +340,18 @@ public class Transactions {
 			if (curr_login_mode == 'S') {
 				all_accounts.get(pos).num_trans++;
 			}
+			
+                    result = true;
 
 		}
+                return result;
 	}
 
 	// create
-	public void create(trans current_trans) {
-
+	public boolean create(trans current_trans) {
+                
+                boolean result = false;
+                
 		account acc = new account();
 		acc.acc_holder = current_trans.acc_holder;
 		acc.acc_num = current_trans.acc_num;
@@ -382,47 +361,70 @@ public class Transactions {
 		acc.num_trans = 0;
 
 		all_accounts.add(acc);
+		
+		result = true;
+		return result;
 
 	}
 
 	// delete
-	public void delete(trans current_trans) {
+	public boolean delete(trans current_trans) {
 
+                boolean result = false;
+                
 		// search the position that match the account name and account number
 		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 		
 		// remove the account from the all accounts
 		if (pos != -1) {
 			all_accounts.remove(pos);
+			result = true;
 		}
+		
+		return result;
+		
+		
 	}
 
 	// enable
-	public void enable(trans current_trans) {
-		
-		// search the position that match the account name and account number
+	public boolean enable(trans current_trans) {
+	
+                boolean result = false;
+                // search the position that match the account name and account number
 		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 		
 		// change the account status to active
 		if (pos != -1) {
 			all_accounts.get(pos).acc_status = 'A';
+			result = true;
 		}
 		
+		return result;
 	}
 
 	// Disable
-	public void disable(trans current_trans) {
+	public boolean disable(trans current_trans) {
+                
+                boolean result = false;
 		// search the position that match the account name and account number
 		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 		
 		// change the account status to disable
 		if (pos != -1) {
 			all_accounts.get(pos).acc_status = 'D';
+			result = true;
 		}
+		
+		return result;
+		
+		
 	}
 
 	// changeplan
-	public void changeplan(trans current_trans) {
+	public boolean changeplan(trans current_trans) {
+	
+                boolean result = false;
+                
 		// search the position that match the account name and account number
 		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 
@@ -434,31 +436,28 @@ public class Transactions {
 			else if (all_accounts.get(pos).acc_type == 'S') {
 				all_accounts.get(pos).acc_type = 'N';
 			}
+			result = true;
 		}
+		return result;
 		
 	}
 
 	// logout
-	public void logout(trans current_trans) {
+	public boolean logout(trans current_trans) {
 		// set the current login mode to standard as default
 		curr_login_mode = 'S';
+		return true;
 	}
 	
 	// minus the transaction fee
 	float getTransactionFee(int pos) {
-	
-            // check if the pos is valid
-            if (pos < 0 || pos > all_accounts.size()) {
-                // if the account doesn't exist
-                System.out.println("ERROR: Account doesn't exist.");
-                return 0.0f;
-            }
             
             if (all_accounts.get(pos).acc_type == 'S') {
                     return 0.05f;
             } else if (all_accounts.get(pos).acc_type == 'N') {
                     return 0.10f;
             }
+            System.out.println("ERROR: Invalid account type.");
             return 0.0f;
     }
 
