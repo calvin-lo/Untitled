@@ -16,7 +16,8 @@ default:
 	$(JC) $(JFLAGS) $(SOURCES) $(CLASSES)
 
 run:
-	java -cp "junit-4.12.jar::"hamcrest-core-1.3.jar org.junit.runner.JUnitCore TransactionTest
+	#java -cp "junit-4.12.jar::"hamcrest-core-1.3.jar org.junit.runner.JUnitCore TransactionTest
+	java org.junit.runner.JUnitCore TransactionTest
 
 classes: $(CLASSES:.java=.class)
 
