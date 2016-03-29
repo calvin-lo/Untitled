@@ -58,21 +58,14 @@ public class TransactionTest {
         T.parseMerged("NOT_EXIST_FILE");
     }
     
-    // create a testing account database and trans database
-    List<account> testAccounts;
-    List<trans> testTrans;
-    
-    public void createTestingData() {
-        Transactions test = new Transactions();
-        testAccounts = test.parseMaster("MasterAccounts.txt");
-        testTrans = test.parseMerged("merged.trans");
-    }
-    
     // Test createNewCurrent: with a testing accounts list
     @Test
     public void testCreateNewCurrent() {
         Transactions T = new Transactions();
-        createTestingData();
+        
+        // set test data
+        List<account> testAccounts = T.parseMaster("MasterAccounts.txt");
+        
         T.createNewCurrent(testAccounts);
     }
     
@@ -80,7 +73,10 @@ public class TransactionTest {
     @Test
     public void testCreateNewMaster() {
         Transactions T = new Transactions();
-        createTestingData();
+        
+        // set test data
+        List<account> testAccounts = T.parseMaster("MasterAccounts.txt");
+        
         T.createNewMaster(testAccounts);
     }
     
@@ -88,6 +84,11 @@ public class TransactionTest {
     @Test
     public void testSearchName1() {
         Transactions T = new Transactions();
+        
+        // parse the master bank accounts file and set the all_accounts variable
+        T.all_accounts = T.parseMaster("MasterAccounts.txt");
+        
+        // set up the test data
         String name = "John Doe";
         T.searchName(name);
     }
@@ -96,42 +97,67 @@ public class TransactionTest {
     @Test
     public void testSearchName2() {
         Transactions T = new Transactions();
+        
+        // parse the master bank accounts file and set the all_accounts variable
+        T.all_accounts = T.parseMaster("MasterAccounts.txt");
+        
+        // set up the test data
         String name = "NOT EXIST";
         T.searchName(name);
     }
     
-    // Test searchNameAcc:
+    // Test searchNameAcc: Search both name and account number that exist in the test data
     @Test
     public void testSearchNameAcc1() {
         Transactions T = new Transactions(); 
+        
+        // parse the master bank accounts file and set the all_accounts variable
+        T.all_accounts = T.parseMaster("MasterAccounts.txt");
+        
+        // set up the test data
         String name = "John Doe";
         String number = "00001";
         T.searchNameAcc(name, number);
         
     }
     
-    // Test searchNameAcc:
+    // Test searchNameAcc: Search a both name and account number that doesn’t exist in the test data
     @Test
     public void testSearchNameAcc2() {
-        Transactions T = new Transactions();  
+        Transactions T = new Transactions();
+        
+        // parse the master bank accounts file and set the all_accounts variable
+        T.all_accounts = T.parseMaster("MasterAccounts.txt");
+        
+        // set up the test data
         String name = "NOT EXIST";
         String number = "NOT EXIST";
         T.searchNameAcc(name, number);
     }
     
-    // Test searchNameAcc:
+    // Test searchNameAcc: Search only account number that exist in the test data
     @Test
     public void testSearchNameAcc3() {
-        Transactions T = new Transactions();    
+        Transactions T = new Transactions();  
+        
+        // parse the master bank accounts file and set the all_accounts variable
+        T.all_accounts = T.parseMaster("MasterAccounts.txt");
+        
+        // set up the test data
         String name = "NOT EXIST";
         String number = "00001";
         T.searchNameAcc(name, number);
     }
     
-    // Test searchNameAcc:
+    // Test searchNameAcc: Search only name that doesn’t exist in the test data
     @Test
     public void testSearchNameAcc4() {
         Transactions T = new Transactions();    
+        
+        // parse the master bank accounts file and set the all_accounts variable
+        T.all_accounts = T.parseMaster("MasterAccounts.txt");
+        
+        // set up the test data
         String name = "John Doe";
         String number = "NOT EXIST";
         T.searchNameAcc(name, number);
