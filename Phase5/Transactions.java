@@ -85,9 +85,7 @@ public class Transactions {
 		} else if (code.equals("01")) {
 			withdrawal(current_trans);
 		} else if (code.equals("02")) {
-                        trans_index++;
-                        trans target = all_trans.get(trans_index);
-			transfer(current_trans, target);
+			transfer(current_trans);
 		} else if (code.equals("03")) {
 			paybill(current_trans);
 		} else if (code.equals("04")) {
@@ -219,10 +217,25 @@ public class Transactions {
 	// minus the amount from a specfic account position
 	// return true if succesfully minus, else return false
 	boolean minus(int pos, String value) {
+	
+                // check if the pos is valid
+                if (pos < 0 || pos > all_accounts.size()) {
+                    // if the account doesn't exist
+                    System.out.println("ERROR: Account doesn't exist.");
+                    return false;
+                }
                 
+                
+                float amount = 0;
+                float balance = 0;
 		// convert value to float
-                float amount = Float.parseFloat(value);
-                float balance = Float.parseFloat(all_accounts.get(pos).acc_balance);
+		try {
+                    amount = Float.parseFloat(value);
+                    balance = Float.parseFloat(all_accounts.get(pos).acc_balance);
+		} catch (Exception e) {
+                    System.out.println("ERROR: Invalid amount format");
+                    return false;
+		}
 		
 		// minus the amount and transaction fee
 		float new_balance = balance - amount;
@@ -243,9 +256,23 @@ public class Transactions {
 	// return true if succesfully add, else return false
 	boolean add(int pos, String value) {
 		
+		// check if the pos is valid
+                if (pos < 0 || pos > all_accounts.size()) {
+                    // if the account doesn't exist
+                    System.out.println("ERROR: Account doesn't exist.");
+                    return false;
+                }
+		
+                float amount = 0;
+                float balance = 0;
 		// convert value to float
-                float amount = Float.parseFloat(value);
-                float balance = Float.parseFloat(all_accounts.get(pos).acc_balance);
+		try {
+                    amount = Float.parseFloat(value);
+                    balance = Float.parseFloat(all_accounts.get(pos).acc_balance);
+		} catch (Exception e) {
+                    System.out.println("ERROR: Invalid amount format");
+                    return false;
+		}
 		
 		// add the amount and minus the transaction fee
 		float new_balance = balance + amount;
@@ -254,38 +281,52 @@ public class Transactions {
 			System.out.println("ERROR: Over 99999.");
 			return false;
 		}
-		else {
+		// if the new balance is less than 0
+		else if (new_balance < 0) {
+			System.out.println("ERROR: Below 0.");
+			return false;
+		} else {
 			// convert back the new balance to string and save it the account
 			all_accounts.get(pos).acc_balance = String.format("%.2f", new_balance);
 		}
 		return true;
 	}
 
+	
 	// login
 	public void login(trans current_trans) {
-            if (current_trans.mis_info.charAt(0) == 'A') {
-                curr_login_mode = 'A';
-            } 
+		// search the position that matches the account name and number
+		int pos = searchName(current_trans.acc_holder);
+
+		// set the login mode
+		if (pos != -1) {
+			// set the login mode to A if log in as admin. (default as standard)
+			if (current_trans.mis_info.charAt(0) == 'A') {
+				curr_login_mode = 'A';
+			} 
+		}
+
 	}
 
 	// withdrawal
  	public void withdrawal(trans current_trans) {
-            // search the position that match the account name and account number
-            int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
+		// search the position that match the account name and account number
+		int pos = searchNameAcc(current_trans.acc_holder, current_trans.acc_num);
 
-            // reduce the amount from that account
-            if (pos != -1) {
-                    minus(pos, current_trans.amount);
-                    // increase the number of transaction if in standard mode
-                    if (curr_login_mode == 'S') {
-                            all_accounts.get(pos).num_trans++;
-                    }
-            }
+		// reduce the amount from that account
+		if (pos != -1) {
+			minus(pos, current_trans.amount);
+			// increase the number of transaction if in standard mode
+			if (curr_login_mode == 'S') {
+				all_accounts.get(pos).num_trans++;
+			}
+
+		}
 
 	}
 
 	// transfer
-	public void transfer(trans current_trans, trans next_trans) {
+	public void transfer(trans current_trans) {
 		// withdrawal money from the current index account
 		withdrawal(current_trans);
 		// increase the trans_index by 1
@@ -296,7 +337,7 @@ public class Transactions {
 
 		// reduce the amount from that account
 		if (pos != -1) {
-			minus(pos, current_trans.amount);
+			add(pos, current_trans.amount);
 		}
 		// if the account doesn't exist
 		// deposit the amount back
