@@ -20,8 +20,9 @@ default:
 
 run:
 	#java -cp "junit-4.12.jar::"hamcrest-core-1.3.jar org.junit.runner.JUnitCore FileWriterTest
-	#java org.junit.runner.JUnitCore TransactionTest
+	java org.junit.runner.JUnitCore TransactionTest
 	java org.junit.runner.JUnitCore FileReaderTest
+	java org.junit.runner.JUnitCore FileWriterTest
 
 classes: $(CLASSES:.java=.class)
 
