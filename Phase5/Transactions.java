@@ -102,7 +102,7 @@ public class Transactions {
 		} else if (code.equals("08")) {
 			return changeplan(current_trans);
 		} else if (code.equals("09")) {
-			enable(current_trans);
+			return enable(current_trans);
 		} else if (code.equals("00")) {
 			return logout(current_trans);
 		} else {

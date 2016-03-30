@@ -138,6 +138,16 @@ public class TransactionTest {
         
         // set up test data
         trans t = new trans();
+
+        t.code = "05";
+        t.acc_holder = "John Doe";
+        t.acc_num = "00001";
+        t.amount = "0";
+        t.mis_info = "N";
+        
+        assertEquals(true, T.execute(t.code, t));
+        
+        
     }
     
     // Test execute delete
@@ -145,8 +155,18 @@ public class TransactionTest {
     public void testExecuteDelete() {
         Transactions T = new Transactions();
         
+        // parse the master bank accounts file and set the all_accounts variable
+        T.parseMaster("MasterAccounts.txt");
+        
+        
         // set up test data
         trans t = new trans();
+
+        t.code = "06";
+        t.acc_holder = "John Doe";
+        t.acc_num = "00001";
+        
+        assertEquals(true, T.execute(t.code, t));
     }
     
     // Test execute disable
@@ -154,8 +174,17 @@ public class TransactionTest {
     public void testExecuteDisable() {
         Transactions T = new Transactions();
         
+        // parse the master bank accounts file and set the all_accounts variable
+        T.parseMaster("MasterAccounts.txt");
+        
         // set up test data
         trans t = new trans();
+        t.code = "07";
+        t.acc_holder = "John Doe";
+        t.acc_num = "00001";
+        
+        assertEquals(true, T.execute(t.code, t));
+        
     }
     
     // Test execute changeplan
@@ -180,8 +209,16 @@ public class TransactionTest {
     public void testExecuteEnable() {
         Transactions T = new Transactions();
         
+        // parse the master bank accounts file and set the all_accounts variable
+        T.parseMaster("MasterAccounts.txt");
+        
         // set up test data
         trans t = new trans();
+        t.code = "09";
+        t.acc_holder = "John Doe";
+        t.acc_num = "88888";
+        
+        assertEquals(true, T.execute(t.code, t));
     }
 
     // Test execute logout
