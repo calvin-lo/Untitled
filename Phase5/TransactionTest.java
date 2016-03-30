@@ -712,7 +712,7 @@ public class TransactionTest {
         // set up the test data
         int pos = 0;
         
-        assertEquals(0.05f, T.getTransactionFee(pos), 0.0f);
+        assertEquals(0.05, T.getTransactionFee(pos), 0.01);
         
     }
     
@@ -727,7 +727,7 @@ public class TransactionTest {
         // set up the test data
         int pos = 2;
         
-        assertEquals(0.10f, T.getTransactionFee(pos), 0.0f);
+        assertEquals(0.10, T.getTransactionFee(pos), 0.01);
         
     }
     
@@ -743,7 +743,7 @@ public class TransactionTest {
         T.all_accounts.add(acc);
         int pos = 0;
         
-        assertEquals(0.0f, T.getTransactionFee(pos), 0.0f);
+        assertEquals(0.0, T.getTransactionFee(pos), 0.01);
         
     }
     
