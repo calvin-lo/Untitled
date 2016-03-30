@@ -541,12 +541,81 @@ public class TransactionTest {
     }
     
     // Test create
-    
+
+    @Test
+    public void testCreate1() {
+
+        Transactions T = new Transactions();
+
+        // set up test data
+        trans t = new trans();
+
+        t.code = "05";
+        t.acc_holder = "John Doe";
+        t.acc_num = "00001";
+        t.amount = "0";
+        t.mis_info = "N";
+
+
+        assertEquals(true, T.create(t));
+
+    }
+
     // Test delete
+    @Test
+    public void testDelete1() {
+
+        Transactions T = new Transactions();
+        
+        // parse the master bank accounts file and set the all_accounts variable
+        T.parseMaster("MasterAccounts.txt");
+        
+        // set up test data
+        trans t = new trans();
+        t.code = "06";
+        t.acc_holder = "John Doe";
+        t.acc_num = "00001";
+
+        assertEquals(true, T.delete(t));
+
+    }
     
     // Test enable
+    @Test
+    public void testEnable1() {
+        Transactions T = new Transactions();
+        
+        // parse the master bank accounts file and set the all_accounts variable
+        T.parseMaster("MasterAccounts.txt");
+        
+        // set up test data
+        trans t = new trans();
+        t.code = "09";
+        t.acc_holder = "John Doe";
+        t.acc_num = "88888";
+        
+        assertEquals(true, T.enable(t));
+        
+        
+    }
     
     // Test disable
+    @Test
+    public void testDisable1() {
+        Transactions T = new Transactions();
+
+        // parse the master bank accounts file and set the all_accounts variable
+        T.parseMaster("MasterAccounts.txt");
+        
+        // set up test data
+        trans t = new trans();
+        t.code = "07";
+        t.acc_holder = "John Doe";
+        t.acc_num = "00001";
+
+        assertEquals(true, T.disable(t));
+
+    }
     
     // Test changeplan: from a non student plan
     @Test
